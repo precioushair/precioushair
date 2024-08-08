@@ -1,14 +1,22 @@
 from django.db import models
 from userauths.models import User
-# Create your models here.
+from django.utils.html import mark_safe
+from django.conf import settings
 from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
+import cloudinary
+from cloudinary.models import CloudinaryField
+          
+cloudinary.config( 
+  cloud_name = getattr(settings, 'CLOUD_NAME_SECRET', None), 
+  api_key = getattr(settings, 'API_KEY', None), 
+  api_secret = getattr(settings, 'API_SECRET', None)
+)
 class Category(models.Model):
     name = models.CharField(max_length=255)
     parent_category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subcategories')
-    image = models.ImageField(upload_to='categories/', default="category.webp")
+    image = CloudinaryField(folder="category-images")
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(unique=True)
 
@@ -38,6 +46,15 @@ class Category(models.Model):
 
         # Call the original save method to save the model instance
         super(Category, self).save(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        # Delete the image from Cloudinary before deleting the Blog object
+        if self.image:
+            # Get the public ID of the image from Cloudinary
+            public_id = self.image.public_id
+            # Delete the image from Cloudinary
+            cloudinary.uploader.destroy(public_id)
+        # Call the parent class delete method to delete the Blog object
+        super().delete(*args, **kwargs)
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
@@ -45,9 +62,11 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField()
-    image = models.ImageField(upload_to='products/')
+    image = CloudinaryField(folder="products")
     slug = models.SlugField(unique=True)
 
+    def blog_image(self):
+        return mark_safe('<img src="%s" width="50" height="50" style="border-radius: 5px;" />' % (self.image.url))
     def __str__(self):
         return self.name
     
@@ -73,9 +92,18 @@ class Product(models.Model):
 
         # Call the original save method to save the model instance
         super(Product, self).save(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        # Delete the image from Cloudinary before deleting the Blog object
+        if self.image:
+            # Get the public ID of the image from Cloudinary
+            public_id = self.image.public_id
+            # Delete the image from Cloudinary
+            cloudinary.uploader.destroy(public_id)
+        # Call the parent class delete method to delete the Blog object
+        super().delete(*args, **kwargs)
     
 class ProductImages(models.Model):
-    images = models.ImageField(upload_to='products/')
+    images = CloudinaryField(folder="products")
     product = models.ForeignKey(Product, related_name="p_images", on_delete=models.SET_NULL, null=True)
     date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
@@ -103,9 +131,18 @@ class ProductImages(models.Model):
 
         # Call the original save method to save the model instance
         super(ProductImages, self).save(*args, **kwargs)
-    
+    def delete(self, *args, **kwargs):
+        # Delete the image from Cloudinary before deleting the Blog object
+        if self.images:
+            # Get the public ID of the image from Cloudinary
+            public_id = self.images.public_id
+            # Delete the image from Cloudinary
+            cloudinary.uploader.destroy(public_id)
+        # Call the parent class delete method to delete the Blog object
+        super().delete(*args, **kwargs)
     class Meta:
         verbose_name_plural = "Product images"
+        
         
 
 

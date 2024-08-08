@@ -265,3 +265,6 @@ UNFOLD = {
 
 }
 
+CLOUD_NAME_SECRET = "dypvrytwu"
+API_KEY = "796229729547852"
+API_SECRET = "FaYFLYVkL-i-bNhuAwAEerbbszY" 
