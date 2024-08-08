@@ -7,3 +7,4 @@ migrations
 .pot
 *.pyc
 .env
+db.sqlite3
