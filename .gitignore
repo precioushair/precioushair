@@ -1,0 +1,8 @@
+__pycache__/
+migrations
+*.py[cod]
+*$py.class
+.pyd
+.__pycache__.log
+.pot
+*.pyc

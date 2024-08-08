@@ -1,0 +1,869 @@
+{% extends "partials/base.html" %}
+{% load static %}
+{% block content %}
+
+
+        <main class="main">
+            <div class="page-content">
+                <section class="intro-section appear-animate">
+                    <div class="container">
+                        <div class="row grid">
+                            <div class="grid-item col-xl-3 col-lg-4 height-x2 category-list d-lg-block d-none">
+                                <ul class="menu menu-options vertical-menu category-menu appear-animate"
+                                    data-animation-options="{
+                                'name': 'fadeInRightShorter',
+                                'delay': '.2s'
+                            }">
+                                    <li><a href="{% url "core:categories" %}" class="menu-title">Browse Our Categories</a></li>
+                                    <li>
+                                        <a href="{% url "core:categories" %}">
+                                            <i class="d-icon-t-shirt1" style="
+                                            font-size: 23px;
+                                            margin-left: -1px;
+                                            margin-right: 1rem;
+                                        "></i>All Categories</a>
+                                        <div class="megamenu">
+                                            <div class="row">
+                                                {% comment %} <div class="col-lg-4">
+                                                    <h4 class="menu-title">Women’s Clothing</h4>
+                                                    <ul>
+                                                        <li><a href="demo5-shop.html">Bottoms</a></li>
+                                                        <li><a href="demo5-shop.html">Dresses</a></li>
+                                                        <li><a href="demo5-shop.html">Outwear</a></li>
+                                                        <li><a href="demo5-shop.html">Sleepwear</a></li>
+                                                        <li><a href="demo5-shop.html">Swimwear</a></li>
+                                                        <li><a href="demo5-shop.html">Tops</a></li>
+                                                       
+                                                        
+                                                    </ul>
+                                                </div> {% endcomment %}
+                                                <div class="col-lg-4">
+                                                    <h4 class="menu-title">Categories</h4>
+                                                    
+                                                    <ul>
+                                                        {% for c in categories %}
+                                                        <li><a href="{% url "core:category-detail" c.slug %}">{{c.name}}</a></li>
+                                                        
+                                                        {% endfor %}
+                                                    
+                                                    </ul>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="menu-banner menu-banner3 banner banner-fixed">
+                                                        <figure>
+                                                            <img src="{% static 'images/menu/banner-3.jpg' %}" alt="Banner" width="280"
+                                                                height="374" />
+                                                        </figure>
+                                                        <div class="banner-content banner-date">
+                                                            <h6
+                                                                class=" text-white text-right font-weight-bold text-uppercase lh-1 mb-0">
+                                                                20-22<sup>tm</sup>April</h6>
+                                                        </div>
+                                                        <div class="banner-content x-50 w-100 text-center">
+                                                            <h4
+                                                                class="banner-subtitle bg-primary d-inline-block mb-1 text-white lh-1 ls-normal text-uppercase font-weight-semi-bold">
+                                                                Ultimate Sale</h4>
+                                                            <h3
+                                                                class="banner-title text-white text-uppercase font-weight-bold lh-1 ls-l mb-0">
+                                                                Up To 70%</h3>
+                                                            <p class="text-white font-weight-normal ls-normal mb-2">
+                                                                Discount Selected Items</p>
+                                                            <a href="demo5-shop.html"
+                                                                class="btn btn-white btn-link btn-underline btn-icon-right btn-icon-right btn-icon-right">Shop
+                                                                Now<i class="d-icon-arrow-right"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="menu-banner menu-banner3 banner banner-fixed">
+                                                        <figure>
+                                                            <img src="{% static 'images/menu/banner-3.jpg' %}" alt="Banner" width="280"
+                                                                height="374" />
+                                                        </figure>
+                                                        <div class="banner-content banner-date">
+                                                            <h6
+                                                                class=" text-white text-right font-weight-bold text-uppercase lh-1 mb-0">
+                                                                20-22<sup>tm</sup>April</h6>
+                                                        </div>
+                                                        <div class="banner-content x-50 w-100 text-center">
+                                                            <h4
+                                                                class="banner-subtitle bg-primary d-inline-block mb-1 text-white lh-1 ls-normal text-uppercase font-weight-semi-bold">
+                                                                Ultimate Sale</h4>
+                                                            <h3
+                                                                class="banner-title text-white text-uppercase font-weight-bold lh-1 ls-l mb-0">
+                                                                Up To 70%</h3>
+                                                            <p class="text-white font-weight-normal ls-normal mb-2">
+                                                                Discount Selected Items</p>
+                                                            <a href="demo5-shop.html"
+                                                                class="btn btn-white btn-link btn-underline btn-icon-right btn-icon-right btn-icon-right">Shop
+                                                                Now<i class="d-icon-arrow-right"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                             
+
+
+                                    <li>
+                                        <a href="{% url "core:category-detail" categories.0.slug %}"><img src="{% static "images/shop/hair-svgrepo-com.svg" %}" style="height: 27px; width: 27px; margin-right: 3px"/> {{categories.0.name}}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url "core:category-detail" categories.1.slug %}"><img src="{% static "images/shop/bundles.svg" %}" style="height: 20px; width: 20px; margin-right: 7px"/> {{categories.1.name}}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url "core:category-detail" categories.2.slug %}"><img src="{% static "images/shop/hair-clip-beauty-svgrepo-com.svg" %}" style="height: 20px; width: 20px; margin-right: 7px"/> {{categories.2.name}}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url "core:category-detail" categories.4.slug %}"><img src="{% static "images/shop/shampoo-svgrepo-com.svg" %}" style="height: 20px; width: 20px; margin-right: 7px"/> {{categories.4.name}}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url "core:category-detail" categories.3.slug %}"><img src="{% static "images/shop/hair-salon-2-svgrepo-com.svg" %}" style="height: 20px; width: 20px; margin-right: 7px"/> {{categories.3.name}}</a>
+                                    </li>
+
+
+                                    <li><a href="demo5-shop.html" class="menu-title">Today Deals</a>
+                                    </li>
+                                    <li>
+                                        <a href="demo5-shop.html">
+                                            <i class="d-icon-card"></i>All Products
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="demo5-shop.html">
+                                            <i class="d-icon-card"></i>Daily Deals
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="grid-item col-xl-9 col-lg-9 col-md-8 height-x2">
+                                <div class="intro-slider  owl-carousel owl-theme row owl-dot-inner owl-dot-dark owl-full-height animation-slider cols-1 appear-animate"
+                                    data-animation="{
+                                    'name': 'fadeIn',
+                                    'delay': '.2s'
+                                }" data-owl-options="{
+                                    'items': 1,
+                                    'nav': false,
+                                    'dots': true,
+                                    'loop': true,
+                                    'autoplay': true,
+                                    'animateIn': 'fadeInLeft',
+                                    'animateOut': 'fadeOutRight'
+                                }">
+                                    <div class="intro-slide1 banner banner-fixed banner-radius"
+                                        style="background-color: #f6f5f7;">
+                                        <figure>
+                                            <img src="{% static 'images/demos/demo5/slides/1.jpg' %}" width="580" height="508"
+                                                alt="banner" />
+                                        </figure>
+                                        <div class="banner-content y-50">
+                                            <h4 class="banner-subtitle text-uppercase font-weight-normal ls-normal slide-animate"
+                                                data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1s'}">
+                                                <span class="text-primary font-weight-bold">01.&nbsp;&nbsp;</span>BEST
+                                                SELLERS STORE
+                                            </h4>
+                                            <h3 class="banner-title font-weight-bold ls-md slide-animate"
+                                                data-animation-options="{'name': 'blurIn', 'delay': '.4s', 'duration': '1s'}">
+                                                Our greatest hits <br />for women</h3>
+                                            <p class="font-weight-normal ls-normal lh-1 text-uppercase text-dark mb-5 slide-animate"
+                                                data-animation-options="{'name': 'fadeInUpShorter', 'delay': '.7s', 'duration': '1s'}">
+                                                Starting At <strong class="text-primary">$24.00</strong></p>
+                                            <a href="demo5-shop.html"
+                                                class="btn btn-dark btn-sm btn-rounded slide-animate"
+                                                data-animation-options="{'name': 'fadeInUpShorter', 'delay': '.9s', 'duration': '1s'}">Shop
+                                                now</a>
+                                        </div>
+                                    </div>
+                                    <div class="intro-slide2 banner banner-fixed banner-radius"
+                                        style="background-color: #e4e8ec;">
+                                        <figure>
+                                            <img src="{% static 'images/demos/demo5/slides/2.jpg' %}" width="580" height="508"
+                                                alt="banner" />
+                                        </figure>
+                                        <div class="banner-content y-50">
+                                            <div class="slide-animate" data-animation-options="{
+                                                'name': 'fadeInLeftShorter',
+                                                'delay': '.2s'
+                                            }">
+                                                <h4 class="banner-subtitle text-uppercase font-weight-normal ls-normal">
+                                                    <span class="text-primary font-weight-bold">02.&nbsp;</span>BEST
+                                                    SELLERS STORE
+                                                </h4>
+                                                <h3 class="banner-title font-weight-bold ls-md mb-2 slide-animate"
+                                                    data-animation-options="{
+                                                    'name': 'fadeInLeftShorter',
+                                                    'delay': '.2s'
+                                                }">Big Sale <br />for women</h3>
+                                                <p class="text-uppercase text-dark ml-1">
+                                                    Up To<strong
+                                                        class="text-primary ml-1 mr-1">$24.00</strong><strong>Off</strong>
+                                                </p>
+                                                <a class="btn btn-white btn-sm btn-rounded btn-shadow"
+                                                    href="demo5-shop.html">Shop now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="intro-slide3 banner banner-fixed banner-radius"
+                                        style="background-color: #1d1b1a;">
+                                        <figure>
+                                            <img src="{% static 'images/demos/demo5/slides/3.jpg' %}" width="580" height="508"
+                                                alt="Banner" />
+                                        </figure>
+                                        <div class="banner-content y-50">
+                                            <h4 class="banner-subtitle text-uppercase text-white font-weight-normal ls-normal slide-animate"
+                                                data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1s'}">
+                                                <span class="text-primary font-weight-bold">03.&nbsp;</span>Ever Precious Hairz
+                                                STORE
+                                            </h4>
+                                            <h3 class="banner-title font-weight-bold text-white ls-md slide-animate"
+                                                data-animation-options="{'name': 'fadeInUpShorter', 'delay': '.4s', 'duration': '1s'}">
+                                                Fashionable <br />for men's</h3>
+                                            <p class="font-weight-normal ls-normal lh-1 text-uppercase text-white mb-5 slide-animate"
+                                                data-animation-options="{'name': 'fadeInUpShorter', 'delay': '.6s', 'duration': '1s'}">
+                                                Starting At <strong class="text-primary">$24.00</strong></p>
+                                            <a href="demo5-shop.html"
+                                                class="btn btn-white btn-outline btn-sm btn-rounded slide-animate"
+                                                data-animation-options="{'name': 'fadeInUpShorter', 'delay': '.8s', 'duration': '1s'}">Shop
+                                                now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                   
+                            <div class="grid-item col-lg-6 col-md-4 height-x1">
+                                <div class="intro-banner intro-banner3 banner banner-fixed banner-radius 
+                                    overlay-light appear-animate" style="background-color: #3a4146;"
+                                    data-animation-options="{
+                                    'name': 'fadeInUpShorter',
+                                    'delay': '.2s'
+                                }">
+                                    <a href="#">
+                                        <figure>
+                                            <img src="{% static 'images/demos/demo5/banners/3.jpg' %}" width="580" height="241"
+                                                alt="banner" />
+                                        </figure>
+                                    </a>
+                                    <div class="banner-content y-50">
+                                        <h4 class="banner-subtitle text-uppercase font-weight-bold text-primary">BLACK
+                                            FRIDAY SALE</h4>
+                                        <h3 class="banner-title text-white lh-1 font-weight-bold"> New Arrivals
+                                        </h3>
+                                        <a href="demo5-shop.html"
+                                            class="btn btn-white btn-link btn-underline btn-icon-right">Shop
+                                            Now<i class="d-icon-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid-item col-lg-6 col-md-4 col-sm-6 height-x1">
+                                <div class="intro-banner intro-banner5 banner banner-fixed banner-radius 
+                                    overlay-dark appear-animate" style="background-color: #f3f5f3;"
+                                    data-animation-options="{
+                                    'name': 'fadeInUpShorter',
+                                    'delay': '.2s'
+                                }">
+                                    <a href="#">
+                                        <figure>
+                                            <img src="{% static 'images/demos/demo5/banners/5.jpg' %}" width="280" height="241"
+                                                alt="banner" />
+                                        </figure>
+                                    </a>
+                                    <div class="banner-content">
+                                        <h4 class="banner-subtitle text-uppercase font-weight-normal ls-s">
+                                            20% Off</h4>
+                                        <h3 class="banner-title ls-m font-weight-normal">Kids Store</h3>
+                                        <a href="demo5-shop.html" class="btn btn-link btn-underline btn-icon-right">Shop
+                                            Now<i class="d-icon-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-space col-1"></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="service-list mt-10">
+                    <div class="container">
+                        <div class="owl-carousel owl-theme row cols-lg-3 cols-sm-2 cols-1" data-owl-options="{
+                                'items': 3,
+                                'nav': false,
+                                'dots': false,
+                                'loop': true,
+                                'autoplay': true,
+                                'autoplayTimeout': 5000,
+                                'responsive': {
+                                    '0': {
+                                        'items': 1
+                                    },
+                                    '576': {
+                                        'items': 2
+                                    },
+                                    '768': {
+                                        'items': 3,
+                                        'loop': false
+                                    }
+                                }
+                            }">
+                            <div class="icon-box icon-box-side icon-box1 appear-animate" data-animation-options="{
+                                    'name': 'fadeInRightShorter',
+                                    'delay': '.3s'
+                                }">
+                                <i class="icon-box-icon d-icon-truck"></i>
+                                <div class="icon-box-content">
+                                    <h4 class="icon-box-title text-capitalize ls-normal">Free Shipping &amp; Return
+                                    </h4>
+                                    <p class="ls-s">Free shipping on orders over $99</p>
+                                </div>
+                            </div>
+                            <div class="icon-box icon-box-side icon-box2 appear-animate" data-animation-options="{
+                                    'name': 'fadeInRightShorter',
+                                    'delay': '.4s'
+                                }">
+                                <i class="icon-box-icon d-icon-service"></i>
+                                <div class="icon-box-content">
+                                    <h4 class="icon-box-title text-capitalize ls-normal">Customer Support 24/7</h4>
+                                    <p class="ls-s">Instant access to perfect support</p>
+                                </div>
+                            </div>
+                            <div class="icon-box icon-box-side icon-box3 appear-animate" data-animation-options="{
+                                    'name': 'fadeInRightShorter',
+                                    'delay': '.5s'
+                                }">
+                                <i class="icon-box-icon d-icon-secure"></i>
+                                <div class="icon-box-content">
+                                    <h4 class="icon-box-title text-capitalize ls-normal">100% Secure Payment</h4>
+                                    <p class="ls-s">We ensure secure payment!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="pt-7 mt-5 appear-animate" data-animation-options="{'delay': '.3s'}">
+                    <div class="container">
+                        <h2 class="title title-center mb-5">Popular Categories</h2>
+                        <div class="owl-carousel owl-theme row cols-lg-4 cols-md-3 cols-sm-2 cols-1" data-owl-options="{
+                            'nav': false,
+                            'dots': true,
+                            'autoplay': false,
+                            'margin': 20,
+                            'responsive': {
+                                '0': {
+                                    'items': 1
+                                },
+                                '576': {
+                                    'items': 2
+                                },
+                                '768': {
+                                    'items': 3
+                                },
+                                '992': {
+                                    'items': 4,
+                                    'dots': false
+                                }
+                            }
+                        }">
+                        {% for category in categories %}
+                            <div class="category category-default1 category-absolute banner-radius overlay-zoom">
+                                <a href="{% url "core:category-detail" category.slug %}">
+                                    <figure class="category-media" style="background-color: #edd3c7;">
+                                        <img src="{{category.image.url}}" alt="category" width="280"
+                                            height="280" />
+                                    </figure>
+                                </a>
+                                <div class="category-content">
+                                    <h4 class="category-name ls-l"><a href="{% url "core:category-detail" category.slug %}">{{category.name}}</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </section>
+                <section class="mt-10 pt-2 mb-8 appear-animate" data-animation-options="{
+                    'name': 'fadeIn',
+                    'delay': '.2s'
+                }">
+                    <div class="container">
+                        <h2 class="title title-simple title-center">Featured Products</h2>
+                        <div class="row cols-lg-4 cols-md-3 cols-2">
+                            {% for p in products %}
+                            <div class="product text-center">
+                                <figure class="product-media" style="background-color: #f7f8fa;">
+                                    <a href="{% url "core:product-detail" p.slug %}">
+                                        <img src="{{p.image.url}}" alt="{{p.name}}" width="280" height="280">
+                                    </a>
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i class="d-icon-bag"></i></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist"  hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                        <a href="#" class="btn-product-icon btn-search btn-preview" title="Quick View" 
+                                            hx-get="{% url "core:product-preview" p.slug %}" 
+                                            hx-target="#quickViewContent"
+                                            hx-trigger="click"
+                                            hx-select="#MainContent"
+                                            hx-swap="innerHTML">
+                                            <i class="d-icon-search"></i>
+                                        </a>
+                                    </div>
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        <a href="{% url "core:category-detail" p.category.slug %}">{{p.category.name}}</a>
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="{% url "core:product-detail" p.slug %}">{{p.name}}</a>
+                                    </h3>
+                                    <div class="product-price">
+                                        <span class="price">${{p.price}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+
+                           
+                        </div>
+                    </div>
+                </section>
+               
+                <section class="mt-10 pt-8 mb-8 appear-animate" data-animation-options="{
+                    'name': 'fadeIn',
+                    'delay': '.2s'
+                }">
+                    <div class="container">
+                        <h2 class="title title-simple title-center">Ever Precious Hairz</h2>
+                        <div class="owl-carousel owl-theme row owl-nav-full cols-lg-4 cols-md-3 cols-2"
+                            data-owl-options="{
+                            'items': 4,
+                            'dots': true,
+                            'nav': false,
+                            'loop': false,
+                            'margin': 20,
+                            'responsive': {
+                                '0': {
+                                    'items': 2
+                                },
+                                '576': {
+                                    'items': 3
+                                },
+                                '768': {
+                                    'items': 4
+                                },
+                                '992': {
+                                    'items': 5
+                                },
+                                '1200': {
+                                    'items': 6,
+                                    'dots': false,
+                                    'nav': true
+                                }
+                            }
+                        }">
+                            <div class="product text-center">
+                                <figure class="product-media" style="background-color: #f7f8fa;">
+                                    <a href="demo5-product.html">
+                                        <img src="{% static 'images/demos/demo5/products/9.jpg' %}" alt="Blue Pinafore Denim Dress"
+                                            width="180" height="180">
+                                    </a>
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal"
+                                            data-target="#addCartModal" title="Add to cart"><i
+                                                class="d-icon-bag"></i></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist"  hx-post="" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i
+                                                class="d-icon-heart"></i></a>
+                                    </div>
+                                   
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        <a href="demo5-shop.html">Electronics</a>
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="demo5-product.html">Hand Electric Cell</a>
+                                    </h3>
+                                    <div class="product-price">
+                                        <span class="price">$230.99</span>
+                                    </div>
+                                    <div class="ratings-container">
+                                        <div class="ratings-full">
+                                            <span class="ratings" style="width:60%"></span>
+                                            <span class="tooltiptext tooltip-top"></span>
+                                        </div>
+                                        <a href="demo5-product.html" class="rating-reviews">( 6 reviews )</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product text-center">
+                                <figure class="product-media" style="background-color: #f7f8fa;">
+                                    <a href="demo5-product.html">
+                                        <img src="{% static 'images/demos/demo5/products/10.jpg' %}" alt="Blue Pinafore Denim Dress"
+                                            width="180" height="180">
+                                    </a>
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal"
+                                            data-target="#addCartModal" title="Add to cart"><i
+                                                class="d-icon-bag"></i></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
+                                                class="d-icon-heart"></i></a>
+                                    </div>
+                                   
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        <a href="demo5-shop.html">Bags</a>
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="demo5-product.html">Women’s Blue Handbag</a>
+                                    </h3>
+                                    <div class="product-price">
+                                        <span class="price">$230.99</span>
+                                    </div>
+                                    <div class="ratings-container">
+                                        <div class="ratings-full">
+                                            <span class="ratings" style="width:60%"></span>
+                                            <span class="tooltiptext tooltip-top"></span>
+                                        </div>
+                                        <a href="demo5-product.html" class="rating-reviews">( 6 reviews )</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product text-center">
+                                <figure class="product-media" style="background-color: #f7f8fa;">
+                                    <a href="demo5-product.html">
+                                        <img src="{% static 'images/demos/demo5/products/11.jpg' %}" alt="Blue Pinafore Denim Dress"
+                                            width="180" height="180">
+                                    </a>
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal"
+                                            data-target="#addCartModal" title="Add to cart"><i
+                                                class="d-icon-bag"></i></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
+                                                class="d-icon-heart"></i></a>
+                                    </div>
+                                    
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        <a href="demo5-shop.html">Bags</a>
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="demo5-product.html">Women’s Yellowish Band Handbag</a>
+                                    </h3>
+                                    <div class="product-price">
+                                        <span class="price">$230.99</span>
+                                    </div>
+                                    <div class="ratings-container">
+                                        <div class="ratings-full">
+                                            <span class="ratings" style="width:60%"></span>
+                                            <span class="tooltiptext tooltip-top"></span>
+                                        </div>
+                                        <a href="demo5-product.html" class="rating-reviews">( 6 reviews )</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product text-center">
+                                <figure class="product-media" style="background-color: #f7f8fa;">
+                                    <a href="demo5-product.html">
+                                        <img src="{% static 'images/demos/demo5/products/12.jpg' %}" alt="Blue Pinafore Denim Dress"
+                                            width="180" height="180">
+                                    </a>
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal"
+                                            data-target="#addCartModal" title="Add to cart"><i
+                                                class="d-icon-bag"></i></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
+                                                class="d-icon-heart"></i></a>
+                                    </div>
+                                
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        <a href="demo5-shop.html">Cosmetics</a>
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="demo5-product.html">Cosmetical Wristing Brush</a>
+                                    </h3>
+                                    <div class="product-price">
+                                        <span class="price">$230.99</span>
+                                    </div>
+                                    <div class="ratings-container">
+                                        <div class="ratings-full">
+                                            <span class="ratings" style="width:60%"></span>
+                                            <span class="tooltiptext tooltip-top"></span>
+                                        </div>
+                                        <a href="demo5-product.html" class="rating-reviews">( 6 reviews )</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product text-center">
+                                <figure class="product-media" style="background-color: #f7f8fa;">
+                                    <a href="demo5-product.html">
+                                        <img src="{% static 'images/demos/demo5/products/13.jpg' %}" alt="Blue Pinafore Denim Dress"
+                                            width="180" height="180">
+                                    </a>
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal"
+                                            data-target="#addCartModal" title="Add to cart"><i
+                                                class="d-icon-bag"></i></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
+                                                class="d-icon-heart"></i></a>
+                                    </div>
+                                 
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        <a href="demo5-shop.html">Watch</a>
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="demo5-product.html">Brown Strap Wrist Watch</a>
+                                    </h3>
+                                    <div class="product-price">
+                                        <span class="price">$230.99</span>
+                                    </div>
+                                    <div class="ratings-container">
+                                        <div class="ratings-full">
+                                            <span class="ratings" style="width:60%"></span>
+                                            <span class="tooltiptext tooltip-top"></span>
+                                        </div>
+                                        <a href="demo5-product.html" class="rating-reviews">( 6 reviews )</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product text-center">
+                                <figure class="product-media" style="background-color: #f7f8fa;">
+                                    <a href="demo5-product.html">
+                                        <img src="{% static 'images/demos/demo5/products/14.jpg' %}" alt="Blue Pinafore Denim Dress"
+                                            width="180" height="180">
+                                    </a>
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal"
+                                            data-target="#addCartModal" title="Add to cart"><i
+                                                class="d-icon-bag"></i></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
+                                                class="d-icon-heart"></i></a>
+                                    </div>
+                                    
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        <a href="demo5-shop.html">Shoes</a>
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="demo5-product.html">Training White Shoes</a>
+                                    </h3>
+                                    <div class="product-price">
+                                        <span class="price">$230.99</span>
+                                    </div>
+                                    <div class="ratings-container">
+                                        <div class="ratings-full">
+                                            <span class="ratings" style="width:60%"></span>
+                                            <span class="tooltiptext tooltip-top"></span>
+                                        </div>
+                                        <a href="demo5-product.html" class="rating-reviews">( 6 reviews )</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product text-center">
+                                <figure class="product-media" style="background-color: #f7f8fa;">
+                                    <a href="demo5-product.html">
+                                        <img src="{% static 'images/demos/demo5/products/11.jpg' %}" alt="Blue Pinafore Denim Dress"
+                                            width="180" height="180">
+                                    </a>
+                                    <div class="product-action-vertical">
+                                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal"
+                                            data-target="#addCartModal" title="Add to cart"><i
+                                                class="d-icon-bag"></i></a>
+                                        <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
+                                                class="d-icon-heart"></i></a>
+                                    </div>
+                                   
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        <a href="demo5-shop.html">Bags</a>
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="demo5-product.html">Women’s Yellowish Band Handbag</a>
+                                    </h3>
+                                    <div class="product-price">
+                                        <span class="price">$230.99</span>
+                                    </div>
+                                    <div class="ratings-container">
+                                        <div class="ratings-full">
+                                            <span class="ratings" style="width:60%"></span>
+                                            <span class="tooltiptext tooltip-top"></span>
+                                        </div>
+                                        <a href="demo5-product.html" class="rating-reviews">( 6 reviews )</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+           
+                <section class="instagram-section pb-8 mb-10 appear-animate">
+                    <div class="container">
+                        <h2 class="title title-simple text-normal title-center mb-6">Follow Us on Instagram</h2>
+                        <div class="row grid">
+                            <div class="grid-item col-lg-2 col-sm-4 col-6 height-x1">
+                                <figure class="instagram appear-animate" style="background-color: #ced0cf;"
+                                    data-animation-options="{
+                                    'name': 'fadeInLeftShorter',
+                                    'delay': '.3s'
+                                }">
+                                    <a href="#">
+                                        <img src="{% static 'images/demos/demo5/instagrams/1.jpg' %}" alt="Instagram" width="180"
+                                            height="180" />
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="grid-item col-lg-2 col-sm-4 col-6 height-x1">
+                                <figure class="instagram appear-animate" style="background-color: #dddcda;"
+                                    data-animation-options="{
+                                    'name': 'fadeInLeftShorter',
+                                    'delay': '.2s'
+                                }">
+                                    <a href="#">
+                                        <img src="{% static 'images/demos/demo5/instagrams/2.jpg' %}" alt="Instagram" width="180"
+                                            height="180" />
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="grid-item col-lg-2 col-sm-4 col-6 height-x1">
+                                <figure class="instagram appear-animate" style="background-color: #eaebe9;"
+                                    data-animation-options="{
+                                    'name': 'fadeInRightShorter',
+                                    'delay': '.2s'
+                                }">
+                                    <a href="#">
+                                        <img src="{% static 'images/demos/demo5/instagrams/3.jpg' %}" alt="Instagram" width="180"
+                                            height="180" />
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="grid-item col-lg-2 col-sm-4 col-6 height-x1">
+                                <figure class="instagram appear-animate" style="background-color: #b4b4b6;"
+                                    data-animation-options="{
+                                    'name': 'fadeInRightShorter',
+                                    'delay': '.3s'
+                                }">
+                                    <a href="#">
+                                        <img src="{% static 'images/demos/demo5/instagrams/4.jpg' %}" alt="Instagram" width="180"
+                                            height="180" />
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="grid-item col-lg-4 col-sm-8 height-x2">
+                                <div class="testimonial-wrapper">
+                                    <h3 class="title title-simple font-weight-semi-bold text-normal">What they
+                                        say about us</h3>
+                                    <div class="owl-carousel owl-theme row cols-1 appear-animate"
+                                        data-animation-options="{
+                                        'delay': '.2s'
+                                    }" data-owl-options="{
+                                        'items': 1,
+                                        'nav': false,
+                                        'dots': true,
+                                        'loop': false
+                                    }">
+                                        <div class="testimonial testimonial-centered">
+                                            <div class="testimonial-info">
+                                                <figure class="testimonial-author-thumbnail">
+                                                    <img src="{% static 'images/agents/4.jpg' %}" alt="user" width="40" height="40" />
+                                                </figure>
+                                                <blockquote class="comment">
+                                                    “ Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                                                    Phasellus hendrerit.
+                                                    Pellente sque aliquet nibh nec urna. In nisi neque ”
+                                                </blockquote>
+                                                <cite>
+                                                    Jenson Gregory
+                                                    <span>Customer</span>
+                                                </cite>
+                                            </div>
+                                        </div>
+                                        <div class="testimonial testimonial-centered">
+                                            <div class="testimonial-info">
+                                                <figure class="testimonial-author-thumbnail">
+                                                    <img src="{% static 'images/agents/4.jpg' %}" alt="user" width="40" height="40" />
+                                                </figure>
+                                                <blockquote class="comment">“ Lorem ipsum dolor sit amet, consectetuer
+                                                    adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec
+                                                    urna. In nisi neque ”</blockquote>
+                                                <cite>
+                                                    Mary Adams
+                                                    <span>Customer</span>
+                                                </cite>
+                                            </div>
+                                        </div>
+                                        <div class="testimonial testimonial-centered">
+                                            <div class="testimonial-info">
+                                                <figure class="testimonial-author-thumbnail">
+                                                    <img src="{% static 'images/agents/4.jpg' %}" alt="user" width="40" height="40" />
+                                                </figure>
+                                                <blockquote class="comment">“ Lorem ipsum dolor sit amet, consectetuer
+                                                    adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec
+                                                    urna. In nisi neque ”</blockquote>
+                                                <cite>
+                                                    Owen Hunt
+                                                    <span>Customer</span>
+                                                </cite>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid-item col-lg-2 col-sm-4 col-6 height-x1">
+                                <figure class="instagram appear-animate" style="background-color: #3b414d;"
+                                    data-animation-options="{
+                                    'name': 'fadeInLeftShorter',
+                                    'delay': '.3s'
+                                }">
+                                    <a href="#">
+                                        <img src="{% static 'images/demos/demo5/instagrams/5.jpg' %}" alt="Instagram" width="180"
+                                            height="180" />
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="grid-item col-lg-2 col-sm-4 col-6 height-x1">
+                                <figure class="instagram appear-animate" style="background-color: #d1cecb;"
+                                    data-animation-options="{
+                                    'name': 'fadeInLeftShorter',
+                                    'delay': '.2s'
+                                }">
+                                    <a href="#">
+                                        <img src="{% static 'images/demos/demo5/instagrams/6.jpg' %}" alt="Instagram" width="180"
+                                            height="180" />
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="grid-item col-lg-2 col-sm-4 col-6 height-x1">
+                                <figure class="instagram appear-animate" style="background-color: #e3e7ea;"
+                                    data-animation-options="{
+                                    'name': 'fadeInRightShorter',
+                                    'delay': '.2s'
+                                }">
+                                    <a href="#">
+                                        <img src="{% static 'images/demos/demo5/instagrams/7.jpg' %}" alt="Instagram" width="180"
+                                            height="180" />
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="grid-item col-lg-2 col-sm-4 col-6 height-x1">
+                                <figure class="instagram appear-animate" style="background-color: #162021;"
+                                    data-animation-options="{
+                                    'name': 'fadeInRightShorter',
+                                    'delay': '.3s'
+                                }">
+                                    <a href="#">
+                                        <img src="{% static 'images/demos/demo5/instagrams/8.jpg' %}" alt="Instagram" width="180"
+                                            height="180" />
+                                    </a>
+                                </figure>
+                            </div>
+                            <div class="grid-space col-1"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+{% endblock content %}

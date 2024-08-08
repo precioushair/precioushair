@@ -1,0 +1,73 @@
+{% load static %}
+
+<div class="product product-single row mb-7" id="MainContent">
+    <div class="col-md-6 sticky-sidebar-wrapper" >
+        <div class="product-gallery pg-vertical sticky-sidebar"
+            data-sticky-options="{'minWidth': 767}">
+            <div
+                class="product-single-carousel owl-carousel owl-theme owl-nav-inner row cols-1 gutter-no">
+                <figure class="product-image">
+                    <img src="{{product.image.url}}"
+                        data-zoom-image="{{product.image.url}}"
+                        alt="Converse Training Shoes" width="800" height="900">
+                </figure>
+            </div>
+{% comment %}             
+            <div class="product-label-group">
+                <label class="product-label label-new">new</label>
+            </div> {% endcomment %}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="product-details">
+           
+            <h1 class="product-name">{{product.name}}</h1>
+            <div class="product-meta">
+                SKU: <span class="product-sku">12345670</span>
+                BRAND: <span class="product-brand">The Northland</span>
+            </div>
+            <div class="product-price">${{product.price}}</div>
+            <div class="ratings-container">
+                <div class="ratings-full">
+                    <span class="ratings" style="width:80%"></span>
+                    <span class="tooltiptext tooltip-top"></span>
+                </div>
+                <a href="#product-tab-reviews" class="link-to-tab rating-reviews">( 11 reviews )</a>
+            </div>
+            <p class="product-short-desc">{{product.description}}</p>
+            
+            
+            <div class="product-variation-price">
+                <span>$239.00</span>
+            </div>
+            <hr class="product-divider">
+            <div class="product-form product-qty">
+                <div class="product-form-group">
+                    <div class="input-group mr-2">
+                        <button class="quantity-minus d-icon-minus"></button>
+                        <input class="quantity form-control" type="number" min="1" max="1000000">
+                        <button class="quantity-plus d-icon-plus"></button>
+                    </div>
+                    <button
+                        class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"><i
+                            class="d-icon-bag"></i>Add to
+                        Cart</button>
+                </div>
+            </div>
+            <hr class="product-divider mb-3">
+            <div class="product-footer">
+                <div class="social-links mr-4">
+                    <a href="#" class="social-link social-facebook fab fa-facebook-f"></a>
+                    <a href="#" class="social-link social-twitter fab fa-twitter"></a>
+                    <a href="#" class="social-link social-pinterest fab fa-pinterest-p"></a>
+                </div>
+                <span class="divider d-lg-show"></span>
+                <a href="#" class="btn-product btn-wishlist mr-6"><i class="d-icon-heart"></i>Add to
+                    wishlist</a>
+                <a href="#" class="btn-product btn-compare"><i class="d-icon-compare"></i>Add
+                    to
+                    compare</a>
+            </div>
+        </div>
+    </div>
+</div>

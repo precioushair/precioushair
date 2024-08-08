@@ -1,0 +1,59 @@
+{% load static %}
+<a href="#" class="cart-toggle label-block link">
+    <div class="cart-label d-lg-show">
+        <span class="cart-name">Shopping Cart:</span>
+        <span class="cart-price">${{cart_total}}</span>
+    </div>
+    <i class="d-icon-bag"><span class="cart-count">{{cart.items.count}}</span></i>
+</a>
+<div class="canvas-overlay"></div>
+
+    <div class="dropdown-box" >
+    <div class="canvas-header">
+        <h4 class="canvas-title">Shopping Cart</h4>
+        <a href="#" class="btn btn-dark btn-link btn-icon-right btn-close">close<i
+                class="d-icon-arrow-right"></i><span class="sr-only">Cart</span></a>
+    </div>
+    <div class="products scrollable"  >
+    {% if cart.items.all %}
+    {% for cart_item in cart.items.all %}
+        <div id="cart-item-{{ cart_item.id }}" class="product product-cart">
+            <figure class="product-media">
+                <a href="{% url 'core:product-detail' cart_item.product.slug %}">
+                    <img src="{{ cart_item.product.image.url }}" alt="{{ cart_item.product.name }}" width="80" height="88" />
+                </a>
+                <button class="btn btn-link btn-close" hx-delete="{% url 'core:remove_from_cart' cart_item.id %}" hx-target="#cart-items" hx-swap="innerHTML">
+                    <i class="fas fa-times"></i><span class="sr-only">Close</span>
+                </button>
+            </figure>
+            <div class="product-detail">
+                <a href="{% url 'core:product-detail' cart_item.product.slug %}" class="product-name">{{ cart_item.product.name }}</a>
+                <div class="price-box">
+                    <span class="product-quantity">{{ cart_item.quantity }}</span>
+                    <span class="product-price">${{ cart_item.product.price }}</span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% else %}
+    <div class="product-detail mt-5">
+        <div class="price-box">
+            <span class="product-price">No items in cart</span>
+        </div>
+    </div>
+    {% endif %}
+
+    </div>
+
+    <div class="cart-total">
+        <label>Subtotal:</label>
+        <span class="price">${{cart_total}}</span>
+    </div>
+
+
+    <div class="cart-action">
+        <a href="{% url "core:view_cart" %}" class="btn btn-dark btn-link">View Cart</a>
+        <a href="checkout.html" class="btn btn-dark"><span>Go To Checkout</span></a>
+    </div>
+
+</div>

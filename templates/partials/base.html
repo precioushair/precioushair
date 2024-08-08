@@ -1,0 +1,704 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Ever Precious Hairz - Ultimate eCommerce Template</title>
+    <meta name="keywords" content="HTML5 Template" />
+    <meta name="description" content="Ever Precious Hairz - Ultimate eCommerce Template">
+    <meta name="author" content="D-THEMES">
+
+    <link rel="icon" type="image/png" href="images/icons/favicon.png">
+
+    <link rel="preload" href="fonts/riode115b.ttf?5gap68" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous">
+    <link rel="preload" href="vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous">
+    <script>
+        WebFontConfig = {
+            google: { families: ['Poppins:400,500,600,700,800'] }
+        };
+        (function (d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = 'js/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+    </script>
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/magnific-popup/magnific-popup.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/owl-carousel/owl.carousel.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/sticky-icon/stickyicon.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/demo5.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static "css/style.min.css" %}">
+    <style>
+        .htmx-indicator{
+            opacity:0;
+            transition: opacity 500ms ease-in;
+        }
+        .htmx-request .htmx-indicator{
+            opacity:1
+        }
+        .htmx-request.htmx-indicator{
+            opacity:1
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 60px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            border-radius: 10px;
+        }
+        
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+       
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the modal
+            var modal = document.getElementById("quickViewModal");
+        
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+        
+            // When the user clicks on the quick view button, open the modal
+            document.querySelectorAll('.btn-preview').forEach(item => {
+                item.addEventListener('click', event => {
+                    event.preventDefault();
+                    // Display the modal
+                    modal.style.display = "block";
+                })
+            });
+        
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+        
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            document.body.addEventListener('htmx:configRequest', function() {
+                document.body.style.cursor = 'wait';
+            });
+            
+            document.body.addEventListener('htmx:afterRequest', function() {
+                document.body.style.cursor = 'default';
+            });
+            
+        });
+        
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemSearch = document.getElementById('item_search');
+            const searchResults = document.getElementById('search_results');
+
+            itemSearch.addEventListener('input', function() {
+                let query = itemSearch.value;
+                if (query.length > 3) {
+                    fetch(`/search_query/?query=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            searchResults.innerHTML = '';
+                            searchResults.style.display = 'block';
+                            data.results.forEach(product => {
+                                const li = document.createElement('li');
+                                const a = document.createElement('a');
+                                a.href = `/products/${product.slug}`;
+                                a.textContent = `${product.name}`;
+                                li.appendChild(a);
+                                searchResults.appendChild(li);
+                            });
+                        });
+                } else {
+                    searchResults.style.display = 'none';
+                }
+            });
+
+            // Keep the search results visible when the input is focused
+            itemSearch.addEventListener('focus', function() {
+                if (itemSearch.value.length > 3) {
+                    searchResults.style.display = 'block';
+                }
+            });
+
+            // Hide the search results when clicking outside the input and results
+            document.addEventListener('click', function(event) {
+                if (!itemSearch.contains(event.target) && !searchResults.contains(event.target)) {
+                    searchResults.style.display = 'none';
+                }
+            });
+
+            // Ensure results are visible again when clicking on the input
+            itemSearch.addEventListener('click', function() {
+                if (itemSearch.value.length > 3) {
+                    searchResults.style.display = 'block';
+                }
+            });
+        });
+    </script>
+    
+</head>
+
+<body class="home">
+    <div class="page-wrapper">
+        <h1 class="d-none">Ever Precious - Get the </h1>
+        <header class="header">
+            <div class="header-top">
+                <div class="container">
+                    <div class="header-left">
+                        <p class="welcome-msg">Welcome to Ever Precious Hairz</p>
+                    </div>
+                    <div class="header-right">
+                        
+
+                        <div class="dropdown ml-5">
+                            <a href="#language">ENG</a>
+                            <ul class="dropdown-box">
+                                <li>
+                                    <a href="#USD">ENG</a>
+                                </li>
+                                <li>
+                                    <a href="#EUR">FRH</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <span class="divider"></span>
+                        <a href="{% url "core:contact" %}" hx-boost="true" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
+                        <a href="#" class="help d-lg-show"><i class="d-icon-info"></i> Need Help</a>
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url "userauths:account" %}" hx-boost="true" class="link-to-tab d-md-show"><i class="d-icon-user"  style="margin-right: 0.5rem;"></i>Account</a>
+                        <span class="delimiter">/</span>
+                        <a href="{% url "userauths:logout" %}" class=" link-to-tab d-md-show ml-0">Logout</a>
+                        {% else %}
+                            <a href="#signin" class="login-toggle link-to-tab d-md-show"><i class="d-icon-user"></i>Sign
+                                in</a>
+                            <span class="delimiter">/</span>
+                            <a href="#register" class="register-toggle link-to-tab d-md-show ml-0">Register</a>
+                        {% endif %}
+                        <div class="dropdown login-dropdown off-canvas">
+                            <div class="canvas-overlay"></div>
+
+                            <div class="dropdown-box scrollable">
+                                <div class="login-popup">
+                                    <div class="form-box">
+                                        <div class="tab tab-nav-simple tab-nav-boxed form-tab">
+                                            <ul
+                                                class="nav nav-tabs nav-fill align-items-center border-no justify-content-center mb-5">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active border-no lh-1 ls-normal"
+                                                        href="#signin">Login</a>
+                                                </li>
+                                                <li class="delimiter">or</li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link border-no lh-1 ls-normal"
+                                                        href="#register">Register</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" style="margin-top: 50px;">
+                                                <div id="signin-response"></div>
+                                                <div class="tab-pane active" id="signin">
+                                                    <form hx-post="{% url 'userauths:sign-in' %}" style="margin-top: 10px" hx-target="#signin-response" hx-swap="innerHTML">
+                                                        {% csrf_token %}
+                                                        <div class="form-group mb-3">
+                                                            <input type="text" class="form-control" id="signin-email" name="email" placeholder="Username or Email Address *" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="password" class="form-control" id="signin-password" name="password" placeholder="Password *" required>
+                                                        </div>
+                                                        <div class="form-footer">
+                                                            <div class="form-checkbox">
+                                                                <input type="checkbox" class="custom-checkbox" id="signin-remember" name="signin-remember">
+                                                                <label class="form-control-label" for="signin-remember">Remember me</label>
+                                                            </div>
+                                                            <a href="#" class="lost-link">Lost your password?</a>
+                                                        </div>
+                                                        <button class="btn btn-dark btn-block btn-rounded" type="submit"  hx-indicator="#spinner">Login
+                                                            <img  id="spinner" class="htmx-indicator" src="https://htmx.org/img/bars.svg"/>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                <div class="tab-pane" id="register">
+                                                    <div id="register-response"></div>
+                                                    <form hx-post="{% url 'userauths:sign-up' %}" style="margin-top: 10px" hx-target="#register-response" hx-swap="innerHTML">
+                                                        {% csrf_token %}
+                                                        <div class="form-group mb-3">
+                                                            <input type="text" class="form-control" id="register-name" name="full_name" placeholder="Your Name *" required>
+                                                        </div>
+                                                        <div class="form-group mb-3">
+                                                            <input type="email" class="form-control" id="register-email" name="email" placeholder="Your Email Address *" required>
+                                                        </div>
+                                                        <div class="form-group mb-3">
+                                                            <input type="text" class="form-control" id="register-number" name="phone_number" placeholder="Your Phone number *" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="password" class="form-control" id="register-password" name="password" placeholder="Password *" required>
+                                                        </div>
+                                                        <div class="form-footer">
+                                                            <div class="form-checkbox">
+                                                                <input type="checkbox" class="custom-checkbox" id="register-agree" name="register-agree" required>
+                                                                <label class="form-control-label" for="register-agree">I agree to the privacy policy</label>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-dark btn-block btn-rounded" type="submit"  hx-indicator="#spinner">Register
+                                                            <img  id="spinner" class="htmx-indicator" src="https://htmx.org/img/bars.svg"/>
+                                                        </button>
+                                                        
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                    <button title="Close (Esc)" type="button" class="mfp-close"><span>×</span></button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-middle sticky-header fix-top sticky-content">
+                <div class="container">
+                    <div class="header-left">
+                        <a href="#" class="mobile-menu-toggle">
+                            <i class="d-icon-bars2"></i>
+                        </a>
+                        <a href="/" class="logo">
+                            <img src="{% static 'images/demos/demo5/log.png' %}" alt="logo" width="153" height="44" />
+                        </a>
+
+                        <div class="header-search hs-simple">
+                            <form class="input-wrapper" method="GET"  action="{% url 'core:search' %}"  >
+                                <input type="text" class="form-control " name="search" autocomplete="off"  id="item_search"
+                                    placeholder="Search..." required  />
+                                <button class="btn btn-search" type="submit" title="submit-button">
+                                    <i class="d-icon-search"></i>
+                                </button>
+                            </form>
+                            <ul id="search_results" class="search-dropdown" style="margin-top: 10px; border-radius: 6px; padding-top: 8px;"></ul>
+
+                            
+                        </div>
+                       
+
+
+                    </div>
+                  
+                    <div class="header-right">
+                        <a href="tel:+2348025067397" class="icon-box icon-box-side">
+                            <div class="icon-box-icon mr-0 mr-lg-2">
+                                <i class="d-icon-phone"></i>
+                            </div>
+                            <div class="icon-box-content d-lg-show">
+                                <h4 class="icon-box-title">Call Us Now:</h4>
+                                <p>(+234) 8025067397</p>
+                            </div>
+                        </a>
+                        <span class="divider"></span>
+                        <div class="dropdown wishlist wishlist-dropdown off-canvas">
+                            <a href="{% url "core:view_wishlist" %}" class="wishlist-toggle" title="wishlist">
+                                <i class="d-icon-heart"></i>
+                            </a>
+                            <div class="canvas-overlay"></div>
+
+                            <div class="dropdown-box scrollable">
+                                <div class="canvas-header">
+                                    <h4 class="canvas-title">wishlist</h4>
+                                    <a href="#" class="btn btn-dark btn-link btn-icon-right btn-close">close<i
+                                            class="d-icon-arrow-right"></i><span class="sr-only">wishlist</span></a>
+                                </div>
+                                <div class="products scrollable" id="wishlist-container">
+                                    {% include "htmx/wishlist_items.html" %}
+                                </div>
+                                <a href="{% url "core:view_wishlist" %}" class="btn btn-dark wishlist-btn mt-4"><span>Go To
+                                        Wishlist</span></a>
+
+                            </div>
+
+                        </div>
+                        <span class="divider"></span>
+                        <div class="dropdown cart-dropdown type2 off-canvas mr-0 mr-lg-2" id="cart-items">
+                            {% include "htmx/cart_items.html"  %}
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </header>
+
+        <!-- Quick View Modal -->
+<div id="quickViewModal" class="modal" style="z-index: 1000;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="quickViewContent">
+            <!-- Product details will be loaded here -->
+        </div>
+    </div>
+</div>
+{% block content %}
+
+
+{% endblock content %}
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-middle">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="widget widget-about">
+                        <a href="/" class="logo-footer">
+                            <img src="{% static 'images/demos/demo5/log-footer.png' %}" alt="logo-footer" width="150"
+                                height="43" />
+                        </a>
+                        <div class="widget-body">
+                            <p class="ls-s">Fringilla urna porttitor rhoncus dolor purus<br />
+                                luctus venenatis lectus magna fringilla diam<br />
+                                maecenas ultricies mi eget mauris.</p>
+                            <a
+                                href="https://d-themes.com/cdn-cgi/l/email-protection#274a464e4b67554e4843420944484a"><span
+                                    class="__cf_email__"
+                                    >mock@gmail.com</span></a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="widget">
+                        <h4 class="widget-title">About Us</h4>
+                        <ul class="widget-body">
+                            <li><a href="{% url "core:about" %}">About Us</a></li>
+                            <li><a href="#">Order History</a></li>
+                            <li><a href="#">Returns</a></li>
+                            <li><a href="#">Custom Service</a></li>
+                            <li><a href="#">Terms &amp; Condition</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="widget">
+                        <h4 class="widget-title">Customer Service</h4>
+                        <ul class="widget-body">
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Money-back Guarantee!</a></li>
+                            <li><a href="#">Returns</a></li>
+                            <li><a href="#">Shipping</a></li>
+                            <li><a href="#">Terms and Conditions</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="widget">
+                        <h4 class="widget-title">My Account</h4>
+                        <ul class="widget-body">
+                            <li><a href="#">Sign in</a></li>
+                            <li><a href="cart.html">View Cart</a></li>
+                            <li><a href="{% url "core:view_wishlist" %}">My Wishlist</a></li>
+                            <li><a href="#">Track My Order</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-left">
+                <figure class="payment">
+                    <img src="{% static 'images/payment.png' %}" alt="payment" width="159" height="29" />
+                </figure>
+            </div>
+            <div class="footer-center">
+                <p class="copyright">Ever Precious Hairz &copy; 2022. All Rights Reserved</p>
+            </div>
+            <div class="footer-right">
+                <div class="social-links">
+                    <a href="#" title="social-link" class="social-link social-facebook fab fa-facebook-f"></a>
+                    <a href="#" title="social-link" class="social-link social-twitter fab fa-twitter"></a>
+                    <a href="#" title="social-link" class="social-link social-linkedin fab fa-linkedin-in"></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+</div>
+
+<div class="sticky-footer sticky-content fix-bottom">
+<a href="/" class="sticky-link">
+    <i class="d-icon-home"></i>
+    <span>Home</span>
+</a>
+<a href="{% url "core:categories" %}" class="sticky-link">
+    <i class="d-icon-volume"></i>
+    <span>Categories</span>
+</a>
+<a href="wishlist.html" class="sticky-link">
+    <i class="d-icon-heart"></i>
+    <span>Wishlist</span>
+</a>
+{% if request.user.is_authenticated %}
+    <a href="{% url "userauths:account" %}" hx-boost="true" class="sticky-link">
+        <i class="d-icon-user"></i>
+        <span>Account</span>
+    </a>
+{% else %}
+    <a href="#signin" hx-boost="true" class="login-toggle sticky-link">
+        <i class="d-icon-user"></i>
+        <span>Login</span>
+    </a>
+{% endif %}
+<div class="header-search hs-toggle dir-up">
+    <a href="#" class="mobile-menu-toggle sticky-link">
+        <i class="d-icon-search"></i>
+        <span>Search</span>
+    </a>
+    <form action="#" class="input-wrapper">
+        <input type="text" class="form-control item_search" name="search" autocomplete="off"
+            placeholder="Search your keyword..." required />
+        <button class="btn btn-search" type="submit" title="submit-button">
+            <i class="d-icon-search"></i>
+        </button>
+    </form>
+    <ul class="search_results search-dropdown"></ul>
+</div>
+</div>
+
+
+
+<div class="mobile-menu-wrapper">
+<div class="mobile-menu-overlay">
+</div>
+
+<a class="mobile-menu-close" href="#"><i class="d-icon-times"></i></a>
+
+<div class="mobile-menu-container scrollable">
+    <form action="#" class="input-wrapper">
+        <input type="text" class="form-control item_search" name="search" autocomplete="off" 
+            placeholder="Search your keyword..." required />
+        <button class="btn btn-search" type="submit" title="submit-button">
+            <i class="d-icon-search"></i>
+        </button>
+        <ul class="search_results search-dropdown" style="margin-top: 50px; background: #000000; color: #fff;"></ul>
+      
+    </form>
+ 
+    
+    <div class="tab tab-nav-simple tab-nav-center tab-nav-boxed">
+        <ul class="nav nav-tabs nav-fill">
+            <li class="nav-item">
+                <a href="#tab-1" class="nav-link active">Main Menu</a>
+            </li>
+            <li class="nav-item">
+                <a href="#tab-2" class="nav-link">Categories</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mobile-menu mmenu-anim tab-content">
+        <ul class="tab-pane active" id="tab-1">
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a href="{% url "core:categories" %}">Categories</a>
+                <ul>
+                    {% for c in categories %}
+                    <li>
+                        <a href="{% url "core:category-detail" c.slug %}">
+                            {{c.name}}
+                        </a>
+                     
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li>
+                <a href="demo5-product.html" class="active">Products</a>
+                <ul>
+                    <li>
+                        <a href="#">Product Pages</a>
+                        <ul>
+                            <li><a href="product-simple.html">Simple Product</a></li>
+                            <li><a href="product-featured.html">Featured &amp; On Sale</a></li>
+                            <li><a href="product.html">Variable Product</a></li>
+                            <li><a href="product-variable-swatch.html">Variation Swatch
+                                    Product</a></li>
+                            <li><a href="product-grouped.html">Grouped Product </a></li>
+                            <li><a href="product-external.html">External Product</a></li>
+                            <li><a href="product-in-stock.html">In Stock Product</a></li>
+                            <li><a href="product-out-stock.html">Out of Stock Product</a></li>
+                            <li><a href="product-upsell.html">Upsell Products</a></li>
+                            <li><a href="product-cross-sell.html">Cross Sell Products</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Product Layouts</a>
+                        <ul>
+                            <li><a href="product-vertical.html">Vertical Thumb</a></li>
+                            <li><a href="product-horizontal.html">Horizontal Thumb</a></li>
+                            <li><a href="product-gallery.html">Gallery Type</a></li>
+                            <li><a href="product-grid.html">Grid Images</a></li>
+                            <li><a href="product-masonry.html">Masonry Images</a></li>
+                            <li><a href="product-sticky.html">Sticky Info</a></li>
+                            <li><a href="product-sticky-both.html">Left & Right Sticky</a></li>
+                            <li><a href="product-left-sidebar.html">With Left Sidebar</a></li>
+                            <li><a href="product-right-sidebar.html">With Right Sidebar</a></li>
+                            <li><a href="product-full.html">Full Width Layout </a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Product Features</a>
+                        <ul>
+                            <li><a href="product-sale.html">Sale Countdown</a></li>
+                            <li><a href="product-hurryup.html">Hurry Up Notification </a></li>
+                            <li><a href="product-attribute-guide.html">Attribute Guide </a></li>
+                            <li><a href="product-sticky-cart.html">Add Cart Sticky</a></li>
+                            <li><a href="product-thumbnail-label.html">Labels on Thumbnail</a>
+                            </li>
+                            <li><a href="product-more-description.html">More Description
+                                    Tabs</a></li>
+                            <li><a href="product-accordion-data.html">Data In Accordion</a></li>
+                            <li><a href="product-tabinside.html">Data Inside</a></li>
+                            <li><a href="product-video.html">Video Thumbnail </a>
+                            </li>
+                            <li><a href="product-360-degree.html">360 Degree Thumbnail </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Pages</a>
+                <ul>
+                    <li><a href="{% url "core:about" %}">About</a></li>
+                    <li><a href="{% url "core:contact" %}" hx-boost="true">Contact Us</a></li>
+                    <li><a href="account.html">Login</a></li>
+                    <li><a href="{% url "core:faq" %}">FAQs</a></li>
+                    <li><a href="error-404.html">Error 404</a>
+                        <ul>
+                            <li><a href="error-404.html">Error 404</a></li>
+                            <li><a href="error-404-1.html">Error 404-1</a></li>
+                            <li><a href="error-404-2.html">Error 404-2</a></li>
+                            <li><a href="error-404-3.html">Error 404-3</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="coming-soon.html">Coming Soon</a></li>
+                </ul>
+            </li>
+            
+    
+        </ul>
+        <ul class="tab-pane" id="tab-2">
+            <li>
+                <a href="{% url "core:category-detail" categories.0.slug %}"><img src="{% static "images/shop/hair-svgrepo-com-white.svg" %}" style="height: 27px; width: 27px; margin-right: 3px"/> {{categories.0.name}}</a>
+            </li>
+            <li>
+                <a href="{% url "core:category-detail" categories.1.slug %}"><img src="{% static "images/shop/bundles-white.svg" %}" style="height: 20px; width: 20px; margin-right: 7px"/> {{categories.1.name}}</a>
+            </li>
+            <li>
+                <a href="{% url "core:category-detail" categories.2.slug %}"><img src="{% static "images/shop/hair-clip-beauty-svgrepo-com-white.svg" %}" style="height: 20px; width: 20px; margin-right: 7px"/> {{categories.2.name}}</a>
+            </li>
+            <li>
+                <a href="{% url "core:category-detail" categories.4.slug %}"><img src="{% static "images/shop/shampoo-svgrepo-com-white.svg" %}" style="height: 20px; width: 20px; margin-right: 7px"/> {{categories.4.name}}</a>
+            </li>
+            <li>
+                <a href="{% url "core:category-detail" categories.3.slug %}"><img src="{% static "images/shop/hair-salon-2-svgrepo-com-white.svg" %}" style="height: 20px; width: 20px; margin-right: 7px"/> {{categories.3.name}}</a>
+            </li>
+
+            <li><a href="demo5-shop.html" class="menu-title">Today Deals</a>
+            </li>
+            <li>
+                <a href="demo5-shop.html">
+                    <i class="d-icon-card"></i>All Products
+                </a>
+            </li>
+            <li>
+                <a href="demo5-shop.html">
+                    <i class="d-icon-card"></i>Daily Deals
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+</div>
+
+
+
+
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '831ad2765d09de283501bbe96217fc2c0e7794ed';
+    _smartsupp.offsetY = 68;
+    window.smartsupp||(function(d) {
+        var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+        s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+        c.type='text/javascript';c.charset='utf-8';c.async=true;
+        c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document);
+    </script>
+    <noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/parallax/parallax.min.js' %}"></script>
+<script src="{% static 'vendor/elevatezoom/jquery.elevatezoom.min.js' %}"></script>
+<script src="{% static 'vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'vendor/owl-carousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'vendor/isotope/isotope.pkgd.min.js' %}"></script>
+
+<script src="{% static 'js/main.min.js' %}"></script>
+<script src="{% static 'js/htmx.min.js' %}"></script>
+</body>
+
+</html>

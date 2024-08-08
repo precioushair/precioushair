@@ -1,0 +1,49 @@
+{% load static %}
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    document.addEventListener("htmx:configRequest", (event) => {
+        event.detail.headers['X-CSRFToken'] = csrftoken;
+    });
+</script>
+{% if wishlist_items %}
+    {% for item in wishlist_items %}
+    <div class="product product-wishlist" id="wishlist-item-{{ item.product.id }}">
+        <figure class="product-media">
+            <a href="{% url "core:product-detail" item.product.slug %}">
+                <img src="{{item.product.image.url}}" width="100" height="100" alt="product" />
+            </a>
+            <button class="btn btn-link btn-close" hx-delete="{% url 'core:remove_from_wishlist' item.product.id %}" hx-target="#wishlist-container" hx-swap="innerHTML">
+                <i class="fas fa-times"></i><span class="sr-only">Close</span>
+            </button>
+        </figure>
+        <div class="product-detail">
+            <a href="{% url "core:product-detail" item.product.slug %}" class="product-name">{{item.product.name}}</a>
+            <div class="price-box">
+                <span class="product-price">${{item.product.price}}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<div class="product-detail mt-5">
+    <div class="price-box">
+        <span class="product-price">No items in wishlist</span>
+    </div>
+</div>
+{% endif %}

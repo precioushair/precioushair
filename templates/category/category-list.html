@@ -1,0 +1,44 @@
+{% extends "partials/base.html" %}
+{% load static %}
+{% block content %}
+        <main class="main">
+            <nav class="breadcrumb-nav">
+                <div class="container">
+                    <ul class="breadcrumb">
+                        <li><a href="/"><i class="d-icon-home"></i> Home</a></li>
+                        <li><a href="#" class="active">Categories</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="page-content pb-10 mb-10">
+                <div class="container">
+                  
+                    <div class="posts grid post-grid row" data-grid-options="{
+                        'layoutMode': 'fitRows'
+                    }">
+                    {% for c in categories %}
+                        <div class="grid-item col-sm-6 col-lg-4 lifestyle shopping winter-sale">
+                            <article class="post">
+                                <figure class="post-media">
+                                    <a href="{% url "core:category-detail" c.slug %}">
+                                        <img src="{{c.image.url}}" width="380" height="280" alt="post" />
+                                    </a>
+                                </figure>
+                                <div class="post-details">
+                                   
+                                    <h4 class="post-title"><a href="{% url "core:category-detail" c.slug %}">{{c.name}}</a>
+                                    </h4>
+                                    <p class="post-content">
+                                        {{c.description}} 
+                                    </p>
+                                    <a href="{% url "core:category-detail" c.slug %}" class="btn btn-link btn-underline btn-primary">View
+                                        category<i class="d-icon-arrow-right"></i></a>
+                                </div>
+                            </article>
+                        </div>
+                    {% endfor %} 
+                    </div>
+                 
+                </div>
+            </div>
+{% endblock content %}
