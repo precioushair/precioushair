@@ -453,7 +453,7 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <div id="quickViewContent">
-            <div id="preloader1">
+            <div id="preloader1" style="display: flex; align-items: center; justify-content: center;">
                 <!-- Your preloader content, e.g., a spinner or loading animation -->
                 <img src="{% static 'images/preloader.gif' %}" alt="Loading...">
             </div>
@@ -519,7 +519,7 @@
                     <div class="widget">
                         <h4 class="widget-title">My Account</h4>
                         <ul class="widget-body">
-                            <li><a href="#">Sign in</a></li>
+                            <li><a href="#signin" class="login-toggle">Sign in</a></li>
                             <li><a href="{% url "core:view_cart" %}">View Cart</a></li>
                             <li><a href="{% url "core:view_wishlist" %}">My Wishlist</a></li>
                             <li><a href="#">Track My Order</a></li>

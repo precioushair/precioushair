@@ -9,8 +9,8 @@
             <div
                 class="product-single-carousel owl-carousel owl-theme owl-nav-inner row cols-1 gutter-no">
                 <figure class="product-image">
-                    <img src="{{product.image.url}}"
-                        data-zoom-image="{{product.image.url}}"
+                    <img src="{{product.image.url}}" style="border-radius: 8px;"
+                        data-zoom-image="/"
                         alt="Converse Training Shoes" width="800" height="900">
                 </figure>
             </div>
@@ -21,45 +21,50 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="product-details">
+        <div class="product-details" style="padding-bottom: 0px !important;">
            
-            <h1 class="product-name">{{product.name}}</h1>
-            <div class="product-meta">
+            <h1 class="product-name product-name-mobile">{{product.name}}</h1>
+            <div class="product-meta d-none-mobile">
                 SKU: <span class="product-sku">{{product.sku}}</span>
                 Category: <span class="product-brand">{{product.category}}</span>
             </div>
-            <div class="product-price">&#8358;{{product.price|intcomma}}</div>
+            <div class="product-price product-price-mobile">&#8358;{{product.price|intcomma}}</div>
+            <p class="product-short-desc d-none-mobile">{{product.description}}</p>
           
-            <p class="product-short-desc">{{product.description}}</p>
             
             
-            <div class="product-variation-price">
-                <span>&#8358;239.00</span>
-            </div>
             <hr class="product-divider">
             <div class="product-form product-qty">
                 <div class="product-form-group">
                   
                     <button
                         class="btn-product btn-cart text-normal ls-normal font-weight-semi-bold"><i
-                            class="d-icon-bag"></i>Add to
+                            class="d-icon-bag" hx-post="{% url 'core:add_to_cart' product.id %}" hx-target="#cart-items" hx-swap="innerHTML"></i>Add to
                         Cart</button>
                 </div>
             </div>
-            <hr class="product-divider mb-3">
-            <div class="product-footer">
-                <div class="social-links mr-4">
-                    <a href="#" class="social-link social-facebook fab fa-facebook-f"></a>
-                    <a href="#" class="social-link social-twitter fab fa-twitter"></a>
-                    <a href="#" class="social-link social-pinterest fab fa-pinterest-p"></a>
-                </div>
-                <span class="divider d-lg-show"></span>
-                <a href="#" class="btn-product btn-wishlist mr-6"><i class="d-icon-heart"></i>Add to
+            <hr class="product-divider mb-3 d-none-mobile">
+            <div class="product-footer d-none-mobile">
+                
+                <a href="#" class="btn-product btn-wishlist mr-6"  hx-post="{% url 'core:add_to_wishlist' product.id %}" hx-target="#wishlist-container" hx-swap="innerHTML"><i class="d-icon-heart"></i>Add to
                     wishlist</a>
-                <a href="#" class="btn-product btn-compare"><i class="d-icon-compare"></i>Add
-                    to
-                    compare</a>
+          
             </div>
+            
         </div>
     </div>
+    <style>
+        @media only screen and (max-width: 720px) {
+            .d-none-mobile{
+                display: none;
+            }
+            .product-price-mobile{
+                font-size: 0.875rem;
+            }
+            .product-name-mobile{
+                font-size: 0.875rem;
+            }
+          }
+          
+    </style>
 </div>

@@ -19,17 +19,18 @@
                                 <ul class="nav nav-tabs nav-fill align-items-center border-no justify-content-center mb-5"
                                     role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active border-no lh-1 ls-normal" href="#signin">Login</a>
+                                        <a class="nav-link active border-no lh-1 ls-normal" href="#signin-r">Login</a>
                                     </li>
                                     <li class="delimiter">or</li>
                                     <li class="nav-item">
-                                        <a class="nav-link border-no lh-1 ls-normal" href="#register">Register</a>
+                                        <a class="nav-link border-no lh-1 ls-normal" href="#register-r">Register</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div id="signin-response"></div>
-                                    <div class="tab-pane active" id="signin">
-                                        <form hx-post="{% url 'userauths:sign-in' %}" style="margin-top: 10px" hx-target="#signin-response" hx-swap="innerHTML">
+                                    
+                                    <div class="tab-pane active" id="signin-r">
+                                        <div id="signin-respon"></div>
+                                        <form hx-post="{% url 'userauths:sign-in' %}" style="margin-top: 10px" hx-target="#signin-respon" hx-swap="innerHTML">
                                             {% csrf_token %}
                                             <div class="form-group mb-3">
                                                 <input type="text" class="form-control" id="signin-email" name="email" placeholder="Username or Email Address *" required>
@@ -50,8 +51,8 @@
                                         </form>
                                         
                                     </div>
-                                    <div class="tab-pane" id="register">
-                                        <div id="register-response"></div>
+                                    <div class="tab-pane" id="register-r">
+                                        <div id="register-respon"></div>
                                         <form hx-post="{% url 'userauths:sign-up' %}" style="margin-top: 10px" hx-target="#register-response" hx-swap="innerHTML">
                                             {% csrf_token %}
                                             <div class="form-group mb-3">

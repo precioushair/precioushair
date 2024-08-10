@@ -9,6 +9,8 @@ import cloudinary
 from cloudinary.models import CloudinaryField
 import uuid
 from django.utils.text import slugify
+from django.utils import timezone
+from datetime import timedelta
 import requests
           
 cloudinary.config( 
@@ -69,12 +71,13 @@ class Product(models.Model):
     image = CloudinaryField(folder="products")
     slug = models.SlugField(unique=True)
     sku = models.CharField(max_length=100, unique=True, blank=True, null=True)
-
+    date = models.DateTimeField(auto_now=True)
     def blog_image(self):
         return mark_safe('<img src="%s" width="50" height="50" style="border-radius: 5px;" />' % (self.image.url))
     def __str__(self):
         return self.name
-    
+    def is_recent(self):
+        return self.date >= timezone.now() - timedelta(days=2)
     def save(self, *args, **kwargs):
         if self.image:
             # Download the image from Cloudinary
@@ -203,7 +206,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-
+  
     def __str__(self):
         return f'{self.quantity} x {self.product.name}'
 
@@ -214,6 +217,6 @@ class Review(models.Model):
     rating = models.PositiveIntegerField()
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-
+    date = models.DateTimeField(auto_now=True)
     def __str__(self):
         return f'Review by {self.user.username} for {self.product.name}'
