@@ -1,8 +1,9 @@
 {% load static %}
+{% load humanize %}
 <a href="#" class="cart-toggle label-block link">
     <div class="cart-label d-lg-show">
         <span class="cart-name">Shopping Cart:</span>
-        <span class="cart-price">${{cart_total}}</span>
+        <span class="cart-price">&#8358;{{cart_total}}</span>
     </div>
     <i class="d-icon-bag"><span class="cart-count">{{cart.items.count}}</span></i>
 </a>
@@ -25,12 +26,14 @@
                 <button class="btn btn-link btn-close" hx-delete="{% url 'core:remove_from_cart' cart_item.id %}" hx-target="#cart-items" hx-swap="innerHTML">
                     <i class="fas fa-times"></i><span class="sr-only">Close</span>
                 </button>
+                
+                
             </figure>
             <div class="product-detail">
                 <a href="{% url 'core:product-detail' cart_item.product.slug %}" class="product-name">{{ cart_item.product.name }}</a>
                 <div class="price-box">
                     <span class="product-quantity">{{ cart_item.quantity }}</span>
-                    <span class="product-price">${{ cart_item.product.price }}</span>
+                    <span class="product-price">&#8358;{{ cart_item.product.price|intcomma }}</span>
                 </div>
             </div>
         </div>
@@ -47,13 +50,13 @@
 
     <div class="cart-total">
         <label>Subtotal:</label>
-        <span class="price">${{cart_total}}</span>
+        <span class="price">&#8358;{{cart_total}}</span>
     </div>
 
 
     <div class="cart-action">
         <a href="{% url "core:view_cart" %}" class="btn btn-dark btn-link">View Cart</a>
-        <a href="checkout.html" class="btn btn-dark"><span>Go To Checkout</span></a>
+        <a href="#" class="btn btn-dark"><span>Go To Checkout</span></a>
     </div>
 
 </div>

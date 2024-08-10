@@ -42,7 +42,7 @@ def register_view(request):
         )
         return HttpResponse(f'<div class="alert alert-warning"><span class="text-white">{error_messages}</span></div>')
 
-    return HttpResponse("Invalid request")
+    return render(request, "user/sign-up.html")
 
 
 def login_view(request):
@@ -59,12 +59,16 @@ def login_view(request):
                 login(request, user)
                 return render(request, "htmx/login_success.html")
             else:
-                return HttpResponse('<div class="alert alert-warning"><span class="text-white">Incorrect email or password.</span></div>')
+                
+                return render(request, "htmx/error.html", {"error": "Incorrect email or password."})
         except User.DoesNotExist:
-            return HttpResponse('<div class="alert alert-warning"><span class="text-white">User does not exist</span></div>')
+            return render(request, "htmx/error.html", {"error": "User does not exist."})
 
-    return HttpResponse('<div class="alert alert-warning"><span class="text-white">Invalid request</span></div>')
+    return render(request, "user/sign-in.html")
 
+
+def sign_up_page(request):
+    return render(request, "user/login.html")
 
 def logout_view(request):
     logout(request)

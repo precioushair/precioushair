@@ -1,5 +1,6 @@
 {% extends "partials/base.html" %}
 {% load static %}
+{% load humanize %}
 {% block content %}
 		<main class="main">
 			<div class="page-header"
@@ -53,15 +54,7 @@
 										</div>
 									</div>
 									
-									<div class="widget widget-collapsible">
-										<h3 class="widget-title">Color</h3>
-										<ul class="widget-body filter-items">
-											<li><a href="#">Black</a></li>
-											<li><a href="#">Blue</a></li>
-											<li><a href="#">Green</a></li>
-											<li><a href="#">White</a></li>
-										</ul>
-									</div>
+							
 									<div class="widget widget-collapsible">
 										<h3 class="widget-title">Brands</h3>
 										<ul class="widget-body filter-items">
@@ -143,7 +136,7 @@
 												<a href="product.html">{{p.name}}</a>
 											</h3>
 											<div class="product-price">
-												<ins class="new-price">${{p.price}}</ins><del class="old-price">$67.99</del>
+												<ins class="new-price">&#8358;{{p.price}}</ins><del class="old-price">&#8358;67.99</del>
 											</div>
 											{% comment %} <div class="ratings-container">
 												<div class="ratings-full">

@@ -7,6 +7,9 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import cloudinary
 from cloudinary.models import CloudinaryField
+import uuid
+from django.utils.text import slugify
+import requests
           
 cloudinary.config( 
   cloud_name = getattr(settings, 'CLOUD_NAME_SECRET', None), 
@@ -26,11 +29,12 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         if self.image:
-            # Open the uploaded image
-            img = Image.open(self.image)
+            # Download the image from Cloudinary
+            response = requests.get(self.image.url)
+            img = Image.open(BytesIO(response.content))
 
-            # Resize the image to the desired dimensions (280x280)
-            img = img.resize((612, 406), Image.ANTIALIAS)
+            # Resize the image to the desired dimensions (280x320)
+            img = img.resize((280, 320), Image.ANTIALIAS)
 
             # Save the resized image to a BytesIO object
             output = BytesIO()
@@ -39,10 +43,10 @@ class Category(models.Model):
 
             # Update the image field with the resized image
             self.image = InMemoryUploadedFile(output, 'ImageField', 
-                                             f"{self.image.name.split('.')[0]}.webp", 
-                                             'image/webp', 
-                                             output.getbuffer().nbytes, 
-                                             None)
+                                              f"{self.image.public_id}.webp", 
+                                              'image/webp', 
+                                              output.getbuffer().nbytes, 
+                                              None)
 
         # Call the original save method to save the model instance
         super(Category, self).save(*args, **kwargs)
@@ -64,6 +68,7 @@ class Product(models.Model):
     stock = models.PositiveIntegerField()
     image = CloudinaryField(folder="products")
     slug = models.SlugField(unique=True)
+    sku = models.CharField(max_length=100, unique=True, blank=True, null=True)
 
     def blog_image(self):
         return mark_safe('<img src="%s" width="50" height="50" style="border-radius: 5px;" />' % (self.image.url))
@@ -72,23 +77,26 @@ class Product(models.Model):
     
     def save(self, *args, **kwargs):
         if self.image:
-            # Open the uploaded image
-            img = Image.open(self.image)
+            # Download the image from Cloudinary
+            response = requests.get(self.image.url)
+            img = Image.open(BytesIO(response.content))
 
-            # Resize the image to the desired dimensions (280x280)
+            # Resize the image to the desired dimensions (280x320)
             img = img.resize((280, 320), Image.ANTIALIAS)
 
             # Save the resized image to a BytesIO object
             output = BytesIO()
             img.save(output, format='WEBP', quality=98)
             output.seek(0)
-
+            base_sku = slugify(self.name)[:10]  # Limiting to 10 characters for brevity
+            unique_sku = f"{base_sku}-{uuid.uuid4().hex[:8]}"  # Adding 8 characters from a UUID
+            self.sku = unique_sku
             # Update the image field with the resized image
             self.image = InMemoryUploadedFile(output, 'ImageField', 
-                                             f"{self.image.name.split('.')[0]}.webp", 
-                                             'image/webp', 
-                                             output.getbuffer().nbytes, 
-                                             None)
+                                              f"{self.image.public_id}.webp", 
+                                              'image/webp', 
+                                              output.getbuffer().nbytes, 
+                                              None)
 
         # Call the original save method to save the model instance
         super(Product, self).save(*args, **kwargs)
@@ -111,10 +119,11 @@ class ProductImages(models.Model):
     
     def save(self, *args, **kwargs):
         if self.image:
-            # Open the uploaded image
-            img = Image.open(self.image)
+            # Download the image from Cloudinary
+            response = requests.get(self.image.url)
+            img = Image.open(BytesIO(response.content))
 
-            # Resize the image to the desired dimensions (280x280)
+            # Resize the image to the desired dimensions (280x320)
             img = img.resize((280, 320), Image.ANTIALIAS)
 
             # Save the resized image to a BytesIO object
@@ -123,11 +132,11 @@ class ProductImages(models.Model):
             output.seek(0)
 
             # Update the image field with the resized image
-            self.images = InMemoryUploadedFile(output, 'ImageField', 
-                                             f"{self.images.name.split('.')[0]}.webp", 
-                                             'image/webp', 
-                                             output.getbuffer().nbytes, 
-                                             None)
+            self.image = InMemoryUploadedFile(output, 'ImageField', 
+                                              f"{self.image.public_id}.webp", 
+                                              'image/webp', 
+                                              output.getbuffer().nbytes, 
+                                              None)
 
         # Call the original save method to save the model instance
         super(ProductImages, self).save(*args, **kwargs)

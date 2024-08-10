@@ -1,0 +1,9 @@
+<div class="alert alert-warning" id="warningAlert">
+    <span class="text-white">{{error}}</span>
+</div>
+<script>
+    setTimeout(function() {
+        // Remove the alert from the DOM
+        document.getElementById('warningAlert').remove();
+    }, 3000);  // Remove after 3 seconds
+</script>

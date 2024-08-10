@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -118,12 +119,34 @@
                 }
             }
             document.body.addEventListener('htmx:configRequest', function() {
-                document.body.style.cursor = 'wait';
+                // Show progress bar and start animation
+                const progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = '0%';
+                progressBar.style.display = 'block';
+            
+                // Simulate progress
+                let width = 0;
+                const interval = setInterval(() => {
+                    if (width >= 90) {
+                        clearInterval(interval);
+                    } else {
+                        width += 10;
+                        progressBar.style.width = width + '%';
+                    }
+                }, 100);
             });
             
             document.body.addEventListener('htmx:afterRequest', function() {
-                document.body.style.cursor = 'default';
+                // Complete the progress bar
+                const progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = '100%';
+            
+                // Hide the progress bar after a brief delay
+                setTimeout(() => {
+                    progressBar.style.display = 'none';
+                }, 500);
             });
+            
             
         });
         
@@ -175,17 +198,69 @@
                     searchResults.style.display = 'block';
                 }
             });
+            // Function to show the progress bar
+            function showProgressBar() {
+                var progressBar = document.getElementById('progress-bar');
+                progressBar.style.display = 'block';
+                setTimeout(() => { // Allow transition to work
+                    progressBar.style.width = '50%';
+                }, 10);
+            }
+        
+            // Function to update the progress bar to full width
+            function updateProgressBar() {
+                var progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = '100%';
+            }
+        
+            // Function to hide the progress bar
+            function hideProgressBar() {
+                var progressBar = document.getElementById('progress-bar');
+                setTimeout(function() {
+                    progressBar.style.display = 'none';
+                    progressBar.style.width = '0';
+                }, 500); // Delay to let the user see the progress completion
+            }
+        
+            // Event listeners for HTMX events
+            document.addEventListener('htmx:configRequest', function (event) {
+                showProgressBar();
+            });
+        
+            document.addEventListener('htmx:beforeOnLoad', function (event) {
+                updateProgressBar();
+            });
+        
+            document.addEventListener('htmx:afterOnLoad', function (event) {
+                hideProgressBar();
+            });
         });
     </script>
-    
+    <style>
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #9c28b1;
+            transition: width 0.4s ease;
+            z-index: 1000;
+            display: none;
+        }
+      </style>
 </head>
 
 <body class="home">
+    <div id="progress-bar"></div>
     <div class="page-wrapper">
+       
+        
         <h1 class="d-none">Ever Precious - Get the </h1>
         <header class="header">
             <div class="header-top">
                 <div class="container">
+                    
                     <div class="header-left">
                         <p class="welcome-msg">Welcome to Ever Precious Hairz</p>
                     </div>
@@ -309,7 +384,7 @@
                             <i class="d-icon-bars2"></i>
                         </a>
                         <a href="/" class="logo">
-                            <img src="{% static 'images/demos/demo5/log.png' %}" alt="logo" width="153" height="44" />
+                            <img src="{% static 'images/logo.jpg' %}" alt="logo" width="50" height="30" />
                         </a>
 
                         <div class="header-search hs-simple">
@@ -378,7 +453,12 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <div id="quickViewContent">
+            <div id="preloader1">
+                <!-- Your preloader content, e.g., a spinner or loading animation -->
+                <img src="{% static 'images/preloader.gif' %}" alt="Loading...">
+            </div>
             <!-- Product details will be loaded here -->
+             
         </div>
     </div>
 </div>
@@ -394,8 +474,8 @@
                 <div class="col-lg-4 col-sm-6">
                     <div class="widget widget-about">
                         <a href="/" class="logo-footer">
-                            <img src="{% static 'images/demos/demo5/log-footer.png' %}" alt="logo-footer" width="150"
-                                height="43" />
+                            <img src="{% static 'images/logo.jpg' %}" alt="logo-footer" width="50"
+                                height="30" />
                         </a>
                         <div class="widget-body">
                             <p class="ls-s">Fringilla urna porttitor rhoncus dolor purus<br />
@@ -440,7 +520,7 @@
                         <h4 class="widget-title">My Account</h4>
                         <ul class="widget-body">
                             <li><a href="#">Sign in</a></li>
-                            <li><a href="cart.html">View Cart</a></li>
+                            <li><a href="{% url "core:view_cart" %}">View Cart</a></li>
                             <li><a href="{% url "core:view_wishlist" %}">My Wishlist</a></li>
                             <li><a href="#">Track My Order</a></li>
                             <li><a href="#">Help</a></li>
@@ -483,7 +563,7 @@
     <i class="d-icon-volume"></i>
     <span>Categories</span>
 </a>
-<a href="wishlist.html" class="sticky-link">
+<a href="{% url "core:view_wishlist" %}" class="sticky-link">
     <i class="d-icon-heart"></i>
     <span>Wishlist</span>
 </a>
@@ -563,75 +643,17 @@
                 </ul>
             </li>
             <li>
-                <a href="demo5-product.html" class="active">Products</a>
-                <ul>
-                    <li>
-                        <a href="#">Product Pages</a>
-                        <ul>
-                            <li><a href="product-simple.html">Simple Product</a></li>
-                            <li><a href="product-featured.html">Featured &amp; On Sale</a></li>
-                            <li><a href="product.html">Variable Product</a></li>
-                            <li><a href="product-variable-swatch.html">Variation Swatch
-                                    Product</a></li>
-                            <li><a href="product-grouped.html">Grouped Product </a></li>
-                            <li><a href="product-external.html">External Product</a></li>
-                            <li><a href="product-in-stock.html">In Stock Product</a></li>
-                            <li><a href="product-out-stock.html">Out of Stock Product</a></li>
-                            <li><a href="product-upsell.html">Upsell Products</a></li>
-                            <li><a href="product-cross-sell.html">Cross Sell Products</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">Product Layouts</a>
-                        <ul>
-                            <li><a href="product-vertical.html">Vertical Thumb</a></li>
-                            <li><a href="product-horizontal.html">Horizontal Thumb</a></li>
-                            <li><a href="product-gallery.html">Gallery Type</a></li>
-                            <li><a href="product-grid.html">Grid Images</a></li>
-                            <li><a href="product-masonry.html">Masonry Images</a></li>
-                            <li><a href="product-sticky.html">Sticky Info</a></li>
-                            <li><a href="product-sticky-both.html">Left & Right Sticky</a></li>
-                            <li><a href="product-left-sidebar.html">With Left Sidebar</a></li>
-                            <li><a href="product-right-sidebar.html">With Right Sidebar</a></li>
-                            <li><a href="product-full.html">Full Width Layout </a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">Product Features</a>
-                        <ul>
-                            <li><a href="product-sale.html">Sale Countdown</a></li>
-                            <li><a href="product-hurryup.html">Hurry Up Notification </a></li>
-                            <li><a href="product-attribute-guide.html">Attribute Guide </a></li>
-                            <li><a href="product-sticky-cart.html">Add Cart Sticky</a></li>
-                            <li><a href="product-thumbnail-label.html">Labels on Thumbnail</a>
-                            </li>
-                            <li><a href="product-more-description.html">More Description
-                                    Tabs</a></li>
-                            <li><a href="product-accordion-data.html">Data In Accordion</a></li>
-                            <li><a href="product-tabinside.html">Data Inside</a></li>
-                            <li><a href="product-video.html">Video Thumbnail </a>
-                            </li>
-                            <li><a href="product-360-degree.html">360 Degree Thumbnail </a></li>
-                        </ul>
-                    </li>
-                </ul>
+                <a href="#" class="active">All Products</a>
+               
             </li>
             <li>
                 <a href="#">Pages</a>
                 <ul>
                     <li><a href="{% url "core:about" %}">About</a></li>
                     <li><a href="{% url "core:contact" %}" hx-boost="true">Contact Us</a></li>
-                    <li><a href="account.html">Login</a></li>
+                    <li><a href="#">Login</a></li>
                     <li><a href="{% url "core:faq" %}">FAQs</a></li>
-                    <li><a href="error-404.html">Error 404</a>
-                        <ul>
-                            <li><a href="error-404.html">Error 404</a></li>
-                            <li><a href="error-404-1.html">Error 404-1</a></li>
-                            <li><a href="error-404-2.html">Error 404-2</a></li>
-                            <li><a href="error-404-3.html">Error 404-3</a></li>
-                        </ul>
                     </li>
-                    <li><a href="coming-soon.html">Coming Soon</a></li>
                 </ul>
             </li>
             
@@ -654,15 +676,15 @@
                 <a href="{% url "core:category-detail" categories.3.slug %}"><img src="{% static "images/shop/hair-salon-2-svgrepo-com-white.svg" %}" style="height: 20px; width: 20px; margin-right: 7px"/> {{categories.3.name}}</a>
             </li>
 
-            <li><a href="demo5-shop.html" class="menu-title">Today Deals</a>
+            <li><a href="#" class="menu-title">Today Deals</a>
             </li>
             <li>
-                <a href="demo5-shop.html">
+                <a href="#">
                     <i class="d-icon-card"></i>All Products
                 </a>
             </li>
             <li>
-                <a href="demo5-shop.html">
+                <a href="#">
                     <i class="d-icon-card"></i>Daily Deals
                 </a>
             </li>
