@@ -1,13 +1,14 @@
 {% extends "partials/base.html" %}
 {% load static %}
+{% load humanize %}
 {% block content %}
 
         <main class="main cart">
             <div class="page-content pt-7 pb-10">
                 <div class="step-by pr-4 pl-4">
-                    <h3 class="title title-simple title-step active"><a href="cart.html">1. Shopping Cart</a></h3>
-                    <h3 class="title title-simple title-step"><a href="checkout.html">2. Checkout</a></h3>
-                    <h3 class="title title-simple title-step"><a href="order.html">3. Order Complete</a></h3>
+                    <h3 class="title title-simple title-step active"><a href="#">1. Shopping Cart</a></h3>
+                    <h3 class="title title-simple title-step"><a href="#">2. Checkout</a></h3>
+                    <h3 class="title title-simple title-step"><a href="#">3. Order Complete</a></h3>
                 </div>
                 <div class="container mt-7 mb-2">
                     <div class="row">
@@ -30,30 +31,31 @@
                                     <tr>
                                         <td class="product-thumbnail">
                                             <figure>
-                                                <a href="product-simple.html">
-                                                    <img src="{% static 'images/products/product18.jpg' %}" width="100" height="100"
+                                                <a href="{% url "core:product-detail" item.product.slug %}">
+                                                    <img src="{{item.product.image.url}}" style="border-radius: 6px;" width="100" height="100"
                                                         alt="product">
                                                 </a>
                                             </figure>
                                         </td>
                                         <td class="product-name">
                                             <div class="product-name-section">
-                                                <a href="product-simple.html">Converse Training Shoes</a>
+                                                <a href="{% url "core:product-detail" item.product.slug %}">{{item.product.name}}</a>
                                             </div>
                                         </td>
                                         <td class="product-subtotal">
-                                            <span class="amount">$129.99</span>
+                                            <span class="amount">₦{{item.product.price|floatformat:"0"|intcomma }}</span>
                                         </td>
                                         <td class="product-quantity">
                                             <div class="input-group">
                                                 <button class="quantity-minus d-icon-minus"></button>
-                                                <input class="quantity form-control" type="number" min="1"
+                                                <input class="quantity form-control" type="number" min="1" value="{{ item.product.quantity }}"
                                                     max="1000000">
+                                                    <span>{{ item.product.quantity }}</span>
                                                 <button class="quantity-plus d-icon-plus"></button>
                                             </div>
                                         </td>
                                         <td class="product-price">
-                                            <span class="amount">$129.99</span>
+                                            <span class="amount">₦{{item.product.price|floatformat:"0"|intcomma }}</span>
                                         </td>
                                         <td class="product-close">
                                             <a href="#" class="product-remove" title="Remove this product">
@@ -63,7 +65,7 @@
                                     </tr>
                                     {% endfor %}
                                     {% else %}
-                                    <h2 class="title title-center mb-5">No items in wishlist</h2>
+                                    <h2 class="title title-center mb-5">No items in cart</h2>
                                     {% endif %}
                                 </tbody>
                             </table>
@@ -93,7 +95,7 @@
                                                 <h4 class="summary-subtitle">Subtotal</h4>
                                             </td>
                                             <td>
-                                                <p class="summary-subtotal-price">&#8358;{{cart_total}}</p>
+                                                <p class="summary-subtotal-price">&#8358;{{cart_total|floatformat:"0"|intcomma }}</p>
                                             </td>
                                         </tr>
                                         <tr class="sumnary-shipping shipping-row-last">
@@ -157,7 +159,7 @@
                                                 <h4 class="summary-subtitle">Total</h4>
                                             </td>
                                             <td>
-                                                <p class="summary-total-price ls-s">$426.99</p>
+                                                <p class="summary-total-price ls-s">&#8358;{{cart_total|floatformat:"0"|intcomma }}</p>
                                             </td>
                                         </tr>
                                     </table>
