@@ -214,7 +214,7 @@ window.Riode = {};
             paddingOffsetBottom: 0,
         },
         templateCartAddedAlert: '<div class="alert alert-simple alert-btn cart-added-alert">' +
-            '<a href="cart.html" class="btn btn-success btn-md">View Cart</a>' +
+            '<a href="/cart/" class="btn btn-success btn-md">View Cart</a>' +
             '<span>"{{name}}" has been added to your cart.</span>' +
             '<button type="button" class="btn btn-link btn-close"><i class="d-icon-times"></i></button>' +
             '</div>',
@@ -1941,7 +1941,7 @@ window.Riode = {};
                         price: $product.find('.product-variation-price').length > 0 ? $product.find('.product-variation-price').children('span').html() : $product.find('.product-price .price').html(),
 
                         count: $product.find('.quantity').val(),
-                        actionTemplate: '<div class="action-group d-flex mt-3"><a href="cart.html" class="btn btn-sm btn-outline btn-primary btn-rounded mr-2">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                        actionTemplate: '<div class="action-group d-flex mt-3"><a href="/cart/" class="btn btn-sm btn-outline btn-primary btn-rounded mr-2">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                     });
                 }
             });
@@ -3509,7 +3509,7 @@ window.Riode = {};
                                 imageLink: $productName.find(' a ').attr('href'),
                                 price: productPrice,
                                 count: $product.find('.quantity').length > 0 ? $product.find('.quantity').val() : 1,
-                                actionTemplate: '<div class="action-group d-flex"><a href="cart.html" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                                actionTemplate: '<div class="action-group d-flex"><a href="/cart/" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                             });
                     } else {
                         // if not product single, then open minipopup
@@ -3523,7 +3523,7 @@ window.Riode = {};
                                 imageLink: $product.find('.product-name > a').attr('href'),
                                 price: $product.find('.product-price .new-price, .product-price .price').html(),
                                 count: $product.find('.quantity').length > 0 ? $product.find('.quantity').val() : 1,
-                                actionTemplate: '<div class="action-group d-flex"><a href="cart.html" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                                actionTemplate: '<div class="action-group d-flex"><a href="/cart/" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                             });
                     }
                 })
@@ -3541,7 +3541,7 @@ window.Riode = {};
                         imageLink: $tooltip.find('.tooltip-name > a').attr('href'),
                         price: $tooltip.find('.tooltip-price .new-price, .tooltip-price .price').html(),
                         count: $tooltip.find('.quantity').length > 0 ? $tooltip.find('.quantity').val() : 1,
-                        actionTemplate: '<div class="action-group d-flex"><a href="cart.html" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                        actionTemplate: '<div class="action-group d-flex"><a href="/cart/" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                     });
                 });
         },
