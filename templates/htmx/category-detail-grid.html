@@ -1,0 +1,51 @@
+
+{% load static %}
+{% load humanize %}
+
+<div id="productsCanvas">
+	<div class="row cols-2 cols-sm-3 product-wrapper">
+		{% for p in products %}
+		<div class="product-wrap">
+			<div class="product">
+				<figure class="product-media">
+					<a href="{% url "core:product-detail" p.slug %}">
+						<img src="{{p.image.url}}" style="border-radius: 8px;" alt="{{p.name}}" width="280" height="315">
+					</a>
+					{% if p.is_recent %}
+					<div class="product-label-group">
+						<label class="product-label label-new">new</label>
+				
+					</div>
+					{% endif %}
+					<div class="product-action-vertical">
+						<a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i class="d-icon-bag"></i></a>
+						<a href="#" class="btn-product-icon btn-wishlist"  hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i class="d-icon-heart"></i></a>
+						<a href="#" class="btn-product-icon btn-search btn-preview" title="Quick View" 
+							hx-get="{% url "core:product-preview" p.slug %}" 
+							hx-target="#quickViewContent"
+							hx-trigger="click"
+							hx-select="#MainContent"
+							hx-swap="innerHTML">
+							<i class="d-icon-search"></i>
+						</a>
+					</div>
+					
+				</figure>
+				<div class="product-details">
+					<div class="product-cat">
+						<a href="{% url "core:category-detail" p.category.slug %}">{{p.category.name}}</a>
+					</div>
+					<h3 class="product-name">
+						<a href="{% url "core:product-detail" p.slug %}">{{p.name}}</a>
+					</h3>
+					<div class="product-price">
+						<ins class="new-price">&#8358;{{p.price}}</ins>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	
+	</div>
+</div>

@@ -56,7 +56,7 @@ window.Riode = {};
             // info
             message: '',
             productClass: '', // ' product-cart', ' product-list-sm'
-            imageSrc: '',
+            imageSrc: '#',
             imageLink: '#',
             name: '',
             nameLink: '#', // 'product.html',
@@ -2980,7 +2980,7 @@ window.Riode = {};
                 if (0 == $demos.children().length) {
                     Riode.doLoading($content);
                     $.ajax({
-                        url: "ajax/demos-list.html",
+                        url: "",
                         method: 'post',
                         data: {
                             action: "riode_demos_list",
@@ -3436,40 +3436,7 @@ window.Riode = {};
                     }
                 })
         },
-        initProductsQuickview: function () {
-            Riode.$body.on('click', '.btn-quickview', function (e) {
-                e.preventDefault();
-                if ($(this).closest('.dark-theme').length > 0) {
-                    //dark theme
-                    Riode.popup({
-                        items: {
-                            src: "ajax/quickview-dark.html"
-                        },
-                        callbacks: {
-                            ajaxContentAdded: function () {
-                                this.wrap.imagesLoaded(function () {
-                                    Riode.initProductSingle($('.mfp-product .product-single'));
-                                });
-                            }
-                        }
-                    }, 'quickview');
-                } else {
-                    //light theme
-                    Riode.popup({
-                        items: {
-                            src: "static/ajax/product-preview.html"
-                        },
-                        callbacks: {
-                            ajaxContentAdded: function () {
-                                this.wrap.imagesLoaded(function () {
-                                    Riode.initProductSingle($('.mfp-product .product-single'));
-                                });
-                            }
-                        }
-                    }, 'quickview');
-                }
-            });
-        },
+
         initProductsCartAction: function () {
             Riode.$body
                 // Cart dropdown is offcanvas type
@@ -3659,7 +3626,7 @@ window.Riode = {};
                 , top;
             var url = $($obj).data('url');
             if (!url) {
-                url = 'ajax/ajax-products.html';
+                url = '';
             }
             var loadProducts = function (e) {
                 if (window.pageYOffset > top + $wrapper.outerHeight() - window.innerHeight - 150 && 'loading' != $wrapper.data('load-state')) {

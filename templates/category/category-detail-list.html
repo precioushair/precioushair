@@ -32,7 +32,7 @@
 		document.querySelector('.d-icon-mode-list').classList.toggle('active', listMode);
 		document.querySelector('.d-icon-mode-grid').classList.toggle('active', !listMode);
 	}
-</script>
+	</script>
 	
 	
 		<main class="main">
@@ -123,27 +123,24 @@
 								<div class="toolbox-right">
 									
 									<div class="toolbox-item toolbox-layout">
-									<!-- List Mode Button -->
-									<a href="#"  
-										{% if list_mode %}{% else %}
-										onclick="updateUrlAndLoadContent(event, '{% url 'core:category-detail-list-mode' category.slug %}', '#productsCanvas', true)"
-										{% endif %}
-										class="d-icon-mode-list btn-layout {% if list_mode %}active{% endif %}">
-									</a>
+                                        
+										<!-- List Mode Button -->
+										<a href="#"
+											onclick="updateUrlAndLoadContent(event, '{% url 'core:category-detail-list-mode' category.slug %}', '#productsCanvas', true)"
+											class="d-icon-mode-list btn-layout {% if list_mode %}active{% endif %}">
+										</a>
 
-									<!-- Grid Mode Button -->
-									<a href="#"
-										{% if list_mode %}
-										onclick="updateUrlAndLoadContent(event, '{% url 'core:category-detail-grid-mode' category.slug %}', '#productsCanvas', false)"
-										{% else %}{% endif %}
-										class="d-icon-mode-grid btn-layout {% if list_mode %} {% else %}active{% endif %}">
-									</a>
+										<!-- Grid Mode Button -->
+										<a href="#"
+											onclick="updateUrlAndLoadContent(event, '{% url 'core:category-detail-grid-mode' category.slug %}', '#productsCanvas', false)"
+											class="d-icon-mode-grid btn-layout {% if list_mode %} {% else %}active{% endif %}">
+										</a>
 
 									</div>
 								</div>
 							</nav>
-							{% include "htmx/category-detail-grid.html" %}
-							<nav class="toolbox toolbox-pagination">
+                           {% include "htmx/category-detail-list.html" %}
+                            <nav class="toolbox toolbox-pagination">
 								<p class="show-info">Showing <span>12 of 56</span> Products</p>
 								<ul class="pagination">
 									<li class="page-item disabled">

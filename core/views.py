@@ -42,14 +42,40 @@ def category_list(request):
 def category_detail(request, slug):
     category = Category.objects.get(slug=slug)
     products = Product.objects.filter( category=category)
+    list_mode = request.GET.get('list', 'false') == 'true'
     context = {
         'category': category,
-        'products': products
+        'products': products,
+        'list_mode': list_mode,
     }
-    return render(request, "category/category-detail.html", context)
 
 
+    if list_mode:
+        template = 'category/category-detail-list.html'
+    else:
+        template = 'category/category-detail.html'
+    return render(request, template, context)
 
+
+def category_detail_list_mode(request, slug):
+    category = Category.objects.get(slug=slug)
+    products = Product.objects.filter( category=category)
+    context = {
+        'category': category,
+        'products': products,
+
+    }
+    return render(request, "htmx/category-detail-list.html", context)
+
+def category_detail_grid_mode(request, slug):
+    category = Category.objects.get(slug=slug)
+    products = Product.objects.filter( category=category)
+    context = {
+        'category': category,
+        'products': products,
+
+    }
+    return render(request, "htmx/category-detail-grid.html", context)
 
 
 def product_detail(request, slug):

@@ -198,61 +198,73 @@
                     searchResults.style.display = 'block';
                 }
             });
-            // Function to show the progress bar
+            // Function to create and show the progress bar
             function showProgressBar() {
+                // Check if the progress bar already exists
                 var progressBar = document.getElementById('progress-bar');
+                
+                // If it doesn't exist, create it
+                if (!progressBar) {
+                    progressBar = document.createElement('div');
+                    progressBar.id = 'progress-bar';
+                    // Apply styles from your CSS
+                    progressBar.style.position = 'fixed';
+                    progressBar.style.top = '0';
+                    progressBar.style.left = '0';
+                    progressBar.style.width = '100%';
+                    progressBar.style.height = '5px';
+                    progressBar.style.backgroundColor = '#9c28b1';
+                    progressBar.style.transition = 'width 0.4s ease';
+                    progressBar.style.zIndex = '1000';
+                    progressBar.style.display = 'none';
+                    document.body.appendChild(progressBar); // Append the progress bar to the body
+                }
+
                 progressBar.style.display = 'block';
                 setTimeout(() => { // Allow transition to work
                     progressBar.style.width = '50%';
                 }, 10);
             }
-        
-            // Function to update the progress bar to full width
-            function updateProgressBar() {
-                var progressBar = document.getElementById('progress-bar');
+
+        // Function to update the progress bar to full width
+        function updateProgressBar() {
+            var progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
                 progressBar.style.width = '100%';
             }
-        
-            // Function to hide the progress bar
-            function hideProgressBar() {
-                var progressBar = document.getElementById('progress-bar');
+        }
+
+        // Function to hide the progress bar
+        function hideProgressBar() {
+            var progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
                 setTimeout(function() {
                     progressBar.style.display = 'none';
                     progressBar.style.width = '0';
                 }, 500); // Delay to let the user see the progress completion
             }
-        
-            // Event listeners for HTMX events
-            document.addEventListener('htmx:configRequest', function (event) {
-                showProgressBar();
-            });
-        
-            document.addEventListener('htmx:beforeOnLoad', function (event) {
-                updateProgressBar();
-            });
-        
-            document.addEventListener('htmx:afterOnLoad', function (event) {
-                hideProgressBar();
-            });
+        }
+
+        // Event listeners for HTMX events
+        document.addEventListener('htmx:configRequest', function (event) {
+            showProgressBar();
+        });
+
+        document.addEventListener('htmx:beforeOnLoad', function (event) {
+            updateProgressBar();
+        });
+
+        document.addEventListener('htmx:afterOnLoad', function (event) {
+            hideProgressBar();
+        });
+
         });
     </script>
-    <style>
-        #progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background-color: #9c28b1;
-            transition: width 0.4s ease;
-            z-index: 1000;
-            display: none;
-        }
-      </style>
+
 </head>
 
 <body class="home">
-    <div id="progress-bar"></div>
+    
     <div class="page-wrapper">
        
         
@@ -445,7 +457,7 @@
                 </div>
                 
             </div>
-            
+           
         </header>
 
         <!-- Quick View Modal -->
@@ -482,9 +494,9 @@
                                 luctus venenatis lectus magna fringilla diam<br />
                                 maecenas ultricies mi eget mauris.</p>
                             <a
-                                href="https://d-themes.com/cdn-cgi/l/email-protection#274a464e4b67554e4843420944484a"><span
+                                href="mail:everprecioushairz@yahoo.com"><span
                                     class="__cf_email__"
-                                    >mock@gmail.com</span></a>
+                                    >everprecioushairz@yahoo.com</span></a>
                         </div>
                     </div>
 
@@ -495,9 +507,7 @@
                         <ul class="widget-body">
                             <li><a href="{% url "core:about" %}">About Us</a></li>
                             <li><a href="#">Order History</a></li>
-                            <li><a href="#">Returns</a></li>
-                            <li><a href="#">Custom Service</a></li>
-                            <li><a href="#">Terms &amp; Condition</a></li>
+                      
                         </ul>
                     </div>
 
@@ -507,8 +517,6 @@
                         <h4 class="widget-title">Customer Service</h4>
                         <ul class="widget-body">
                             <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Money-back Guarantee!</a></li>
-                            <li><a href="#">Returns</a></li>
                             <li><a href="#">Shipping</a></li>
                             <li><a href="#">Terms and Conditions</a></li>
                         </ul>
@@ -522,7 +530,7 @@
                             <li><a href="#signin" class="login-toggle">Sign in</a></li>
                             <li><a href="{% url "core:view_cart" %}">View Cart</a></li>
                             <li><a href="{% url "core:view_wishlist" %}">My Wishlist</a></li>
-                            <li><a href="#">Track My Order</a></li>
+                            <li><a href="#" onclick="smartsupp('chat:open'); return false;">Track My Order</a></li>
                             <li><a href="#">Help</a></li>
                         </ul>
                     </div>

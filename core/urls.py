@@ -11,6 +11,8 @@ urlpatterns = [
 
     path('categories/', views.category_list, name="categories" ),
     path('categories/<slug>', views.category_detail, name="category-detail" ),
+    path('categories_detail_list_mode/<slug>', views.category_detail_list_mode, name="category-detail-list-mode" ),
+    path('categories_detail_grid_mode/<slug>', views.category_detail_grid_mode, name="category-detail-grid-mode" ),
     path('products/<slug>', views.product_detail, name="product-detail" ),
     path('products/preview/<slug>', views.product_preview, name="product-preview" ),
 

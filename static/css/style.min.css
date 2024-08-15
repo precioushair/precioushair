@@ -9416,10 +9416,7 @@ figure:hover .overlay {
     text-decoration: none
 }
 
-figure:hover .overlay-visible {
-    background: rgba(34, 102, 204, 0.9);
-    padding-bottom: 9rem
-}
+
 
 .overlay-transparent {
     background: transparent
