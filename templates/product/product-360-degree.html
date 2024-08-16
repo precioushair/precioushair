@@ -11,14 +11,14 @@
 								<div
 									class="product-single-carousel owl-carousel owl-theme owl-nav-inner row cols-1 gutter-no">
 									<figure class="product-image">
-										<img src="{{product.image.url}}"
+										<img src="{{product.image.url}}" style="border-radius: 8px;"
 											data-zoom-image="#"
 											alt="Converse Training Shoes" width="800" height="900">
 									</figure>
 									{% for p in p_image %}
 									<figure class="product-image">
 										<img src="{{p.image.url}}"
-											data-zoom-image="#"
+											data-zoom-image="#" style="border-radius: 8px;"
 											alt="{{p.name}}" width="800" height="900">
 									</figure>
 									{% endfor %}
@@ -32,7 +32,7 @@
 										</div>
 										{% for p in p_image %}
 										<div class="product-thumb">
-											<img src="{{p.image.url}}" alt="product thumbnail"
+											<img src="{{p.image.url}}" alt="{{p.name}} thumbnail" style="border-radius: 8px;"
 												width="150" height="169">
 										</div>
 										{% endfor %}
@@ -58,17 +58,17 @@
 								</div>
 								<h1 class="product-name">{{product.name}}</h1>
 								<div class="product-meta">
-									SKU: <span class="product-sku">12345670</span>
-									BRAND: <span class="product-brand">The Northland</span>
+									SKU: <span class="product-sku">{{product.sku}}</span>
+									Category: <span class="product-brand">{{product.category}}</span>
 								</div>
 								<div class="product-price">&#8358;{{product.price}}</div>
-								<div class="ratings-container">
+								{% comment %} <div class="ratings-container">
 									<div class="ratings-full">
 										<span class="ratings" style="width:80%"></span>
 										<span class="tooltiptext tooltip-top"></span>
 									</div>
 									<a href="#product-tab-reviews" class="link-to-tab rating-reviews">( 11 reviews )</a>
-								</div>
+								</div> {% endcomment %}
 								<p class="product-short-desc">{{product.description}}</p>
 								<div class="product-form product-color">
 									<label>Color:</label>
@@ -139,9 +139,9 @@
 								<a class="nav-link" href="#product-tab-additional">Additional information</a>
 							</li>
 						
-							<li class="nav-item">
+							{% comment %} <li class="nav-item">
 								<a class="nav-link" href="#product-tab-reviews">Reviews (2)</a>
-							</li>
+							</li> {% endcomment %}
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active in" id="product-tab-description">
@@ -236,7 +236,7 @@
 								</ul>
 							</div>
 							
-							<div class="tab-pane" id="product-tab-reviews">
+							{% comment %} <div class="tab-pane" id="product-tab-reviews">
 								<div class="row">
 									<div class="col-lg-4 mb-6">
 										<div class="avg-rating-container">
@@ -521,7 +521,7 @@
 									</div>
 								</div>
 
-							</div>
+							</div> {% endcomment %}
 						</div>
 					</div>
 					<section class="pt-3 mt-10">
@@ -547,15 +547,17 @@
 								}
 							}
 						}">
-
+							{% for r in r_products %}
 							<div class="product">
 								<figure class="product-media">
-									<a href="product.html">
-										<img src="{% static 'images/product/featured1.jpg' %}" alt="product" width="280" height="315">
+									<a href="{% url "core:product-detail" r.slug %}">
+										<img src="{{r.image.url}}" alt="{{r.name}}" style="border-radius: 8px;" width="280" height="315">
 									</a>
+									{% if r.recent %}
 									<div class="product-label-group">
 										<label class="product-label label-new">new</label>
 									</div>
+									{% endif %}
 									<div class="product-action-vertical">
 										<a href="#" class="btn-product-icon btn-cart" data-toggle="modal"
 											data-target="#addCartModal" title="Add to cart"><i
@@ -569,15 +571,15 @@
 								</figure>
 								<div class="product-details">
 									<div class="product-cat">
-										<a href="shop-grid-3col.html">Clothing</a>
+										<a href="{% url "core:category-detail" r.category.slug %}">{{r.category.name}}</a>
 									</div>
 									<h3 class="product-name">
-										<a href="product.html">Solid Pattern in Summer Dress</a>
+										<a href="{% url "core:product-detail" r.slug %}">{{r.name}}</a>
 									</h3>
 									<div class="product-price">
-										<span class="price">&#8358;140.00</span>
+										<span class="price">&#8358;{{r.price}}</span>
 									</div>
-									<div class="ratings-container">
+									{% comment %} <div class="ratings-container">
 										<div class="ratings-full">
 											<span class="ratings" style="width:100%"></span>
 											<span class="tooltiptext tooltip-top"></span>
@@ -585,10 +587,10 @@
 										<a href="#" class="rating-reviews">( <span class="review-count">12</span>
 											reviews
 											)</a>
-									</div>
+									</div> {% endcomment %}
 								</div>
 							</div>
-						
+							{% endfor %}
 						</div>
 					</section>
 				</div>

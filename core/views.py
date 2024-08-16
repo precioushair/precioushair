@@ -33,7 +33,13 @@ def contact(request):
 def faq(request):
     return render(request, "core/faq.html")
 
+def all_products(request):
+    products = Product.objects.all()
 
+    context = {
+        'products': products,
+    }
+    return render(request, "product/all-products.html", context)
 
 def category_list(request):
     return render(request, 'category/category-list.html')
@@ -41,7 +47,7 @@ def category_list(request):
 
 def category_detail(request, slug):
     category = Category.objects.get(slug=slug)
-    products = Product.objects.filter( category=category)
+    products = Product.objects.filter(category=category)
     list_mode = request.GET.get('list', 'false') == 'true'
     context = {
         'category': category,
@@ -80,9 +86,11 @@ def category_detail_grid_mode(request, slug):
 
 def product_detail(request, slug):
     product = Product.objects.get(slug=slug)
+    related_products = Product.objects.filter(category=product.category).exclude(slug=slug)
 
     context = {
-        'product': product
+        'product': product,
+        'r_products': related_products
     }
     return render(request, "product/product-360-degree.html", context)
 
