@@ -87,23 +87,7 @@ window.Riode = {};
                 '{{actionTemplate}}' +
                 '</div>',
         },
-        popup: {
-            removalDelay: 350,
-            callbacks: {
-                open: function () {
-                    $('html').css('overflow-y', 'hidden');
-                    $('body').css('overflow-x', 'visible');
-                    $('.mfp-wrap').css('overflow', 'hidden auto');
-                    $('.sticky-header.fixed').css('padding-right', window.innerWidth - document.body.clientWidth);
-                },
-                close: function () {
-                    $('html').css('overflow-y', '');
-                    $('body').css('overflow-x', 'hidden');
-                    $('.mfp-wrap').css('overflow', '');
-                    $('.sticky-header.fixed').css('padding-right', '');
-                }
-            }
-        },
+   
         popupPresets: {
             login: {
                 type: 'ajax',
@@ -123,12 +107,7 @@ window.Riode = {};
                 preloader: false,
                 closeBtnInside: false
             },
-            quickview: {
-                type: 'ajax',
-                mainClass: "mfp-product mfp-fade",
-                tLoading: '',
-                preloader: false
-            }
+            
         },
         slider: {
             responsiveClass: true,

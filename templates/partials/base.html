@@ -118,34 +118,7 @@
                     modal.style.display = "none";
                 }
             }
-            document.body.addEventListener('htmx:configRequest', function() {
-                // Show progress bar and start animation
-                const progressBar = document.getElementById('progress-bar');
-                progressBar.style.width = '0%';
-                progressBar.style.display = 'block';
-            
-                // Simulate progress
-                let width = 0;
-                const interval = setInterval(() => {
-                    if (width >= 90) {
-                        clearInterval(interval);
-                    } else {
-                        width += 10;
-                        progressBar.style.width = width + '%';
-                    }
-                }, 100);
-            });
-            
-            document.body.addEventListener('htmx:afterRequest', function() {
-                // Complete the progress bar
-                const progressBar = document.getElementById('progress-bar');
-                progressBar.style.width = '100%';
-            
-                // Hide the progress bar after a brief delay
-                setTimeout(() => {
-                    progressBar.style.display = 'none';
-                }, 500);
-            });
+           
             
             
         });
@@ -379,7 +352,7 @@
                                             
                                         </div>
                                     </div>
-                                    <button title="Close (Esc)" type="button" class="mfp-close"><span>×</span></button>
+                                    
                                 </div>
                             </div>
 

@@ -10706,24 +10706,7 @@ button.mfp-arrow {
     }
 }
 
-.mfp-product .mfp-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem 4rem
-}
 
-.mfp-product .mfp-content {
-    max-width: 98.8rem;
-    margin: auto
-}
-
-.mfp-product .product {
-    background-color: #fff;
-    margin-bottom: 2rem;
-    padding: 3rem 1.5rem;
-    border-radius: 1rem
-}
 
 .mfp-product .product-single .product-details {
     padding: 0
