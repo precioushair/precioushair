@@ -2,10 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Category, Product, Wishlist,Cart, CartItem
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import TfidfVectorizer
-import pandas as pd
-import numpy as np
+from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -34,10 +31,15 @@ def faq(request):
     return render(request, "core/faq.html")
 
 def all_products(request):
-    products = Product.objects.all()
-
+    products = Product.objects.all().order_by('name')
+    
+    # Pagination
+    paginator = Paginator(products, 12)  # Show 12 products per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     context = {
-        'products': products,
+        'products': page_obj,  # Pass the paginated products
     }
     return render(request, "product/all-products.html", context)
 

@@ -237,8 +237,8 @@
     
     <div class="page-wrapper">
        
-        
-        <h1 class="d-none">Ever Precious - Get the </h1>
+     
+        <h1 class="d-none">Ever Precious - Premium and affordable hair and hair accessories</h1>
         <header class="header">
             <div class="header-top">
                 <div class="container">
@@ -430,107 +430,108 @@
            
         </header>
 
-        <!-- Quick View Modal -->
-<div id="quickViewModal" class="modal" style="z-index: 1000;">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div id="quickViewContent">
-            <div id="preloader1" style="display: flex; align-items: center; justify-content: center;">
-                <!-- Your preloader content, e.g., a spinner or loading animation -->
-                <img src="{% static 'images/preloader.gif' %}" alt="Loading...">
+                <!-- Quick View Modal -->
+        <div id="quickViewModal" class="modal" style="z-index: 1000;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="quickViewContent">
+                    <div id="preloader1" style="display: flex; align-items: center; justify-content: center;">
+                        <!-- Your preloader content, e.g., a spinner or loading animation -->
+                        <img src="{% static 'images/preloader.gif' %}" alt="Loading...">
+                    </div>
+                    <!-- Product details will be loaded here -->
+                    
+                </div>
             </div>
-            <!-- Product details will be loaded here -->
-             
         </div>
-    </div>
-</div>
-{% block content %}
+       
+        {% block content %}
 
 
-{% endblock content %}
+        {% endblock content %}
 
-<footer class="footer">
-    <div class="container">
-        <div class="footer-middle">
-            <div class="row">
-                <div class="col-lg-4 col-sm-6">
-                    <div class="widget widget-about">
-                        <a href="/" class="logo-footer">
-                            <img src="{% static 'images/logo.jpg' %}" alt="logo-footer" width="50"
-                                height="30" />
-                        </a>
-                        <div class="widget-body">
-                            <p class="ls-s">Fringilla urna porttitor rhoncus dolor purus<br />
-                                luctus venenatis lectus magna fringilla diam<br />
-                                maecenas ultricies mi eget mauris.</p>
-                            <a
-                                href="mail:everprecioushairz@yahoo.com"><span
-                                    class="__cf_email__"
-                                    >everprecioushairz@yahoo.com</span></a>
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-middle">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="widget widget-about">
+                                <a href="/" class="logo-footer">
+                                    <img src="{% static 'images/logo.jpg' %}" alt="logo-footer" width="50"
+                                        height="30" />
+                                </a>
+                                <div class="widget-body">
+                                    <p class="ls-s">Fringilla urna porttitor rhoncus dolor purus<br />
+                                        luctus venenatis lectus magna fringilla diam<br />
+                                        maecenas ultricies mi eget mauris.</p>
+                                    <a
+                                        href="mail:everprecioushairz@yahoo.com"><span
+                                            class="__cf_email__"
+                                            >everprecioushairz@yahoo.com</span></a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="widget">
+                                <h4 class="widget-title">About Us</h4>
+                                <ul class="widget-body">
+                                    <li><a href="{% url "core:about" %}">About Us</a></li>
+                                    <li><a href="#">Order History</a></li>
+                            
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4>
+                                <ul class="widget-body">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and Conditions</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4>
+                                <ul class="widget-body">
+                                    <li><a href="#signin" class="login-toggle">Sign in</a></li>
+                                    <li><a href="{% url "core:view_cart" %}">View Cart</a></li>
+                                    <li><a href="{% url "core:view_wishlist" %}">My Wishlist</a></li>
+                                    <li><a href="#" onclick="smartsupp('chat:open'); return false;">Track My Order</a></li>
+                                    <li><a href="#">Help</a></li>
+                                </ul>
+                            </div>
+
                         </div>
                     </div>
-
                 </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="widget">
-                        <h4 class="widget-title">About Us</h4>
-                        <ul class="widget-body">
-                            <li><a href="{% url "core:about" %}">About Us</a></li>
-                            <li><a href="#">Order History</a></li>
-                      
-                        </ul>
+
+                <div class="footer-bottom">
+                    <div class="footer-left">
+                        <figure class="payment">
+                            <img src="{% static 'images/payment.png' %}" alt="payment" width="159" height="29" />
+                        </figure>
                     </div>
-
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="widget">
-                        <h4 class="widget-title">Customer Service</h4>
-                        <ul class="widget-body">
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Shipping</a></li>
-                            <li><a href="#">Terms and Conditions</a></li>
-                        </ul>
+                    <div class="footer-center">
+                        <p class="copyright">Ever Precious Hairz &copy; 2022. All Rights Reserved</p>
                     </div>
-
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="widget">
-                        <h4 class="widget-title">My Account</h4>
-                        <ul class="widget-body">
-                            <li><a href="#signin" class="login-toggle">Sign in</a></li>
-                            <li><a href="{% url "core:view_cart" %}">View Cart</a></li>
-                            <li><a href="{% url "core:view_wishlist" %}">My Wishlist</a></li>
-                            <li><a href="#" onclick="smartsupp('chat:open'); return false;">Track My Order</a></li>
-                            <li><a href="#">Help</a></li>
-                        </ul>
+                    <div class="footer-right">
+                        <div class="social-links">
+                            <a href="#" title="social-link" class="social-link social-facebook fab fa-facebook-f"></a>
+                            <a href="#" title="social-link" class="social-link social-twitter fab fa-twitter"></a>
+                            <a href="#" title="social-link" class="social-link social-linkedin fab fa-linkedin-in"></a>
+                        </div>
                     </div>
-
                 </div>
-            </div>
-        </div>
 
-        <div class="footer-bottom">
-            <div class="footer-left">
-                <figure class="payment">
-                    <img src="{% static 'images/payment.png' %}" alt="payment" width="159" height="29" />
-                </figure>
             </div>
-            <div class="footer-center">
-                <p class="copyright">Ever Precious Hairz &copy; 2022. All Rights Reserved</p>
-            </div>
-            <div class="footer-right">
-                <div class="social-links">
-                    <a href="#" title="social-link" class="social-link social-facebook fab fa-facebook-f"></a>
-                    <a href="#" title="social-link" class="social-link social-twitter fab fa-twitter"></a>
-                    <a href="#" title="social-link" class="social-link social-linkedin fab fa-linkedin-in"></a>
-                </div>
-            </div>
-        </div>
+        </footer>
 
     </div>
-</footer>
-
-</div>
 
 <div class="sticky-footer sticky-content fix-bottom">
 <a href="/" class="sticky-link">
