@@ -6,17 +6,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Ever Precious Hairz - Premium Hair and Hair accessories</title>
-    <meta name="keywords" content="HTML5 Template" />
-    <meta name="description" content="Ever Precious Hairz - Premium Hair and Hair accessories">
-    <meta name="author" content="D-THEMES">
+    <title>Affordable Luxury Wigs & Hair Extensions – Empowering Nigerian Beauty</title>
+    <meta name="keywords" content="wigs, hair extensions, Nigerian wigs, affordable wigs, luxury wigs, hair bundles, Nigerian hair, Precious Hairz, Ever Precious Hairz, hair accessories, lace front wigs, synthetic wigs, human hair wigs, beauty, fashion, Nigerian beauty products">
 
-    <link rel="icon" type="image/png" href="images/icons/favicon.png">
+    <meta name="description" content="Discover premium wigs, bundles, and hair extensions that blend luxury with affordability. Precious Hairz offers a wide range of styles to enhance your natural beauty, tailored for the modern Nigerian woman. Shop now for high-quality, versatile hair solutions that empower your unique look.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Affordable Luxury Wigs & Hair Extensions – Empowering Nigerian Beauty">
+    <meta property="og:description" content="Discover premium wigs, bundles, and hair extensions that blend luxury with affordability. Precious Hairz offers a wide range of styles to enhance your natural beauty, tailored for the modern Nigerian woman. Shop now for high-quality, versatile hair solutions that empower your unique look.">
+    <meta property="og:url" content="https://www.precioushairz.com">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://www.precioushairz.com/path-to-your-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Affordable Luxury Wigs & Hair Extensions – Empowering Nigerian Beauty">
+    <meta name="twitter:description" content="Explore premium wigs, bundles, and hair extensions at Precious Hairz. Designed for the modern Nigerian woman, our products combine luxury with affordability. Shop now to elevate your style.">
+    <meta name="twitter:image" content="https://www.precioushairz.com/path-to-your-image.jpg">
+    <meta name="identifier-url" content="https://www.precioushairz.com">
+    <meta name="revisit-after" content="7 days">
+    <meta name="page-topic" content="Wigs, Hair Extensions, Nigerian Beauty, Fashion, Beauty, Human Hair, Hair care">
+    
+    <link rel="alternate" href="https://www.precioushairz.com" hreflang="en-ng"> <!-- For English in Nigeria -->
+    
+    <meta name="author" content="Precious Hairz">
 
-    <link rel="preload" href="fonts/riode115b.ttf?5gap68" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
+    <link rel="icon" type="image/png" href="{% static "images/icons/favicon.png" %}">
+
+    <link rel="preload" href="{% static "fonts/riode115b.ttf?5gap68" %}" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="{% static "vendor/fontawesome-free/webfonts/fa-solid-900.woff2" %}" as="font" type="font/woff2"
         crossorigin="anonymous">
-    <link rel="preload" href="vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
+    <link rel="preload" href="{% static "vendor/fontawesome-free/webfonts/fa-brands-400.woff2" %}" as="font" type="font/woff2"
         crossorigin="anonymous">
     <script>
         WebFontConfig = {
@@ -88,7 +105,14 @@
             text-decoration: none;
             cursor: pointer;
         }
-       
+        .scale-down {
+            transition: transform 0.5s linear;
+        }
+        
+        .scale-down:hover {
+            transform: scale(0.96);
+        }
+        
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -366,7 +390,7 @@
                             <i class="d-icon-bars2"></i>
                         </a>
                         <a href="/" class="logo">
-                            <img src="{% static 'images/logo.jpg' %}" alt="logo" width="50" height="30" />
+                            <img src="{% static 'images/logo.jpg' %}" alt="logo" width="60" height="50" />
                         </a>
 
                         <div class="header-search hs-simple">
@@ -387,18 +411,18 @@
                     </div>
                   
                     <div class="header-right">
-                        <a href="tel:+2348025067397" class="icon-box icon-box-side">
+                        <a href="tel:+2348025067397" class="icon-box icon-box-side scale-down">
                             <div class="icon-box-icon mr-0 mr-lg-2">
                                 <i class="d-icon-phone"></i>
                             </div>
-                            <div class="icon-box-content d-lg-show">
+                            <div class="icon-box-content d-lg-show ">
                                 <h4 class="icon-box-title">Call Us Now:</h4>
                                 <p>(+234) 8025067397</p>
                             </div>
                         </a>
                         <span class="divider"></span>
                         <div class="dropdown wishlist wishlist-dropdown off-canvas">
-                            <a href="{% url "core:view_wishlist" %}" class="wishlist-toggle" title="wishlist">
+                            <a href="#" class="wishlist-toggle scale-down" title="wishlist">
                                 <i class="d-icon-heart"></i>
                             </a>
                             <div class="canvas-overlay"></div>
@@ -662,9 +686,9 @@
                     <i class="d-icon-card"></i>All Products
                 </a>
             </li>
-            <li>
+            <li >
                 <a href="#">
-                    <i class="d-icon-card"></i>Daily Deals
+                    <i class="d-icon-card"></i>Visit Our Store
                 </a>
             </li>
         </ul>

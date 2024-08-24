@@ -40,7 +40,7 @@ class Category(models.Model):
 
             # Save the resized image to a BytesIO object
             output = BytesIO()
-            img.save(output, format='WEBP', quality=98)
+            img.save(output, format='WEBP', quality=100)
             output.seek(0)
 
             # Update the image field with the resized image
@@ -89,7 +89,7 @@ class Product(models.Model):
 
             # Save the resized image to a BytesIO object
             output = BytesIO()
-            img.save(output, format='WEBP', quality=98)
+            img.save(output, format='WEBP', quality=100)
             output.seek(0)
             base_sku = slugify(self.name)[:10]  # Limiting to 10 characters for brevity
             unique_sku = f"{base_sku}-{uuid.uuid4().hex[:8]}"  # Adding 8 characters from a UUID

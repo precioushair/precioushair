@@ -8,3 +8,6 @@ migrations
 *.pyc
 .env
 db.sqlite3
+forms/
+pages/
+application/
