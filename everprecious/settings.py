@@ -184,3 +184,5 @@ AUTH_USER_MODEL = "userauths.User"
 CLOUD_NAME_SECRET = "dypvrytwu"
 API_KEY = "796229729547852"
 API_SECRET = "FaYFLYVkL-i-bNhuAwAEerbbszY" 
+
+LOGIN_REDIRECT_URL = '/user/sign-in/'

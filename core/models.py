@@ -24,10 +24,14 @@ class Category(models.Model):
     image = CloudinaryField(folder="category-images")
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(unique=True)
+    date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
     
+    def product_count(self):
+        return self.products.count()
+
 
     def save(self, *args, **kwargs):
         if self.image:
@@ -62,6 +66,9 @@ class Category(models.Model):
         # Call the parent class delete method to delete the Blog object
         super().delete(*args, **kwargs)
 
+    class Meta:
+        verbose_name_plural = "Categories"
+
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=255)
@@ -78,6 +85,8 @@ class Product(models.Model):
         return self.name
     def is_recent(self):
         return self.date >= timezone.now() - timedelta(days=2)
+    def finished(self):
+        return self.stock <= 0
     def save(self, *args, **kwargs):
         if self.image:
             # Download the image from Cloudinary

@@ -21,9 +21,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#orders">Orders</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#downloads">Downloads</a>
-                            </li>
+                            
                             <li class="nav-item">
                                 <a class="nav-link" href="#address">Address</a>
                             </li>
@@ -113,11 +111,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="tab-pane" id="downloads">
-                                <p class="mb-4 text-body">No downloads available yet.</p>
-                                <a href="#" class="btn btn-primary btn-link btn-underline">Browser Products<i
-                                        class="d-icon-arrow-right"></i></a>
-                            </div>
+                           
                             <div class="tab-pane" id="address">
                                 <p class="mb-2">The following addresses will be used on the checkout page by default.
                                 </p>
@@ -150,18 +144,9 @@
                             </div>
                             <div class="tab-pane" id="account">
                                 <form action="#" class="form">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <label>First Name *</label>
-                                            <input type="text" class="form-control" name="first_name" required>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label>Last Name *</label>
-                                            <input type="text" class="form-control" name="last_name" required>
-                                        </div>
-                                    </div>
-                                    <label>Display Name *</label>
-                                    <input type="text" class="form-control mb-0" name="display_name" required>
+                                    
+                                    <label>Full Name </label>
+                                    <input type="text" class="form-control mb-0" name="full_name" value="{{request.user.full_name}}" required>
                                     <small class="d-block form-text mb-7">This will be how your name will be displayed
                                         in the account section and in reviews</small>
                                     <label>Email Address *</label>

@@ -4,11 +4,11 @@ from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth import logout
-from userauths.models import User
+from core.models import Order
 from django.http import JsonResponse, HttpResponse
 from django.db import IntegrityError
 from .utils import send_confirmation_email, reset_password
-from .models import UserToken
+from .models import UserToken, User
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
 from django.template.loader import render_to_string
@@ -79,6 +79,10 @@ def logout_view(request):
 
 
 def account_view(request):
+    customer_orders = Order.objects.filter(customer=request.user)
+    context = {
+        "orders" : customer_orders
+    }
     return render(request, "user/account.html")
 
 

@@ -106,31 +106,10 @@
 								<div class="widget widget-collapsible">
 									<h3 class="widget-title">Product Categories</h3>
 									<ul class="widget-body filter-items search-ul">
-										<li>
-											<a href="#">Clothing<span class="count">(6)</span></a>
-											<ul>
-												<li><a href="#">Summer sale<span class="count">(2)</span></a></li>
-												<li><a href="#">Shirts<span class="count">(3)</span></a></li>
-												<li><a href="#">Trunks<span class="count">(1)</span></a></li>
-											</ul>
-										</li>
-										<li><a href="#">Shoes<span class="count">(5)</span></a></li>
-										<li><a href="#">Men<span class="count">(8)</span></a></li>
-										<li><a href="#">Women<span class="count">(3)</span></a></li>
-										<li><a href="#">Bags & Backpacks<span class="count">(5)</span></a></li>
-										<li>
-											<a href="#">Watches<span class="count">(4)</span></a>
-											<ul>
-												<li><a href="#">Men's<span class="count">(2)</span></a></li>
-												<li><a href="#">Woment's<span class="count">(2)</span></a></li>
-											</ul>
-										</li>
-										<li>
-											<a href="#">Accessosries<span class="count">(1)</span></a>
-											<ul>
-												<li><a href="#">Ring<span class="count">(1)</span></a></li>
-											</ul>
-										</li>
+										{% for c in categories %}
+										<li><a href="#">{{c.name}}</a></li>
+										{% endfor %}
+										
 									</ul>
 								</div>
 								<div class="widget widget-collapsible">

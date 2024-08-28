@@ -10,9 +10,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Able Pro is trending dashboard template made using Bootstrap 5 design framework. Able Pro is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies.">
-  <meta name="keywords" content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard">
-  <meta name="author" content="Phoenixcoded">
+  <meta name="author" content="Ever Precious Hairz">
 
   <!-- [Favicon] icon -->
   <link rel="icon" href="https://ableproadmin.com/assets/images/favicon.svg" type="image/x-icon"> <!-- [Font] Family -->
@@ -69,7 +67,7 @@
             </div>
             <h4 class="text-center f-w-500 mb-3">Login with your email</h4>
             {% if form.errors %}
-              <div class="alert alert-danger" role="alert">
+              <div class="alert alert-danger" role="alert" id="error-container">
                 {% for field in form %}
                   {% for error in field.errors %}
                     <p>{{ error }}</p>
@@ -81,7 +79,7 @@
               </div>
             {% endif %}
 
-            <form method="post">
+            <form method="post" >
               {% csrf_token %}
               <div class="form-group mb-3">
                 <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Username" required>
@@ -97,7 +95,11 @@
                 {% comment %} <h6 class="text-secondary f-w-400 mb-0"><a href="{% url 'admin_password_reset' %}" class="text-secondary">Forgot Password?</a></h6> {% endcomment %}
               </div>
               <div class="d-grid mt-4">
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">Login
+                  <div class="spinner-border" id="loader" style="height: 14px; width: 14px;" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </button>
               </div>
             </form>
             
@@ -114,6 +116,8 @@
   <script src="{% static 'assets/js/fonts/custom-font.js' %}"></script>
   <script src="{% static 'assets/js/pcoded.js' %}"></script>
   <script src="{% static 'assets/js/plugins/feather.min.js' %}"></script>
+   <script src="{% static 'js/htmx.min.js' %}"></script>
+
 
   
   
@@ -307,5 +311,4 @@
 <!-- [Body] end -->
 
 
-<!-- Mirrored from ableproadmin.com/pages/login-v2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 18 Apr 2024 15:20:20 GMT -->
 </html>

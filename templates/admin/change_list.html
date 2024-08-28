@@ -1,0 +1,303 @@
+{% extends "admin/partials/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block applist %}
+{% for app in available_apps %}
+<ul class="pc-navbar">
+  <li class="pc-item pc-caption">
+    <label>{{ app.name }}</label>
+  </li>
+  {% for model in app.models %}
+  <li class="pc-item">
+    <a href="{{ model.admin_url }}"  style="z-index: 1;" class="pc-link">
+      <span class="pc-micon">
+        <svg class="pc-icon">
+          <use xlink:href="#custom-status-up"></use>
+        </svg>
+      </span>
+      <span class="pc-mtext" >{{ model.name }}</span>
+      {% if model.admin_url and show_changelinks %}
+        {% if model.view_only %}
+        <span class="pc-badge bg-warning navigate-top-path" style="z-index: 2;"  data-url="{{ model.admin_url }}">2<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M1 12C1 12 5 20 12 20C19 20 23 12 23 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="#FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg></span> 
+        {% else %}
+        <span class="pc-badge bg-warning navigate-top-path" style="z-index: 2;"  data-url="{{ model.admin_url }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 6L18 9M17.4029 3.61716L3.9933 17.0268L3 21L6.97322 20.0067L20.3828 6.59708C21.2057 5.7742 21.2057 4.44004 20.3828 3.61716C19.56 2.79428 18.2258 2.79428 17.4029 3.61716Z" stroke="#FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg></span> 
+        {% endif %}
+      {% endif %}
+      
+      {% if model.add_url %}
+      <span class="pc-badge bg-success navigate-top-path"  style="z-index: 2;" data-url="{{ model.add_url }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 4V20M4 12H20" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg></span> 
+      {% endif %}
+    </a>
+    <script>
+      document.querySelectorAll('.navigate-top-path').forEach(function(span) {
+        span.addEventListener('click', function(event) {
+          event.stopPropagation();
+          window.location.href = span.getAttribute('data-url');
+        });
+      });
+    </script>
+   
+  </li>
+  {% endfor %}
+ 
+</ul>
+{% endfor %}
+{% endblock applist %}
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Dashboard</a></li>
+                  <li class="breadcrumb-item" aria-current="page">Home</li>
+                </ul>
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h2 class="mb-0">Home</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="row">
+            <!-- [ sample-page ] start -->
+            <div class="col-sm-12">
+              <div class="card table-card">
+                <div class="card-body">
+                  <div class="text-end p-4 pb-sm-2">
+                    <a href="ecom_product-add.html" class="btn btn-primary">
+                      <i class="ti ti-plus f-18"></i> Add Product
+                    </a>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-hover" id="pc-dt-simple">
+                      <thead>
+                        <tr>
+                            {% if cl.opts.model_name == 'category' %}
+                            <th class="text-end">#</th>
+                            <th>Category Name</th>
+                            <th class="text-end">Number of Products</th>
+                            <th class="text-end">Created At</th>
+                            <th class="text-center">Actions</th>
+                      
+                          {% elif cl.opts.model_name == 'product' %}
+                            <th class="text-end">#</th>
+                            <th>Product Detail</th>
+                            <th>Categories</th>
+                            <th class="text-end">Price</th>
+                            <th class="text-end">Qty</th>
+                            <th>Status</th>
+                            <th class="text-center">Actions</th>
+                      
+                          {% elif cl.opts.model_name == 'user' %}
+                            <th class="text-end">#</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Is Active</th>
+                            
+                            <th>Last Login</th>
+                            <th class="text-center">Actions</th>
+                      
+                          {% elif cl.opts.model_name == 'contact' %}
+                            <th class="text-end">#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Message</th>
+                            <th>Date Received</th>
+                            <th>Status</th>
+                            <th class="text-center">Actions</th>
+                      
+                          {% else %}
+                            <!-- Default headers for other models -->
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Details</th>
+                            <th class="text-center">Actions</th>
+                          {% endif %}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if cl.opts.model_name == 'product' %}
+    {% for result in products %}
+        <tr>
+            <!-- Custom HTML for Product model -->
+            <td class="text-end">{{ forloop.counter }}</td>
+            <td>
+                <div class="row">
+                    <div class="col-auto pe-0">
+                        <img src="{{ result.image.url }}" alt="{{ result.name }}" class="wid-40 rounded">
+                    </div>
+                    <div class="col">
+                        <h6 class="mb-1">{{ result.name }}</h6>
+                        <p class="text-muted f-12 mb-0">{{ result.description }}</p>
+                    </div>
+                </div>
+            </td>
+            <td>{{ result.category }}</td>
+            <td class="text-end">₦{{ result.price|floatformat:"0"|intcomma }}</td>
+            <td class="text-end">{{ result.stock }}</td>
+            {% if result.finished %}
+                <td><span class="badge bg-light-warning f-12">Out of stock</span></td>
+            {% else %}
+                <td><span class="badge bg-light-success f-12">In stock</span></td>
+            {% endif %}
+            <td class="text-center">
+                <ul class="list-inline me-auto mb-0">
+                    <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="View">
+                        <a href="{{ result.get_absolute_url }}" class="avtar avtar-xs btn-link-secondary btn-pc-default">
+                            <i class="ti ti-eye f-18"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Edit">
+                        <a href="{{ result.get_edit_url }}" class="avtar avtar-xs btn-link-success btn-pc-default">
+                            <i class="ti ti-edit-circle f-18"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Delete">
+                        <a href="{{ result.get_delete_url }}" class="avtar avtar-xs btn-link-danger btn-pc-default">
+                            <i class="ti ti-trash f-18"></i>
+                        </a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+{% else %}
+    {% for result in cl.result_list %}
+        <tr>
+            <!-- Custom layout per model (same as your original template) -->
+            {% if cl.opts.model_name == 'category' %}
+                <!-- Custom HTML for Category model -->
+                <td class="text-end">{{ forloop.counter }}</td>
+                <td>
+                    <div class="row">
+                        <div class="col-auto pe-0">
+                            <img src="{{ result.image.url }}" alt="{{ result.name }}" class="wid-40 rounded">
+                        </div>
+                        <div class="col">
+                            <h6 class="mb-1">{{ result.name }}</h6>
+                            <p class="text-muted f-12 mb-0">{{ result.description }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td>{{ result.product_count }}</td>
+                <td class="text-end">{{ result.date|date:"d M, Y" }}</td>
+            {% elif cl.opts.model_name == 'user' %}
+                <!-- Custom HTML for User model -->
+                <td class="text-end">{{ forloop.counter }}</td>
+                <td>{{ result.full_name }}</td>
+                <td>{{ result.email }}</td>
+                <td>{{ result.is_active }}</td>
+                <td>{{ result.last_login }}</td>
+            {% elif cl.opts.model_name == 'contact' %}
+                <!-- Custom HTML for Contact model -->
+                <td>{{ result.name }}</td>
+                <td>{{ result.email }}</td>
+                <td>{{ result.message }}</td>
+            {% else %}
+                <!-- Default fallback layout for other models -->
+                <td>{{ result }}</td>
+            {% endif %}
+            <td class="text-center">
+                <ul class="list-inline me-auto mb-0">
+                    <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="View">
+                        <a href="{{ result.get_absolute_url }}" class="avtar avtar-xs btn-link-secondary btn-pc-default">
+                            <i class="ti ti-eye f-18"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Edit">
+                        <a href="{{ result.get_edit_url }}" class="avtar avtar-xs btn-link-success btn-pc-default">
+                            <i class="ti ti-edit-circle f-18"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Delete">
+                        <a href="{{ result.get_delete_url }}" class="avtar avtar-xs btn-link-danger btn-pc-default">
+                            <i class="ti ti-trash f-18"></i>
+                        </a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+{% endif %}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- [ sample-page ] end -->
+            {% if cl.opts.model_name == 'product' %}
+            <div class="pagination-container">
+              <nav class="toolbox toolbox-pagination">
+                <p class="show-info">
+                  Showing {{ products.start_index }} to {{ products.end_index }} of {{ products.paginator.count }} Products
+                </p>
+                <ul class="pagination">
+                  {% if products.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link page-link-prev" href="?e={{ products.previous_page_number }}" aria-label="Previous">
+                        <i class="d-icon-arrow-left"></i>Prev
+                      </a>
+                    </li>
+                  {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                        <i class="d-icon-arrow-left"></i>Prev
+                      </a>
+                    </li>
+                  {% endif %}
+          
+                  {% for num in products.paginator.page_range %}
+                    {% if products.number == num %}
+                      <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{ num }}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item">
+                        <a class="page-link" href="?e={{ num }}">{{ num }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+          
+                  {% if products.has_next %}
+                    <li class="page-item">
+                      <a class="page-link page-link-next" href="?e={{ products.next_page_number }}" aria-label="Next">
+                        Next<i class="d-icon-arrow-right"></i>
+                      </a>
+                    </li>
+                  {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link page-link-next" href="#" aria-label="Next" tabindex="-1" aria-disabled="true">
+                        Next<i class="d-icon-arrow-right"></i>
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </nav>
+            </div>
+            {% endif %}
+          
+          </div>
+       </div>
+    </div>
+    <!-- [ Main Content ] end -->
+ {% endblock content %}
