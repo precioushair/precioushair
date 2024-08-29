@@ -32,7 +32,8 @@ class Category(models.Model):
     def product_count(self):
         return self.products.count()
 
-
+    def get_absolute_url(self):
+        return f'/categories/{self.slug}/'
     def save(self, *args, **kwargs):
         if self.image:
             # Download the image from Cloudinary
@@ -87,6 +88,8 @@ class Product(models.Model):
         return self.date >= timezone.now() - timedelta(days=2)
     def finished(self):
         return self.stock <= 0
+    def get_absolute_url(self):
+        return f'/products/{self.slug}/'
     def save(self, *args, **kwargs):
         if self.image:
             # Download the image from Cloudinary
