@@ -10,7 +10,7 @@
                     <div class="container">
                         <div class="row grid">
                             <div class="grid-item col-xl-3 col-lg-4 height-x2 category-list d-lg-block d-none">
-                                <ul class="menu menu-options vertical-menu category-menu"
+                                <ul class="menu menu-options vertical-menu category-menu" style="border-radius: 1.25rem;"
                                     data-animation-options="{
                                 'name': 'fadeInRightShorter',
                                 'delay': '.2s'
@@ -181,65 +181,10 @@
                         </div>
                     </div>
                 </section>
-                <section class="service-list mt-10">
-                    <div class="container">
-                        <div class="owl-carousel owl-theme row cols-lg-3 cols-sm-2 cols-1" data-owl-options="{
-                                'items': 3,
-                                'nav': false,
-                                'dots': false,
-                                'loop': true,
-                                'autoplay': true,
-                                'autoplayTimeout': 5000,
-                                'responsive': {
-                                    '0': {
-                                        'items': 1
-                                    },
-                                    '576': {
-                                        'items': 2
-                                    },
-                                    '768': {
-                                        'items': 3,
-                                        'loop': false
-                                    }
-                                }
-                            }">
-                            <div class="icon-box icon-box-side icon-box1" data-animation-options="{
-                                    'name': 'fadeInRightShorter',
-                                    'delay': '.3s'
-                                }">
-                                <i class="icon-box-icon d-icon-truck"></i>
-                                <div class="icon-box-content">
-                                    <h4 class="icon-box-title text-capitalize ls-normal">Instant Shipping &amp; Delivery
-                                    </h4>
-                                    <p class="ls-s">Transform Your Look Instantly</p>
-                                </div>
-                            </div>
-                            <div class="icon-box icon-box-side icon-box2 " data-animation-options="{
-                                    'name': 'fadeInRightShorter',
-                                    'delay': '.4s'
-                                }">
-                                <i class="icon-box-icon d-icon-service"></i>
-                                <div class="icon-box-content">
-                                    <h4 class="icon-box-title text-capitalize ls-normal">Customer Support 24/7</h4>
-                                    <p class="ls-s">Instant access to perfect support</p>
-                                </div>
-                            </div>
-                            <div class="icon-box icon-box-side icon-box3 " data-animation-options="{
-                                    'name': 'fadeInRightShorter',
-                                    'delay': '.5s'
-                                }">
-                                <img src="{% static "images/shop/hair-svgrepo-com.svg" %}" style="height: 40px; width: 40px; margin-right: 10px;"/> 
-                                <div class="icon-box-content">
-                                    <h4 class="icon-box-title text-capitalize ls-normal">Authentic &amp; Affordable</h4>
-                                    <p class="ls-s">Luxury Wigs, Affordable Glam</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+               
                 <section class="pt-7 mt-5 " data-animation-options="{'delay': '.3s'}">
                     <div class="container">
-                        <h2 class="title title-center mb-5 pb-3">Popular Categories</h2>
+                        <h2 class="title mb-5 pb-3">Popular Categories</h2>
                         <div class="owl-carousel owl-theme row cols-lg-4 cols-md-3 cols-sm-2 cols-1" data-owl-options="{
                             'nav': false,
                             'dots': true,
@@ -265,7 +210,7 @@
                             <div class="category category-default1 category-absolute banner-radius overlay-zoom">
                                 <a href="{% url "core:category-detail" category.slug %}">
                                     <figure class="category-media" style="background-color: #edd3c7;">
-                                        <img src="{{category.image.url}}" alt="category" width="280"
+                                        <img src="{{category.image.url}}"  alt="category" width="280"
                                             height="280" />
                                     </figure>
                                 </a>
@@ -282,17 +227,19 @@
                     'name': 'fadeIn',
                     'delay': '.2s'}">
                     <div class="container">
-                        <h2 class="title title-simple title-center pb-3">Featured Products</h2>
+                        <h2 class="title  pb-3">Featured Products</h2>
                         <div class="row cols-lg-4 cols-md-3 cols-2">
                             {% for p in products %}
                             <div class="product text-center">
                                 <figure class="product-media" style="background-color: #f7f8fa;">
                                     <a href="{% url "core:product-detail" p.slug %}">
-                                        <img src="{{p.image.url}}" alt="{{p.name}}" style="border-radius: 5px;" width="280" height="280">
+                                        <img src="{{p.image.url}}" alt="{{p.name}}" style="border-radius: 1.25rem;" width="280" height="280">
                                     </a>
                                     <div class="product-action-vertical">
                                         <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i class="d-icon-bag"></i></a>
+                                        {% if user.is_authenticated %}
                                         <a href="#" class="btn-product-icon btn-wishlist"  hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                        {% endif %}
                                         <a href="#" class="btn-product-icon btn-search btn-preview" title="Quick View" 
                                             hx-get="{% url "core:product-preview" p.slug %}" 
                                             hx-target="#quickViewContent"
@@ -304,15 +251,15 @@
                                         </a>
                                     </div>
                                 </figure>
-                                <div class="product-details">
+                                <div class="product-details" style="text-align: left;">
                                     <div class="product-cat">
                                         <a href="{% url "core:category-detail" p.category.slug %}">{{p.category.name}}</a>
                                     </div>
                                     <h3 class="product-name">
-                                        <a href="{% url "core:product-detail" p.slug %}">{{p.name}}</a>
+                                        <a href="{% url "core:product-detail" p.slug %}" style="font-weight: 600;">{{p.name}}</a>
                                     </h3>
-                                    <div class="product-price">
-                                        <span class="price">&#8358;{{p.price|floatformat:"0"|intcomma}}</span>
+                                    <div class="product-name">
+                                        <span class="price" style="font-weight: 600;">&#8358;{{p.price|floatformat:"0"|intcomma}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -333,11 +280,13 @@
                             <div class="product text-center">
                                 <figure class="product-media" style="background-color: #f7f8fa;">
                                     <a href="{% url "core:product-detail" p.slug %}">
-                                        <img src="{{p.image.url}}" alt="{{p.name}}" style="border-radius: 5px;" width="280" height="280">
+                                        <img src="{{p.image.url}}" alt="{{p.name}}" style="border-radius: 1.25rem;" width="280" height="280">
                                     </a>
                                     <div class="product-action-vertical">
                                         <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i class="d-icon-bag"></i></a>
+                                        {% if user.is_authenticated %}
                                         <a href="#" class="btn-product-icon btn-wishlist"  hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                        {% endif %}
                                         <a href="#" class="btn-product-icon btn-search btn-preview" title="Quick View" 
                                             hx-get="{% url "core:product-preview" p.slug %}" 
                                             hx-target="#quickViewContent"
@@ -345,18 +294,18 @@
                                             hx-select="#MainContent"
                                             hx-swap="innerHTML">
                                             <i class="d-icon-search"></i>
-                                        </a>
+                                        </a> 
                                     </div>
                                 </figure>
-                                <div class="product-details">
+                                <div class="product-details" style="text-align: left;">
                                     <div class="product-cat">
                                         <a href="{% url "core:category-detail" p.category.slug %}">{{p.category.name}}</a>
                                     </div>
                                     <h3 class="product-name">
-                                        <a href="{% url "core:product-detail" p.slug %}">{{p.name}}</a>
+                                        <a href="{% url "core:product-detail" p.slug %}" style="font-weight: 550;">{{p.name}}</a>
                                     </h3>
-                                    <div class="product-price">
-                                        <span class="price">&#8358;{{p.price|floatformat:"0"|intcomma}}</span>
+                                    <div class="product-name">
+                                        <span class="price" style="font-weight: 550;">&#8358;{{p.price|floatformat:"0"|intcomma}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -416,15 +365,15 @@
                                                 class="d-icon-heart"></i></a>
                                     </div>
                                 </figure>
-                                <div class="product-details">
+                                <div class="product-details" style="text-align: left;">
                                     <div class="product-cat">
                                         <a href="{{ product.category_url }}">{{ product.category }}</a>
                                     </div>
                                     <h3 class="product-name">
-                                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                                        <a href="{{ product.get_absolute_url }}" style="font-weight: 600;">{{ product.name }}</a>
                                     </h3>
                                     <div class="product-price">
-                                        <span class="price">{{ product.price|floatformat:"0"|intcomma}}</span>
+                                        <span class="price" style="font-weight: 600;">{{ product.price|floatformat:"0"|intcomma}}</span>
                                     </div>
                                     
                                 </div>

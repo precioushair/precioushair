@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", "False").lower() == "true"
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -89,9 +89,9 @@ WSGI_APPLICATION = "everprecious.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-ENVIRONMENT = config('ENVIRONMENT', default='development')
 
-if ENVIRONMENT == 'production':
+
+if not DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -177,6 +177,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "userauths.User"
 
 
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
 
 
 
@@ -186,3 +190,6 @@ API_KEY = "796229729547852"
 API_SECRET = "FaYFLYVkL-i-bNhuAwAEerbbszY" 
 
 LOGIN_REDIRECT_URL = '/user/sign-in/'
+
+PAYSTACK_PUBLIC_KEY = 'pk_test_bd8640ff61e4fe7bd0ae7c33c919e4b24e5cbac8'
+PAYSTACK_SECRET_KEY = 'sk_test_d9251769b45df69289419c350ffc41e72e07e91f'
