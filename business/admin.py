@@ -20,6 +20,8 @@ class MyAdminSite(admin.AdminSite):
         extra_context.update(custom_context)
         
         return super().index(request, extra_context=extra_context) 
+
+
     
 
     
@@ -33,7 +35,7 @@ class ProductAdmin(admin.ModelAdmin):
         queryset = queryset.order_by('name')
         
         # Pagination logic, just like in the example you provided
-        paginator = Paginator(queryset, 3)  # Show 12 products per page
+        paginator = Paginator(queryset, 12)  # Show 12 products per page
         page_number = request.GET.get('e')
         page_obj = paginator.get_page(page_number)
 

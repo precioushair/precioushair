@@ -1,6 +1,5 @@
 {% extends "admin/partials/base.html" %}
-{% load static %}
-{% load humanize %}
+{% load static humanize  admin_urls  %}
 {% block applist %}
 {% for app in available_apps %}
 <ul class="pc-navbar">
@@ -82,8 +81,8 @@
               <div class="card table-card">
                 <div class="card-body">
                   <div class="text-end p-4 pb-sm-2">
-                    <a href="ecom_product-add.html" class="btn btn-primary">
-                      <i class="ti ti-plus f-18"></i> Add Product
+                    <a href="/admin/core/{{cl.opts.model_name|lower}}/add/" class="btn btn-primary">
+                      <i class="ti ti-plus f-18"></i> Add {{cl.opts.model_name|capfirst}}
                     </a>
                   </div>
                   <div class="table-responsive">
@@ -160,18 +159,14 @@
             {% endif %}
             <td class="text-center">
                 <ul class="list-inline me-auto mb-0">
-                    <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="View">
-                        <a href="{{ result.get_absolute_url }}" class="avtar avtar-xs btn-link-secondary btn-pc-default">
-                            <i class="ti ti-eye f-18"></i>
-                        </a>
-                    </li>
+                    
                     <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Edit">
-                        <a href="{{ result.get_edit_url }}" class="avtar avtar-xs btn-link-success btn-pc-default">
+                        <a href="/admin/core/product/{{ result.id }}/change/" class="avtar avtar-xs btn-link-success btn-pc-default">
                             <i class="ti ti-edit-circle f-18"></i>
                         </a>
                     </li>
                     <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Delete">
-                        <a href="{{ result.get_delete_url }}" class="avtar avtar-xs btn-link-danger btn-pc-default">
+                        <a href="/admin/core/product/{{ result.id }}/delete/" class="avtar avtar-xs btn-link-danger btn-pc-default">
                             <i class="ti ti-trash f-18"></i>
                         </a>
                     </li>
@@ -217,18 +212,14 @@
             {% endif %}
             <td class="text-center">
                 <ul class="list-inline me-auto mb-0">
-                    <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="View">
-                        <a href="{{ result.get_absolute_url }}" class="avtar avtar-xs btn-link-secondary btn-pc-default">
-                            <i class="ti ti-eye f-18"></i>
-                        </a>
-                    </li>
+                    
                     <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Edit">
-                        <a href="{{ result.get_edit_url }}" class="avtar avtar-xs btn-link-success btn-pc-default">
+                        <a href="/admin/core/category/{{ result.id }}/change/" class="avtar avtar-xs btn-link-success btn-pc-default">
                             <i class="ti ti-edit-circle f-18"></i>
                         </a>
                     </li>
                     <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Delete">
-                        <a href="{{ result.get_delete_url }}" class="avtar avtar-xs btn-link-danger btn-pc-default">
+                        <a href="/admin/core/category/{{ result.id }}/delete/" class="avtar avtar-xs btn-link-danger btn-pc-default">
                             <i class="ti ti-trash f-18"></i>
                         </a>
                     </li>

@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
-from core.models import Cart, Order, OrderItem
+from core.models import Cart, Order, OrderItem, Product
+from django.shortcuts import get_object_or_404
 from .forms import PaymentForm
 import requests
 from django.http import HttpResponse
+
 
 
 def initiate_payment(request):

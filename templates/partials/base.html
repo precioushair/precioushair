@@ -271,7 +271,10 @@
                         <p class="welcome-msg">Welcome to Ever Precious Hairz</p>
                     </div>
                     <div class="header-right">
-                        
+                        <div class=" ml-5">
+                            <a href="{% url "core:products" %}">SHOP NOW</a>
+                          
+                        </div>
 
                         <div class="dropdown ml-5">
                             <a href="#language">ENG</a>
@@ -284,6 +287,7 @@
                                 </li>
                             </ul>
                         </div>
+                        
 
                         <span class="divider"></span>
                         <a href="{% url "core:contact" %}" hx-boost="true" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
@@ -396,7 +400,7 @@
                         <div class="header-search hs-simple">
                             <form class="input-wrapper" method="GET"  action="{% url 'core:search' %}"  >
                                 <input type="text" class="form-control " name="search" autocomplete="off"  id="item_search"
-                                    placeholder="Search..." required  style="border-radius: 1.3rem;"/>
+                                    placeholder="Search..." required  style="border-radius: 3.75rem;"/>
                                 <button class="btn btn-search" type="submit" title="submit-button">
                                     <i class="d-icon-search"></i>
                                 </button>
@@ -588,8 +592,8 @@
     </a>
     <form action="#" class="input-wrapper">
         <input type="text" class="form-control item_search" name="search" autocomplete="off"
-            placeholder="Search your keyword..." required />
-        <button class="btn btn-search" type="submit" title="submit-button">
+            placeholder="Search your keyword..." required  style="border-radius: 3.75rem;" />
+        <button class="btn btn-search" type="submit" title="submit-button" style="border-radius: 3.75rem;">
             <i class="d-icon-search"></i>
         </button>
     </form>
