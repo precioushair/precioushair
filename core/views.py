@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 
 
 def home(request):
-    products = Product.objects.all().order_by('-id')[:6]
+    products = Product.objects.all().order_by('-id')[:4]
     new_products = Product.objects.all().order_by('-id')[:5]
 
     context = {

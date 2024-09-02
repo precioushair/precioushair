@@ -125,7 +125,7 @@
                                 }">
                                     <a href="{% url "core:products" %}">
                                         <figure>
-                                            <img src="{% static 'images/shop/happy-afro-woman-with-beautiful-smile.jpg' %}" width="580" height="241"
+                                            <img src="{% static 'images/shop/2481.jpg' %}" width="580" height="241"
                                                 alt="banner" />
                                         </figure>
                                     </a>
@@ -164,7 +164,7 @@
                                 }">
                                     <a href="{% url "core:products" %}">
                                         <figure>
-                                            <img src="{% static 'images/shop/artificial-fake-hair-wig-on-rattan-head-mannequin.jpg' %}" width="280" height="241"
+                                            <img src="{% static 'images/shop/2149150984.jpg' %}" width="280" height="241"
                                                 alt="banner" />
                                         </figure>
                                     </a>
@@ -223,7 +223,7 @@
                         </div>
                     </div>
                 </section>
-                <section class="mt-10 pt-2 mb-8 appear-animate" data-animation-options="{
+                <section class="mt-10 pt-2 mb-8" data-animation-options="{
                     'name': 'fadeIn',
                     'delay': '.2s'}">
                     <div class="container">
@@ -232,8 +232,8 @@
                             {% for p in products %}
                             <div class="product text-center">
                                 <figure class="product-media" style="background-color: #f7f8fa;">
-                                    <a href="{% url "core:product-detail" p.slug %}">
-                                        <img src="{{p.image.url}}" alt="{{p.name}}" style="border-radius: 1.25rem;" width="280" height="280">
+                                    <a href="{% url "core:product-detail" p.slug %}" >
+                                        <img src="{{p.image.url}}" alt="{{p.name}}"  style="border-radius: 1.25rem;" width="280" height="280">
                                     </a>
                                     <div class="product-action-vertical">
                                         <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i class="d-icon-bag"></i></a>
@@ -265,14 +265,44 @@
                             </div>
                             {% endfor %}
                             
-
+                           
                            
                         </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="product text-center" style="position: relative;">
+                                    <figure class="product-media" style="background-color: #f7f8fa;">
+                                        <a href="#">
+                                            <img src="{% static 'images/shop/2150908585.jpg' %}" alt="" style="border-radius: 1.25rem; height: auto; width: 100%;">
+                                        </a>
+                                        <div class="product-text" style="position: absolute; bottom: 20px; left: 20px; color: white; text-align: left;">
+                                            <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;" >Best Sellers</h3>
+                                            <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 7px 10px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
+                                        </div>
+                                    </figure>
+                                </div>
+                            </div>    
+
+                            
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="product text-center" style="position: relative;">
+                                    <figure class="product-media" style="background-color: #f7f8fa;">
+                                        <a href="#">
+                                            <img src="{% static 'images/shop/1914.jpg' %}" alt="" style="border-radius: 1.25rem; height: auto; width: 100%;">
+                                        </a>
+                                        <div class="product-text" style="position: absolute; bottom: 20px; left: 20px; color: white; text-align: left;">
+                                            <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;" >Trending</h3>
+                                            <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 7px 10px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
+                                        </div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
                     </div>
                 </section>
-                <section class="mt-10 pt-2 mb-8 appear-animate" data-animation-options="{
-                    'name': 'fadeIn',
-                    'delay': '.2s'}">
+                <section class="mt-10 pt-2 mb-8 ">
                     <div class="container">
                         <h2 class="title title-simple title-center">Daily Deals</h2>
                         <div class="row cols-lg-5 cols-md-6 cols-2">

@@ -41,9 +41,11 @@
 									<button class="thumb-up disabled"><i class="fas fa-chevron-left"></i></button>
 									<button class="thumb-down disabled"><i class="fas fa-chevron-right"></i></button>
 								</div>
+								{% if product.is_recent %}
 								<div class="product-label-group">
 									<label class="product-label label-new">new</label>
 								</div>
+								{% endif %}
 							</div>
 						</div>
 						<div class="col-md-6">
