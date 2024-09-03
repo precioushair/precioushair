@@ -194,6 +194,12 @@ class Cart(models.Model):
     def get_total(self):
         total = sum(item.product.price * item.quantity for item in self.items.all())
         return total
+    def get_quantity_of_product(self, product):
+        try:
+            cart_item = self.items.get(product=product)
+            return cart_item.quantity
+        except CartItem.DoesNotExist:
+            return 0  # Return 0 if the product is not in the cart
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')

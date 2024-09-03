@@ -1,6 +1,7 @@
 {% extends "partials/base.html" %}
 {% load static %}
 {% load humanize %}
+{% load custom_filters %}
 {% block content %}
 
         <main class="main cart">
@@ -47,15 +48,19 @@
                                         </td>
                                         <td class="product-quantity">
                                             <div class="input-group">
-                                                <button class="quantity-minus d-icon-minus"></button>
-                                                <input class="quantity form-control" type="number" min="1" value="{{ item.product.quantity }}"
-                                                    max="1000000">
-                                                    <span>{{ item.product.quantity }}</span>
-                                                <button class="quantity-plus d-icon-plus"></button>
+                                                <button class=" d-icon-minus" style="border-bottom-left-radius: 3.75rem;border-top-left-radius: 3.75rem;"></button>
+                                                <input 
+                                                    class=" form-control" 
+                                                    type="number" 
+                                                    min="1"
+                                                    value="{{ cart|get_quantity:item.product }}" 
+                                                    max="100">
+                                                <button class=" d-icon-plus" style="border-bottom-right-radius: 3.75rem;border-top-right-radius: 3.75rem;"></button>
                                             </div>
                                         </td>
+                                        
                                         <td class="product-price">
-                                            <span class="amount">₦{{item.product.price|floatformat:"0"|intcomma }}</span>
+                                            <span class="amount"> ₦{{ item.product.price| }}</span>
                                         </td>
                                         <td class="product-close">
                                             <a href="#" class="product-remove" title="Remove this product">
@@ -173,4 +178,6 @@
             </div>
         </main>
 
+        
+        
       {% endblock content %}

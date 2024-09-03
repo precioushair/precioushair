@@ -617,11 +617,11 @@
 
 <a class="mobile-menu-close" href="#"><i class="d-icon-times"></i></a>
 
-<div class="mobile-menu-container scrollable">
+<div class="mobile-menu-container scrollable" style="border-bottom-right-radius: 3.75rem;border-top-right-radius: 3.75rem;">
     <form action="#" class="input-wrapper">
-        <input type="text" class="form-control item_search" name="search" autocomplete="off" 
+        <input type="text" class="form-control item_search" style="border-radius: 3.75rem;" name="search" autocomplete="off" 
             placeholder="Search your keyword..." required />
-        <button class="btn btn-search" type="submit" title="submit-button">
+        <button class="btn btn-search" style="border-radius: 3.75rem;" type="submit" title="submit-button">
             <i class="d-icon-search"></i>
         </button>
         <ul class="search_results search-dropdown" style="margin-top: 50px; background: #000000; color: #fff;"></ul>
@@ -658,7 +658,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#" class="active">All Products</a>
+                <a href="{% url "core:products" %}" class="active">All Products</a>
                
             </li>
             <li>
@@ -694,7 +694,7 @@
             <li><a href="#" class="menu-title">Today Deals</a>
             </li>
             <li>
-                <a href="#">
+                <a href="{% url "core:products" %}">
                     <i class="d-icon-card"></i>All Products
                 </a>
             </li>

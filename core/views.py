@@ -11,7 +11,7 @@ from django.core.paginator import Paginator
 
 def home(request):
     products = Product.objects.all().order_by('-id')[:4]
-    new_products = Product.objects.all().order_by('-id')[:5]
+    new_products = Product.objects.all().order_by('-id')[:4]
 
     context = {
         "products": products,
@@ -153,9 +153,6 @@ def view_wishlist(request):
     return render(request, 'user/wishlist.html', {'wishlist_items': wishlist_items})
 
 
-def view_cart(request):
-    return render(request, "user/cart.html")
-
 def get_cart(request):
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
@@ -166,6 +163,10 @@ def get_cart(request):
             session_key = request.session.session_key
         cart, created = Cart.objects.get_or_create(session_key=session_key)
     return cart
+
+def view_cart(request):
+
+    return render(request, "user/cart.html")
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)

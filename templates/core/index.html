@@ -45,6 +45,11 @@
                                             <i class="d-icon-card"></i>Daily Deals
                                         </a>
                                     </li>
+                                    <li style="padding-top: 12px; padding-bottom: 12px;">
+                                        <a href="#">
+                                            <i class="d-icon-card"></i>Physical Store
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="grid-item col-xl-9 col-lg-9 col-md-8 height-x2">
@@ -61,10 +66,39 @@
                                     'animateIn': 'fadeInLeft',
                                     'animateOut': 'fadeOutRight'
                                 }">
+                                    
+                                    <div class="intro-slide2 banner banner-fixed banner-radius"
+                                        style="background-color: #e4e8ec;">
+                                        <figure>
+                                            <img src="{% static 'images/shop/1926.jpg' %}" width="580" height="508"
+                                                alt="banner" />
+                                        </figure>
+                                        <div class="banner-content y-50">
+                                            <div class="slide-animate" data-animation-options="{
+                                                'name': 'fadeInLeftShorter',
+                                                'delay': '.2s'
+                                            }">
+                                                <h4 class="banner-subtitle text-uppercase font-weight-normal ls-normal" style="color: #fff !important;">
+                                                    <span class="text-primary font-weight-bold" style="color: #fff !important;">02.&nbsp;</span>Precious Hairz STORE
+                                                </h4>
+                                                <h3 class="banner-title font-weight-bold ls-md mb-2 slide-animate"
+                                                    data-animation-options="{
+                                                    'name': 'fadeInLeftShorter',
+                                                    'delay': '.2s'
+                                                }" style="color: #fff !important;">Big Sale <br />for women</h3>
+                                                <p class="text-uppercase text-dark ml-1">
+                                                    Up To<strong
+                                                        class="text-primary ml-1 mr-1" >$24.00</strong><strong>Off</strong>
+                                                </p>
+                                                <a class="btn btn-white btn-sm btn-rounded btn-shadow" style="border-radius: 3.75rem;"
+                                                    href="{% url "core:products" %}">Shop now</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="intro-slide1 banner banner-fixed banner-radius"
                                         style="background-color: #f6f5f7;">
                                         <figure>
-                                            <img src="{% static 'images/shop/happy-black-woman-368.jpg' %}" width="580" height="508"
+                                            <img src="{% static 'images/shop/2863.jpg' %}" width="580" height="508"
                                                 alt="banner" />
                                         </figure>
                                         <div class="banner-content y-50">
@@ -87,7 +121,7 @@
                                     <div class="intro-slide2 banner banner-fixed banner-radius"
                                         style="background-color: #e4e8ec;">
                                         <figure>
-                                            <img src="{% static 'images/demos/demo5/slides/2.jpg' %}" width="580" height="508"
+                                            <img src="{% static 'images/shop/1515.jpg' %}" width="580" height="508"
                                                 alt="banner" />
                                         </figure>
                                         <div class="banner-content y-50">
@@ -95,17 +129,17 @@
                                                 'name': 'fadeInLeftShorter',
                                                 'delay': '.2s'
                                             }">
-                                                <h4 class="banner-subtitle text-uppercase font-weight-normal ls-normal">
-                                                    <span class="text-primary font-weight-bold">02.&nbsp;</span>Precious Hairz STORE
+                                                <h4 class="banner-subtitle text-uppercase font-weight-normal ls-normal" style="color: #fff !important;">
+                                                    <span class="text-primary font-weight-bold" style="color: #fff !important;">02.&nbsp;</span>Precious Hairz STORE
                                                 </h4>
                                                 <h3 class="banner-title font-weight-bold ls-md mb-2 slide-animate"
                                                     data-animation-options="{
                                                     'name': 'fadeInLeftShorter',
                                                     'delay': '.2s'
-                                                }">Big Sale <br />for women</h3>
+                                                }" style="color: #fff !important;">Big Sale <br />for women</h3>
                                                 <p class="text-uppercase text-dark ml-1">
                                                     Up To<strong
-                                                        class="text-primary ml-1 mr-1">$24.00</strong><strong>Off</strong>
+                                                        class="text-primary ml-1 mr-1" >$24.00</strong><strong>Off</strong>
                                                 </p>
                                                 <a class="btn btn-white btn-sm btn-rounded btn-shadow" style="border-radius: 3.75rem;"
                                                     href="{% url "core:products" %}">Shop now</a>
@@ -276,8 +310,8 @@
                                             <img src="{% static 'images/shop/2150908585.jpg' %}" alt="" style="border-radius: 1.25rem; height: auto; width: 100%;">
                                         </a>
                                         <div class="product-text" style="position: absolute; bottom: 20px; left: 20px; color: white; text-align: left;">
-                                            <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;" >Best Sellers</h3>
-                                            <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 7px 10px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
+                                            <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;  color: white;" >Best Sellers</h3>
+                                            <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 10px 17px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
                                         </div>
                                     </figure>
                                 </div>
@@ -291,8 +325,8 @@
                                             <img src="{% static 'images/shop/1914.jpg' %}" alt="" style="border-radius: 1.25rem; height: auto; width: 100%;">
                                         </a>
                                         <div class="product-text" style="position: absolute; bottom: 20px; left: 20px; color: white; text-align: left;">
-                                            <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;" >Trending</h3>
-                                            <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 7px 10px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
+                                            <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;  color: white;" >Trending</h3>
+                                            <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 10px 17px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
                                         </div>
                                     </figure>
                                 </div>
@@ -305,7 +339,7 @@
                 <section class="mt-10 pt-2 mb-8 ">
                     <div class="container">
                         <h2 class="title title-simple title-center">Daily Deals</h2>
-                        <div class="row cols-lg-5 cols-md-6 cols-2">
+                        <div class="row cols-lg-4 cols-md-4 cols-2">
                             {% for p in new_products %}
                             <div class="product text-center">
                                 <figure class="product-media" style="background-color: #f7f8fa;">
