@@ -216,9 +216,17 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     complete = models.BooleanField(default=False)
+    coupon = models.ForeignKey('Coupon', on_delete=models.SET_NULL, null=True, blank=True)  
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0) 
 
     def __str__(self):
         return f'Order {self.id} by {self.customer.username}'
+    def calculate_total(self):
+        total = sum(item.product.price * item.quantity for item in self.items.all())
+        if self.coupon:
+            discount = (self.coupon.discount / 100) * total  # Assuming the discount is a percentage
+            total -= discount
+        return total
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
@@ -238,3 +246,14 @@ class Review(models.Model):
     date = models.DateTimeField(auto_now=True)
     def __str__(self):
         return f'Review by {self.user.username} for {self.product.name}'
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=50, unique=True)
+    discount = models.DecimalField(max_digits=5, decimal_places=2)  # Percentage or fixed amount
+    valid_from = models.DateTimeField()
+    valid_until = models.DateTimeField()
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.code

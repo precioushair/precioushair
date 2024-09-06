@@ -60,7 +60,7 @@
                                         </td>
                                         
                                         <td class="product-price">
-                                            <span class="amount"> ₦{{ item.product.price| }}</span>
+                                            <span class="amount"> ₦{{ item.product.price|floatformat:"0"|intcomma }}</span>
                                         </td>
                                         <td class="product-close">
                                             <a href="#" class="product-remove" title="Remove this product">
