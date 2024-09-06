@@ -275,7 +275,7 @@
                     </div>
                     <div class="header-right">
                         <div class=" ml-5">
-                            <a href="{% url "core:products" %}">SHOP NOW</a>
+                            <a href="{% url "core:products" %}" hx-boost="true">SHOP NOW</a>
                           
                         </div>
 
@@ -443,7 +443,7 @@
                                 <div class="products scrollable" id="wishlist-container">
                                     {% include "htmx/wishlist_items.html" %}
                                 </div>
-                                <a href="{% url "core:view_wishlist" %}" class="btn btn-dark wishlist-btn mt-4"><span>Go To
+                                <a href="{% url "core:view_wishlist" %}" class="btn btn-dark wishlist-btn mt-4" style="border-radius: 3.75rem;"><span>Go To
                                         Wishlist</span></a>
 
                             </div>

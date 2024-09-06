@@ -81,7 +81,7 @@
               <div class="card table-card">
                 <div class="card-body">
                   <div class="text-end p-4 pb-sm-2">
-                    <a href="/admin/core/{{cl.opts.model_name|lower}}/add/" class="btn btn-primary">
+                    <a href="/admin/{{cl.opts.app_label|lower}}/{{cl.opts.model_name|lower}}/add/" class="btn btn-primary">
                       <i class="ti ti-plus f-18"></i> Add {{cl.opts.model_name|capfirst}}
                     </a>
                   </div>
@@ -116,11 +116,10 @@
                       
                           {% elif cl.opts.model_name == 'contact' %}
                             <th class="text-end">#</th>
-                            <th>Name</th>
+                            <th>Full Name</th>
                             <th>Email</th>
                             <th>Message</th>
                             <th>Date Received</th>
-                            <th>Status</th>
                             <th class="text-center">Actions</th>
                       
                           {% else %}
@@ -203,9 +202,11 @@
                 <td>{{ result.last_login }}</td>
             {% elif cl.opts.model_name == 'contact' %}
                 <!-- Custom HTML for Contact model -->
-                <td>{{ result.name }}</td>
-                <td>{{ result.email }}</td>
-                <td>{{ result.message }}</td>
+                <td class="text-end">{{ forloop.counter }}</td>
+                <td>{{ result.full_name|truncatechars:"10" }}</td>
+                <td>{{ result.email|truncatechars:"12" }}</td>
+                <td>{{ result.message|truncatechars:"15"  }}</td>
+                <td>{{ result.date|date:"d, M Y" }}</td>
             {% else %}
                 <!-- Default fallback layout for other models -->
                 <td>{{ result }}</td>
@@ -214,12 +215,12 @@
                 <ul class="list-inline me-auto mb-0">
                     
                     <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Edit">
-                        <a href="/admin/core/category/{{ result.id }}/change/" class="avtar avtar-xs btn-link-success btn-pc-default">
+                        <a href="/admin/{{cl.opts.app_label|lower}}/{{cl.opts.model_name|lower}}/{{ result.id }}/change/" class="avtar avtar-xs btn-link-success btn-pc-default">
                             <i class="ti ti-edit-circle f-18"></i>
                         </a>
                     </li>
                     <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Delete">
-                        <a href="/admin/core/category/{{ result.id }}/delete/" class="avtar avtar-xs btn-link-danger btn-pc-default">
+                        <a href="/admin/{{cl.opts.app_label|lower}}/{{cl.opts.model_name|lower}}/{{ result.id }}/delete/" class="avtar avtar-xs btn-link-danger btn-pc-default">
                             <i class="ti ti-trash f-18"></i>
                         </a>
                     </li>

@@ -80,11 +80,11 @@ class UserToken(models.Model):
 
 
 class Contact(models.Model):
-    first_name = models.CharField(max_length=50) 
-    last_name = models.CharField(max_length=50)
+    full_name = models.CharField(max_length=50) 
     contact = models.PositiveBigIntegerField(null=True)
     email = models.EmailField()
     message = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now=True)
     class Meta:
         verbose_name_plural = "Contact"
     def __str__(self):

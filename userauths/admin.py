@@ -7,7 +7,7 @@ admin.site.unregister(Group)
 class UserAdmin(admin.ModelAdmin):
     list_display = ['full_name','email',"phone_number"]
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ['first_name','email',"contact", "message"]
+    list_display = ['full_name','email',"contact", "message"]
 
 
 

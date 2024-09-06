@@ -1,17 +1,16 @@
 from django.shortcuts import render,redirect
 from userauths.forms import UserRegisterForm
 from django.contrib.auth import login, authenticate
-from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth import logout
 from core.models import Order
 from django.http import JsonResponse, HttpResponse
 from django.db import IntegrityError
 from .utils import send_confirmation_email, reset_password
-from .models import UserToken, User
+from .models import UserToken, User, Contact
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
-from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_exempt
 
 
 def register_view(request):
@@ -177,3 +176,18 @@ def redirect_sign_in(request):
             return redirect('core:home')
 
     return render(request, "userauths/sign-in.html")
+
+
+@csrf_exempt  # Use this if you're not sending the CSRF token with AJAX request
+def submit_contact_form(request):
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        contact = request.POST.get('contact')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        # Save to the database
+        Contact.objects.create(full_name=full_name, contact=contact, email=email, message=message)
+        
+        return JsonResponse({'status': 'success', 'message': 'Form submitted successfully!'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request.'})

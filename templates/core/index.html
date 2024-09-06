@@ -37,17 +37,30 @@
                                     </li>
                                     <li>
                                         <a href="{% url "core:products" %}">
-                                            <i class="d-icon-card"></i>All Products
+                                            <svg width="21" height="21" style="margin-right: 8px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_481_3249)">
+                                                <path d="M8.00001 15.9998L16 7.99977M7.94636 4.24948L6.25195 4.23679C5.1357 4.22843 4.22868 5.13546 4.23704 6.25171L4.24972 7.94612C4.25377 8.48692 4.03863 9.00631 3.65336 9.38585L2.44627 10.575C1.65105 11.3584 1.65105 12.6411 2.44627 13.4245L3.65336 14.6137C4.03863 14.9932 4.25377 15.5126 4.24972 16.0534L4.23704 17.7478C4.22868 18.8641 5.1357 19.7711 6.25195 19.7627L7.94636 19.7501C8.48716 19.746 9.00655 19.9611 9.38609 20.3464L10.5753 21.5535C11.3587 22.3487 12.6414 22.3487 13.4248 21.5535L14.6139 20.3464C14.9935 19.9611 15.5129 19.746 16.0537 19.7501L17.7481 19.7627C18.8643 19.7711 19.7713 18.8641 19.763 17.7478L19.7503 16.0534C19.7463 15.5126 19.9614 14.9932 20.3467 14.6137L21.5538 13.4245C22.349 12.6411 22.349 11.3584 21.5538 10.575L20.3467 9.38585C19.9614 9.00631 19.7463 8.48692 19.7503 7.94612L19.763 6.25171C19.7713 5.13546 18.8643 4.22843 17.7481 4.23679L16.0537 4.24948C15.5129 4.25352 14.9935 4.03839 14.6139 3.65312L13.4248 2.44602C12.6414 1.6508 11.3586 1.65081 10.5753 2.44602L9.38609 3.65312C9.00655 4.03839 8.48716 4.25352 7.94636 4.24948ZM10.1667 8.99993C10.1667 9.73631 9.56973 10.3333 8.83335 10.3333C8.09697 10.3333 7.50002 9.73631 7.50002 8.99993C7.50002 8.26355 8.09697 7.6666 8.83335 7.6666C9.56973 7.6666 10.1667 8.26355 10.1667 8.99993ZM16.5 14.9998C16.5 15.7361 15.9031 16.3331 15.1667 16.3331C14.4303 16.3331 13.8333 15.7361 13.8333 14.9998C13.8333 14.2634 14.4303 13.6664 15.1667 13.6664C15.9031 13.6664 16.5 14.2634 16.5 14.9998Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </g>
+                                                <defs>
+                                                <clipPath id="clip0_481_3249">
+                                                <rect width="24" height="24" fill="white"></rect>
+                                                </clipPath>
+                                                </defs>
+                                                </svg>All Products
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#">
-                                            <i class="d-icon-card"></i>Daily Deals
+                                            <svg width="18" height="18" style="margin-right: 8px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M3 10H21M16 2V6M8 2V6M5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg> Daily Deals
                                         </a>
                                     </li>
-                                    <li style="padding-top: 12px; padding-bottom: 12px;">
+                                    <li style="padding-top: 4px; padding-bottom: 4px;">
                                         <a href="#">
-                                            <i class="d-icon-card"></i>Physical Store
+                                            <svg width="20" height="20"  style="margin-right: 8px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4 13V22M19 2L5 2M22 13H2V12.6971C2 10.6089 2.59438 8.56386 3.71366 6.80099L3.92762 6.46399C4.11108 6.17505 4.42957 6 4.77184 6H19.2282C19.5704 6 19.8889 6.17505 20.0724 6.46399L20.2863 6.80099C21.4056 8.56386 22 10.6089 22 12.6971V13ZM10 13H20V22H10V13Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg> <span style="font-size: 1.4rem; font-weight: 600;">Physical Store</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -244,8 +257,8 @@
                             <div class="category category-default1 category-absolute banner-radius overlay-zoom">
                                 <a href="{% url "core:category-detail" category.slug %}">
                                     <figure class="category-media" style="background-color: #edd3c7;">
-                                        <img src="{{category.image.url}}"  alt="category" width="280"
-                                            height="280" />
+                                        <img src="{{category.image.url}}"  alt="category" width="200"
+                                            height="200" />
                                     </figure>
                                 </a>
                                 <div class="category-content" style="border-radius: 3.75rem;">
