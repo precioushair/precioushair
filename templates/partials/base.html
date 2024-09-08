@@ -275,7 +275,7 @@
                     </div>
                     <div class="header-right">
                         <div class=" ml-5">
-                            <a href="{% url "core:products" %}" hx-boost="true">SHOP NOW</a>
+                            <a href="{% url "core:products" %}">SHOP NOW</a>
                           
                         </div>
 
@@ -293,10 +293,10 @@
                         
 
                         <span class="divider"></span>
-                        <a href="{% url "core:contact" %}" hx-boost="true" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
+                        <a href="{% url "core:contact" %}" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
                         <a href="#" onclick="smartsupp('chat:open'); return false;" class="help d-lg-show"><i class="d-icon-info"></i> Need Help</a>
                         {% if request.user.is_authenticated %}
-                        <a href="{% url "userauths:account" %}" hx-boost="true" class="link-to-tab d-md-show"><i class="d-icon-user"  style="margin-right: 0.5rem;"></i>Account</a>
+                        <a href="{% url "userauths:account" %}" class="link-to-tab d-md-show"><i class="d-icon-user"  style="margin-right: 0.5rem;"></i>Account</a>
                         <span class="delimiter">/</span>
                         <a href="{% url "userauths:logout" %}" class=" link-to-tab d-md-show ml-0">Logout</a>
                         {% else %}
@@ -583,12 +583,12 @@
     <span>Wishlist</span>
 </a>
 {% if request.user.is_authenticated %}
-    <a href="{% url "userauths:account" %}" hx-boost="true" class="sticky-link">
+    <a href="{% url "userauths:account" %}"  class="sticky-link">
         <i class="d-icon-user"></i>
         <span>Account</span>
     </a>
 {% else %}
-    <a href="#signin" hx-boost="true" class="login-toggle sticky-link">
+    <a href="#signin"  class="login-toggle sticky-link">
         <i class="d-icon-user"></i>
         <span>Login</span>
     </a>
@@ -665,7 +665,7 @@
                 <a href="#">Pages</a>
                 <ul>
                     <li><a href="{% url "core:about" %}">About</a></li>
-                    <li><a href="{% url "core:contact" %}" hx-boost="true">Contact Us</a></li>
+                    <li><a href="{% url "core:contact" %}">Contact Us</a></li>
                     <li><a href="#">Login</a></li>
                     <li><a href="{% url "core:faq" %}">FAQs</a></li>
                     </li>

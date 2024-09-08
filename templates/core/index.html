@@ -393,76 +393,73 @@
                         </div>
                     </div>
                 </section>
-                {% if "Hair Accessories" in products|dictsort:"category" %}
-                <section class="mt-10 pt-8 mb-8 " data-animation-options="{
-                    'name': 'fadeIn',
-                    'delay': '.2s'
-                }">
-                    <div class="container">
-                        <h2 class="title title-simple title-center">Hair Accessories</h2>
-                        <div class="owl-carousel owl-theme row owl-nav-full cols-lg-4 cols-md-3 cols-2"
-                            data-owl-options="{
-                            'items': 4,
-                            'dots': true,
-                            'nav': false,
-                            'loop': false,
-                            'margin': 20,
-                            'responsive': {
-                                '0': {
-                                    'items': 2
-                                },
-                                '576': {
-                                    'items': 3
-                                },
-                                '768': {
-                                    'items': 4
-                                },
-                                '992': {
-                                    'items': 5
-                                },
-                                '1200': {
-                                    'items': 6,
-                                    'dots': false,
-                                    'nav': true
-                                }
-                            }
-                        }">
-                        {% for product in products %}
-                        {% if product.category|lower == 'hair accessories' %}
-                            <div class="product text-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="product text-center" style="position: relative;">
                                 <figure class="product-media" style="background-color: #f7f8fa;">
-                                    <a href="{{ product.get_absolute_url }}">
-                                        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="180" height="180">
+                                    <a href="#">
+                                        <img src="{% static 'images/shop/143239.jpg' %}" alt="" style="border-radius: 1.25rem; height: auto; width: 100%;">
                                     </a>
-                                    <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal"
-                                            data-target="#addCartModal" title="Add to cart"><i
-                                                class="d-icon-bag"></i></a>
-                                        <a href="#" class="btn-product-icon btn-wishlist" hx-post="" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i
-                                                class="d-icon-heart"></i></a>
+                                    <div class="product-text" style="position: absolute; bottom: 20px; left: 20px; color: white; text-align: left;">
+                                        <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;  color: white;" >This month's most wanted</h3>
+                                        <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 10px 17px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
                                     </div>
                                 </figure>
-                                <div class="product-details" style="text-align: left;">
-                                    <div class="product-cat">
-                                        <a href="{{ product.category_url }}">{{ product.category }}</a>
-                                    </div>
-                                    <h3 class="product-name">
-                                        <a href="{{ product.get_absolute_url }}" style="font-weight: 600;">{{ product.name }}</a>
-                                    </h3>
-                                    <div class="product-price">
-                                        <span class="price" style="font-weight: 600;">{{ product.price|floatformat:"0"|intcomma}}</span>
+                            </div>
+                        </div>    
+                                <!-- Mini-carousel section -->
+                        <div class="col-lg-6 col-md-6 col-12 d-flex align-items-center">
+                            <div class="owl-carousel owl-theme  cols-lg-4 cols-md-3 cols-sm-2 cols-1" data-owl-options="{
+                                'nav': true,
+                                'loop': true,
+                                'dots': false,
+                                'autoplay': false,
+                                'margin': 20,
+                                'responsive': {
+                                    '0': {
+                                        'items': 1
+                                    },
+                                    '576': {
+                                        'items': 2
+                                    },
+                                    '768': {
+                                        'items': 2
+                                    },
+                                    '992': {
+                                        'items': 2,
+                                        'dots': false
+                                    }
+                                }
+                            }">
+                            {% for p in products %}
+                                <div class="">
+                                    
+                                    <a href="#">
+                                        <img src="{{p.image.url}}" alt="{{p.name}}" style=" border-radius: 10px;">
+                                    </a>
+                                    <div class="product-details" style="text-align: left;">
+                                        
+                                        <h3 class="product-name">
+                                            <a href="{{p.url}}" style="font-weight: 550;">{{p.name}}</a>
+                                        </h3>
+                                        <div class="product-name">
+                                            <span class="price" style="font-weight: 550;">&#8358;{{p.price|floatformat:"0"|intcomma}}</span>
+                                        </div>
                                     </div>
                                     
                                 </div>
+                            {% endfor %}
+                                <!-- Add more items as needed -->
                             </div>
-                        {% endif %}
-                        {% endfor %}
-
                         </div>
+                        
+                   
                     </div>
-                </section>
+                </div>
+                
 
-                {% endif %}
+          
  
             </div>
         </main>
