@@ -394,22 +394,23 @@
                     </div>
                 </section>
                 <div class="container">
-                    <div class="row">
+                    <div class="row align-items-stretch mb-5">
                         <div class="col-lg-6 col-md-6 col-12">
-                            <div class="product text-center" style="position: relative;">
-                                <figure class="product-media" style="background-color: #f7f8fa;">
+                            <div class="product text-center" style="position: relative; height: 100%;">
+                                <figure class="product-media" style="background-color: #f7f8fa; height: 100%;">
                                     <a href="#">
-                                        <img src="{% static 'images/shop/143239.jpg' %}" alt="" style="border-radius: 1.25rem; height: auto; width: 100%;">
+                                        <img src="{% static 'images/shop/143239.jpg' %}" alt="" style="border-radius: 1.25rem; height: 100%; width: 100%; object-fit: cover;">
                                     </a>
                                     <div class="product-text" style="position: absolute; bottom: 20px; left: 20px; color: white; text-align: left;">
-                                        <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;  color: white;" >This month's most wanted</h3>
+                                        <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;  color: white;">This month's most wanted</h3>
                                         <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 10px 17px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
                                     </div>
                                 </figure>
                             </div>
-                        </div>    
-                                <!-- Mini-carousel section -->
-                        <div class="col-lg-6 col-md-6 col-12 d-flex align-items-center">
+                        </div>
+                    
+                        <!-- Mini-carousel section -->
+                        <div class="col-lg-6 col-md-6 col-12 d-flex align-items-center" style="background: #FAF8F5; border-radius: 1.25rem;">
                             <div class="owl-carousel owl-theme  cols-lg-4 cols-md-3 cols-sm-2 cols-1" data-owl-options="{
                                 'nav': true,
                                 'loop': true,
@@ -433,13 +434,11 @@
                                 }
                             }">
                             {% for p in products %}
-                                <div class="">
-                                    
+                                <div>
                                     <a href="#">
-                                        <img src="{{p.image.url}}" alt="{{p.name}}" style=" border-radius: 10px;">
+                                        <img src="{{p.image.url}}" alt="{{p.name}}" style="border-radius: 1.25rem;">
                                     </a>
-                                    <div class="product-details" style="text-align: left;">
-                                        
+                                    <div class="product-details" style="text-align: left; background: #FAF8F5;">
                                         <h3 class="product-name">
                                             <a href="{{p.url}}" style="font-weight: 550;">{{p.name}}</a>
                                         </h3>
@@ -447,15 +446,12 @@
                                             <span class="price" style="font-weight: 550;">&#8358;{{p.price|floatformat:"0"|intcomma}}</span>
                                         </div>
                                     </div>
-                                    
                                 </div>
                             {% endfor %}
-                                <!-- Add more items as needed -->
                             </div>
                         </div>
-                        
-                   
                     </div>
+                    
                 </div>
                 
 
