@@ -189,7 +189,6 @@ def remove_from_cart(request, cart_item_id):
 def search(request):
     return render(request, "core/search.html")
 
-
 def search_queries(request):
     query = request.GET.get('query', '')
     
@@ -197,7 +196,20 @@ def search_queries(request):
     if len(query) < 3:
         return JsonResponse({'results': []})
     
-    # Perform a case-insensitive search using icontains
-    top_products = Product.objects.filter(name__icontains=query).values('id', 'name', 'slug')[:10]
-
-    return JsonResponse({'results': list(top_products)})
+    # Fetch the products and manually extract the image URL
+    top_products = Product.objects.filter(name__icontains=query)[:10]
+    
+    # Check if any products were found
+    if not top_products:
+        return JsonResponse({'results': [], 'message': 'No results'})
+    
+    results = []
+    for product in top_products:
+        results.append({
+            'id': product.id,
+            'name': product.name,
+            'slug': product.slug,
+            'image': product.image.url  # Extract the URL from the Cloudinary image field
+        })
+    
+    return JsonResponse({'results': results})

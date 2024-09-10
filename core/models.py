@@ -79,6 +79,8 @@ class Product(models.Model):
     image = CloudinaryField(folder="products")
     slug = models.SlugField(unique=True)
     sku = models.CharField(max_length=100, unique=True, blank=True, null=True)
+    is_best_seller = models.BooleanField(default=False)
+    is_trending = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now=True)
     def blog_image(self):
         return mark_safe('<img src="%s" width="50" height="50" style="border-radius: 5px;" />' % (self.image.url))
@@ -103,8 +105,7 @@ class Product(models.Model):
             output = BytesIO()
             img.save(output, format='WEBP', quality=100)
             output.seek(0)
-            base_sku = slugify(self.name)[:10]  # Limiting to 10 characters for brevity
-            unique_sku = f"{base_sku}-{uuid.uuid4().hex[:8]}"  # Adding 8 characters from a UUID
+            unique_sku = f"{uuid.uuid4().hex[:8]}"  # Adding 8 characters from a UUID
             self.sku = unique_sku
             # Update the image field with the resized image
             self.image = InMemoryUploadedFile(output, 'ImageField', 
@@ -143,7 +144,7 @@ class ProductImages(models.Model):
 
             # Save the resized image to a BytesIO object
             output = BytesIO()
-            img.save(output, format='WEBP', quality=98)
+            img.save(output, format='WEBP', quality=100)
             output.seek(0)
 
             # Update the image field with the resized image

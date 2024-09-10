@@ -115,7 +115,7 @@
         .scale-down:hover {
             transform: scale(0.96);
         }
-        
+
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -149,7 +149,6 @@
             // Search functionality
             const itemSearch = document.getElementById('item_search');
             const searchResults = document.getElementById('search_results');
-    
             itemSearch.addEventListener('input', function () {
                 let query = itemSearch.value;
                 if (query.length > 3) {
@@ -158,14 +157,40 @@
                         .then(data => {
                             searchResults.innerHTML = '';
                             searchResults.style.display = 'block';
-                            data.results.forEach(product => {
-                                const li = document.createElement('li');
-                                const a = document.createElement('a');
-                                a.href = `/products/${product.slug}`;
-                                a.textContent = `${product.name}`;
-                                li.appendChild(a);
-                                searchResults.appendChild(li);
-                            });
+            
+                            // Check if there are any results
+                            if (data.results.length === 0) {
+                                const noResult = document.createElement('li');
+                                noResult.textContent = 'No results';
+                                searchResults.appendChild(noResult);
+                            } else {
+                                data.results.forEach(product => {
+                                    const li = document.createElement('li');
+                                    li.style.display = 'flex';  // Flexbox to align image and text
+            
+                                    // Create image element
+                                    const img = document.createElement('img');
+                                    img.src = product.image;  // Image URL
+                                    img.alt = product.name;
+                                    img.style.width = '50px';  // Set image size
+                                    img.style.height = '50px';
+                                    img.style.borderRadius = '1.25rem';
+                                    img.style.marginRight = '10px';  // Space between image and text
+            
+                                    // Create anchor element
+                                    const a = document.createElement('a');
+                                    a.href = `/products/${product.slug}`;
+                                    a.textContent = product.name;
+                                    a.style.marginTop = '2px'; 
+            
+                                    // Append image and anchor to list item
+                                    li.appendChild(img);
+                                    li.appendChild(a);
+            
+                                    // Append list item to search results
+                                    searchResults.appendChild(li);
+                                });
+                            }
                         })
                         .catch(error => {
                             console.error('Error fetching search results:', error);
@@ -174,6 +199,9 @@
                     searchResults.style.display = 'none';
                 }
             });
+            
+            
+            
     
             // Keep the search results visible when the input is focused
             itemSearch.addEventListener('focus', function () {
