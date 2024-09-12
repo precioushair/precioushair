@@ -72,7 +72,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, db_index=True)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField()
@@ -114,7 +114,7 @@ class Product(models.Model):
                                               output.getbuffer().nbytes, 
                                               None)
 
-        # Call the original save method to save the model instance
+
         super(Product, self).save(*args, **kwargs)
     def delete(self, *args, **kwargs):
         # Delete the image from Cloudinary before deleting the Blog object
@@ -212,6 +212,7 @@ class CartItem(models.Model):
     
 
 
+
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -219,7 +220,7 @@ class Order(models.Model):
     complete = models.BooleanField(default=False)
     coupon = models.ForeignKey('Coupon', on_delete=models.SET_NULL, null=True, blank=True)  
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0) 
-
+    
     def __str__(self):
         return f'Order {self.id} by {self.customer.username}'
     def calculate_total(self):
@@ -236,6 +237,19 @@ class OrderItem(models.Model):
   
     def __str__(self):
         return f'{self.quantity} x {self.product.name}'
+
+class ShippingAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="shipping_addresses")
+    address_line_1 = models.CharField(max_length=255)
+    address_line_2 = models.CharField(max_length=255, null=True, blank=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"Shipping Address for {self.user.username} - {self.address_line_1}"
 
 
 class Review(models.Model):

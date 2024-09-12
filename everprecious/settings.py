@@ -28,7 +28,6 @@ SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
 ALLOWED_HOSTS = ["*"]
 
 
@@ -189,7 +188,7 @@ CLOUD_NAME_SECRET = "dypvrytwu"
 API_KEY = "796229729547852"
 API_SECRET = "FaYFLYVkL-i-bNhuAwAEerbbszY" 
 
-LOGIN_REDIRECT_URL = '/user/sign-in/'
+LOGIN_REDIRECT_URL = '/user/login/'
 
 PAYSTACK_PUBLIC_KEY = 'pk_test_bd8640ff61e4fe7bd0ae7c33c919e4b24e5cbac8'
 PAYSTACK_SECRET_KEY = 'sk_test_d9251769b45df69289419c350ffc41e72e07e91f'

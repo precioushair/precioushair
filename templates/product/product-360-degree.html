@@ -10,15 +10,15 @@
 								data-sticky-options="{'minWidth': 767}">
 								<div
 									class="product-single-carousel owl-carousel owl-theme owl-nav-inner row cols-1 gutter-no">
-									<figure class="product-image" style="border-radius: 1.25rem;">
-										<img src="{{product.image.url}}" style="border-radius: 1.25rem;"
+									<figure class="product-image" style="border-radius: 1.3rem;">
+										<img src="{{product.image.url}}" style="border-radius: 1.3rem;"
 											data-zoom-image="#"
 											alt="Converse Training Shoes" width="800" height="900">
 									</figure>
 									{% for p in p_image %}
-									<figure class="product-image" style="border-radius: 1.25rem;">
+									<figure class="product-image" style="border-radius: 1.3rem;">
 										<img src="{{p.image.url}}"
-											data-zoom-image="#" style="border-radius: 1.25rem;"
+											data-zoom-image="#" style="border-radius: 1.3rem;"
 											alt="{{p.name}}" width="800" height="900">
 									</figure>
 									{% endfor %}
@@ -32,7 +32,7 @@
 										</div>
 										{% for p in p_image %}
 										<div class="product-thumb">
-											<img src="{{p.image.url}}" alt="{{p.name}} thumbnail" style="border-radius: 1.25rem;"
+											<img src="{{p.image.url}}" alt="{{p.name}} thumbnail" style="border-radius: 1.3rem;"
 												width="150" height="169">
 										</div>
 										{% endfor %}
@@ -43,7 +43,7 @@
 								</div>
 								{% if product.is_recent %}
 								<div class="product-label-group">
-									<label class="product-label label-new">new</label>
+									<label class="product-label label-new" style="border-radius: 3.75rem;">new</label>
 								</div>
 								{% endif %}
 							</div>
@@ -164,7 +164,7 @@
 									</a>
 									{% if r.recent %}
 									<div class="product-label-group">
-										<label class="product-label label-new">new</label>
+										<label class="product-label label-new" style="border-radius: 3.75rem;">new</label>
 									</div>
 									{% endif %}
 									<div class="product-action-vertical">

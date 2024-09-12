@@ -77,11 +77,13 @@
 
 @media (max-width:1300px) {
     .owl-theme .owl-nav .owl-prev {
-        left: 20px
+        left: 0px;
+        top: 80px;
     }
 
     .owl-theme .owl-nav .owl-next {
-        right: 20px
+        right: 0px;
+        top: 80px;
     }
 }
 
@@ -5234,7 +5236,7 @@ blockquote {
 }
 
 .banner-radius {
-    border-radius: 1.25rem;
+    border-radius: 1.5rem;
     overflow: hidden
 }
 
@@ -14832,8 +14834,8 @@ aside+div .product-single .product-details {
 }
 
 .header-middle {
-    padding-top: 2.7rem;
-    padding-bottom: 2.7rem;
+    padding-top: 1rem;
+    padding-bottom: 1.7rem;
     color: #222;
     background: #fff;
     font-size: 1.2rem;
@@ -15320,7 +15322,10 @@ aside+div .product-single .product-details {
     }
 
     .header-middle .logo {
-        margin-right: 2rem
+        margin-right: 2rem;
+        width: 40px;
+        height: 30px;
+        
     }
 }
 
@@ -17573,7 +17578,7 @@ aside+div .product-single .product-details {
 }
 
 .about-us .store-section .banner-radius {
-    border-radius: 1.25rem
+    border-radius: 1.5rem
 }
 
 .about-us .customer-section,

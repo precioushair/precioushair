@@ -1,0 +1,116 @@
+{% load static humanize %}
+{% load custom_filters %}
+<script>
+    function updateSubtotal(productId) {
+        const priceElement = document.getElementById(`price-${productId}`);
+        const quantityInput = document.getElementById(`quantity-${productId}`);
+        const subtotalElement = document.getElementById(`subtotal-${productId}`);
+
+        const priceText = priceElement.textContent.replace(/₦|,/g, ''); // Remove naira sign and commas
+        const price = parseFloat(priceText); // Convert to float
+
+        const quantity = parseInt(quantityInput.value);
+        const subtotal = price * quantity;
+
+        if (isNaN(subtotal)) {
+            subtotalElement.textContent = '₦0'; // Default value if subtotal is NaN
+        } else {
+            subtotalElement.textContent = `₦${subtotal.toLocaleString()}`; // Format as currency
+        }
+    }
+
+    function changeQuantity(productId, delta) {
+        const input = document.getElementById(`quantity-${productId}`);
+        let currentQuantity = parseInt(input.value);
+        currentQuantity = Math.max(1, currentQuantity + delta); // Prevent quantity from being less than 1
+
+        input.value = currentQuantity;
+
+        updateSubtotal(productId);
+    }
+
+    // Initial update for all items in the cart
+    document.querySelectorAll('.product-subtotal').forEach(element => {
+        const productId = element.id.split('-')[1];
+        updateSubtotal(productId);
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const shippingRadio = document.getElementById('free-shipping');
+        const localPickup = document.getElementById('local_pickup');
+        const shippingAddress = document.getElementById('shipping-address');
+    
+        shippingRadio.addEventListener('change', function() {
+            if (this.checked) {
+                shippingAddress.style.display = 'block'; // Show the shipping address form when "Shipping" is checked
+            } else if (localPickup.checked) {
+                shippingAddress.style.display = 'none'; // Hide the form if "Local Pickup" is checked
+            } else {
+                shippingAddress.style.display = 'none'; // Hide the form if no valid option is checked
+            }
+        });
+    
+        localPickup.addEventListener('change', function() {
+            if (this.checked) {
+                shippingAddress.style.display = 'none'; // Hide the form when "Local Pickup" is checked
+            }
+        });
+    
+        
+        document.querySelector('#updateBtn').addEventListener('click', function() {
+            const items = [];
+            document.querySelectorAll('.product-quantity input').forEach(input => {
+                const productId = input.id.split('-')[1];
+                const quantity = input.value;
+                items.push(`${productId}|${quantity}`);
+            });
+            
+            // Send the data via HTMX
+            htmx.ajax('POST', '{% url "core:update_cart" %}', {
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                params: { 'items[]': items }
+            });
+        });
+    });
+</script>
+{% for item in cart.items.all %}
+<tr>
+    <td class="product-thumbnail">
+        <figure>
+            <a href="{% url "core:product-detail" item.product.slug %}">
+                <img src="{{item.product.image.url}}" style="border-radius: 1.25rem;" class="cart-product-img" alt="{{product.name}}">
+            </a>
+        </figure>
+    </td>
+    <td class="product-name">
+        <div class="product-name-section">
+            <a href="{% url "core:product-detail" item.product.slug %}">{{item.product.name}}</a>
+        </div>
+    </td>
+    <td class="product-price">
+        <span class="amount" id="price-{{ item.product.id }}">₦{{item.product.price|floatformat:"0"|intcomma }}</span>
+    </td>
+    <td class="product-quantity">
+        <div class="input-group">
+            <button class="d-icon-minus" style="border-bottom-left-radius: 3.75rem;border-top-left-radius: 3.75rem;" onclick="changeQuantity({{ item.product.id }}, -1)">-</button>
+            <input 
+                class="form-control" 
+                id="quantity-{{ item.product.id }}" 
+                type="number" 
+                min="1"
+                value="{{ cart|get_quantity:item.product }}" 
+                max="100">
+            <button class="d-icon-plus" style="border-bottom-right-radius: 3.75rem;border-top-right-radius: 3.75rem;" onclick="changeQuantity({{ item.product.id }}, 1)">+</button>
+        </div>
+    </td>
+    <td class="product-subtotal">
+        <span class="amount" id="subtotal-{{ item.product.id }}">₦{% widthratio item.product.price 1 cart|get_quantity:item.product %}</span>
+    </td>
+    <td class="product-close">
+        <a href="#" class="product-remove" title="Remove this product">
+            <i class="fas fa-times"></i>
+        </a>
+    </td>
+</tr>
+{% endfor %}

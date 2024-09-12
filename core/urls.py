@@ -22,9 +22,15 @@ urlpatterns = [
     path('wishlist/', views.view_wishlist, name='view_wishlist'),
     path('wishlist/add/<int:product_id>/', views.add_to_wishlist, name='add_to_wishlist'),
     path('wishlist/remove/<int:product_id>/', views.remove_from_wishlist, name='remove_from_wishlist'),
+
+    path('apply-coupon/', views.apply_coupon, name='apply_coupon'),
+    path('checkout/', views.checkout_view, name='checkout'),
+    path('order/', views.order_view, name='order'),
+
     
     path('cart/', views.view_cart, name='view_cart'),
     path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path('update_cart/', views.update_cart, name='update_cart'),
     path('remove_from_cart/<int:cart_item_id>/', views.remove_from_cart, name='remove_from_cart'),
 
 

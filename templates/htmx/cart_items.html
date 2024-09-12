@@ -5,8 +5,15 @@
         <span class="cart-name">Shopping Cart:</span>
         <span class="cart-price">&#8358;{{cart_total|floatformat:"0"|intcomma }}</span>
     </div>
-    <i class="d-icon-bag"><span class="cart-count">{{cart.items.count}}</span></i>
+    <i class="d-icon-bag small-cart" ><span class="cart-count">{{cart.items.count}}</span></i>
 </a>
+<style>
+    @media only screen and (max-width: 720px) {
+       .d-icon-phone, .small-cart {
+          font-size: 24px !important;
+        }
+      }
+</style>
 <div class="canvas-overlay"></div>
 
     <div class="dropdown-box" >
@@ -21,7 +28,7 @@
         <div id="cart-item-{{ cart_item.id }}" class="product product-cart">
             <figure class="product-media">
                 <a href="{% url 'core:product-detail' cart_item.product.slug %}">
-                    <img src="{{ cart_item.product.image.url }}" style="border-radius: 1.25rem;" alt="{{ cart_item.product.name }}" width="80" height="88" />
+                    <img src="{{ cart_item.product.image.url }}" style="border-radius: 1.3rem;" alt="{{ cart_item.product.name }}" width="80" height="88" />
                 </a>
                 <button class="btn btn-link btn-close"  hx-on="htmx:afterRequest: document.getElementById('cart-item-{{ cart_item.id }}').remove()" hx-delete="{% url 'core:remove_from_cart' cart_item.id %}" hx-target="#cart-items" hx-swap="innerHTML">
                     <i class="fas fa-times"></i><span class="sr-only">Close</span>
@@ -56,7 +63,7 @@
 
     <div class="cart-action">
         <a href="{% url "core:view_cart" %}" class="btn btn-dark btn-link">View Cart</a>
-        <a href="#" class="btn btn-dark" style="border-radius: 3.75rem;"><span>Go To Checkout</span></a>
+        <a href="{% url "core:checkout" %}" class="btn btn-dark" style="border-radius: 3.75rem;"><span>Go To Checkout</span></a>
     </div>
 
 </div>

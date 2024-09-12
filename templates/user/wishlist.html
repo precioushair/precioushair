@@ -33,7 +33,7 @@
                                     <td class="product-thumbnail">
                                         <a href="{% url "core:product-detail" item.product.slug %}">
                                             <figure>
-                                                <img src="{{item.product.image.url}}" width="100" height="100"
+                                                <img src="{{item.product.image.url}}" width="100" height="100" style="border-radius: 1.25rem;"
                                                     alt="product">
                                             </figure>
                                         </a>
@@ -42,18 +42,19 @@
                                         <a href="{% url "core:product-detail" item.product.slug %}">{{item.product.name|capfirst}}</a>
                                     </td>
                                     <td class="product-price">
-                                        <span class="amount">${{item.product.price}}</span>
+                                        <span class="amount">₦{{item.product.price}}</span>
                                     </td>
                                     <td class="product-stock-status">
-                                        <span class="wishlist-in-stock">In Stock</span>
+                                        <span class="wishlist-in-stock">{% if p.finished %}Out Of Stock {% else %}<span >In Stock</span>{% endif %} </span>
                                     </td>
                                     <td class="product-add-to-cart">
-                                        <a href="#"   class="btn-product btn-primary"><span>Add to cart</span></a>
+                                        <a href="#" style="border-radius: 3.75rem;"   class="btn-product btn-primary"><span>Add to cart</span></a>
                                     </td>
                                     <td class="product-remove">
                                         <div>
-                                            <a href="#"  class="remove" title="Remove this product"><i
-                                                    class="fas fa-times"></i></a>
+                                            <a href="#" class="remove" data-product-item="{{ item.product.id }}" data-url="{% url 'core:remove_from_wishlist' item.product.id %}" title="Remove this product">
+                                                <i class="fas fa-times"></i>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
@@ -63,15 +64,44 @@
                             {% endif %}
                         </tbody>
                     </table>
-                    <div class="social-links share-on">
-                        <h5 class="text-uppercase font-weight-bold mb-0 mr-4 ls-s">Share on:</h5>
-                        <a href="#" class="social-link social-icon social-facebook" title="Facebook"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link social-icon social-instagram" title="Instagram"><i
-                                class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link social-icon social-whatsapp" title="Whatsapp"><i
-                                class="fab fa-whatsapp"></i></a>
-                    </div>
+               <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        $('.btn-delete-wishlist').click(function() {
+                            let productId = $(this).attr('data-product-item');
+                            let this_val = $(this);
+                    
+                            $.ajax({
+                                url: $(this).attr('data-url'),
+                                type: 'POST',
+                                headers: {
+                                    'X-CSRFToken': '{{ csrf_token }}',  // Ensure you include the CSRF token
+                                    'Content-Type': 'application/json',
+                                },
+                                data: JSON.stringify({ id: productId }),
+                                dataType: 'json',
+                                beforeSend: function() {
+                                    // Show a spinner while processing the request
+                                    this_val.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+                                },
+                                success: function(data) {
+                                    if (data.success) {
+                                        // Remove the item row from the DOM
+                                        $(`#wishlist-item-${productId}`).remove();
+                                    } else {
+                                        // Handle failure
+                                        this_val.html('<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8L12 12M12 12L8 16M12 12L8 8M12 12L16 16" stroke="rgba(0,0,0,0.95)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="12" r="10" stroke="rgba(0,0,0,0.95)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle></svg>');
+                                    }
+                                },
+                                error: function(xhr, textStatus, errorThrown) {
+                                    console.error('Error:', errorThrown);
+                                    // Handle the error gracefully by restoring the button
+                                    this_val.html('<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8L12 12M12 12L8 16M12 12L8 8M12 12L16 16" stroke="rgba(0,0,0,0.95)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="12" r="10" stroke="rgba(0,0,0,0.95)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle></svg>');
+                                }
+                            });
+                        });
+                    });
+                    
+                </script>
                 </div>
             </div>
         </main>

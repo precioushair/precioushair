@@ -149,9 +149,17 @@
             // Search functionality
             const itemSearch = document.getElementById('item_search');
             const searchResults = document.getElementById('search_results');
-            itemSearch.addEventListener('input', function () {
+            function debounce(func, wait) {
+                let timeout;
+                return function(...args) {
+                    const context = this;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(context, args), wait);
+                };
+            }
+            itemSearch.addEventListener('input', debounce(function () {
                 let query = itemSearch.value;
-                if (query.length > 3) {
+                if (query.length > 5) {
                     fetch(`/search_query/?query=${query}`)
                         .then(response => response.json())
                         .then(data => {
@@ -174,14 +182,14 @@
                                     img.alt = product.name;
                                     img.style.width = '50px';  // Set image size
                                     img.style.height = '50px';
-                                    img.style.borderRadius = '1.25rem';
+                                    img.style.borderRadius = '0.7rem';
                                     img.style.marginRight = '10px';  // Space between image and text
             
                                     // Create anchor element
                                     const a = document.createElement('a');
                                     a.href = `/products/${product.slug}`;
                                     a.textContent = product.name;
-                                    a.style.marginTop = '2px'; 
+                                    a.style.marginTop = '13px'; 
             
                                     // Append image and anchor to list item
                                     li.appendChild(img);
@@ -198,7 +206,7 @@
                 } else {
                     searchResults.style.display = 'none';
                 }
-            });
+            }, 300));
             
             
             
@@ -370,7 +378,7 @@
                                                             </div>
                                                             <a href="#" class="lost-link">Lost your password?</a>
                                                         </div>
-                                                        <button class="btn btn-dark btn-block btn-rounded" type="submit"  hx-indicator="#spinner">Login
+                                                        <button class="btn btn-dark btn-block btn-rounded" type="submit"  hx-indicator="#spinner" style="border-radius: 3.75rem">Login
                                                             <img  id="spinner" class="htmx-indicator" src="https://htmx.org/img/bars.svg"/>
                                                         </button>
                                                     </form>
@@ -397,7 +405,7 @@
                                                                 <label class="form-control-label" for="register-agree">I agree to the privacy policy</label>
                                                             </div>
                                                         </div>
-                                                        <button class="btn btn-dark btn-block btn-rounded" type="submit"  hx-indicator="#spinner">Register
+                                                        <button class="btn btn-dark btn-block btn-rounded" type="submit"  hx-indicator="#spinner" style="border-radius: 3.75rem">Register
                                                             <img  id="spinner" class="htmx-indicator" src="https://htmx.org/img/bars.svg"/>
                                                         </button>
                                                         
@@ -755,13 +763,8 @@
     </script>
     <noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'vendor/parallax/parallax.min.js' %}"></script>
-<script src="{% static 'vendor/elevatezoom/jquery.elevatezoom.min.js' %}"></script>
-{% comment %} <script src="{% static 'vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script> {% endcomment %}
 <script src="{% static 'vendor/owl-carousel/owl.carousel.min.js' %}"></script>
 <script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
-<script src="{% static 'vendor/isotope/isotope.pkgd.min.js' %}"></script>
-
 <script src="{% static 'js/main.min.js' %}"></script>
 <script src="{% static 'js/htmx.min.js' %}"></script>
 <script src="{% static 'assets/js/swiper8-bundle.min.js' %}"></script>

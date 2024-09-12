@@ -1925,7 +1925,7 @@ window.Riode = {};
                         price: $product.find('.product-variation-price').length > 0 ? $product.find('.product-variation-price').children('span').html() : $product.find('.product-price .price').html(),
 
                         count: $product.find('.quantity').val(),
-                        actionTemplate: '<div class="action-group d-flex mt-3"><a href="/cart" class="btn btn-sm btn-outline btn-primary btn-rounded mr-2">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                        actionTemplate: '<div class="action-group d-flex mt-3"><a href="/cart" class="btn btn-sm btn-outline btn-primary btn-rounded mr-2">View Cart</a><a href="/checkout" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                     });
                 }
             });
@@ -1953,7 +1953,7 @@ window.Riode = {};
                         imageLink: $product.find('.product-name > a').attr('href'),
                         price: $product.find('.product-variation-price').length > 0 ? $product.find('.product-variation-price').children('span').html() : $product.find('.product-price .price').html(),
                         count: $product.find('.quantity').val(),
-                        actionTemplate: '<div class="action-group d-flex mt-3"><a href="compare.html" class="btn btn-sm btn-outline btn-primary btn-rounded mr-2">Compare</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                        actionTemplate: '<div class="action-group d-flex mt-3"><a href="compare.html" class="btn btn-sm btn-outline btn-primary btn-rounded mr-2">Compare</a><a href="/checkout" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                     });
                 }
             });
@@ -2121,7 +2121,7 @@ window.Riode = {};
                     imageLink: $product.find('.product-name > a').attr('href'),
                     price: $product.find('.product-variation-price').length > 0 ? $product.find('.product-variation-price').children('span').html() : $product.find('.product-price').html(),
                     count: $product.find('.quantity').val(),
-                    actionTemplate: '<div class="action-group d-flex mt-3"><a href="compare.html" class="btn btn-sm btn-outline btn-primary btn-rounded mr-2">Compare</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                    actionTemplate: '<div class="action-group d-flex mt-3"><a href="compare.html" class="btn btn-sm btn-outline btn-primary btn-rounded mr-2">Compare</a><a href="/checkout" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                 });
             }
         }
@@ -2997,138 +2997,6 @@ window.Riode = {};
         },
     };
 
-    /**
-     * @class MiniPopup
-     */
-    Riode.Minipopup = (function () {
-        var $area,
-            offset = 0,
-            boxes = [],
-            isPaused = false,
-            timers = [],
-            timerId = false,
-            timerInterval = 200,
-            timerClock = function () {
-                if (isPaused) {
-                    return;
-                }
-                for (var i = 0; i < timers.length; ++i) {
-                    (timers[i] -= timerInterval) <= 0 && this.close(i--);
-                }
-            }
-
-        return {
-            init: function () {
-                // init area
-                var area = document.createElement('div');
-                area.className = "minipopup-area";
-                Riode.byClass('page-wrapper')[0].appendChild(area);
-
-                $area = $(area);
-                $area.on('click', '.btn-close', function (e) {
-                    self.close($(this).closest('.minipopup-box').index());
-                });
-
-                // bind methods
-                this.close = this.close.bind(this);
-                timerClock = timerClock.bind(this);
-            },
-
-            open: function (options, callback) {
-                var self = this,
-                    settings = $.extend(true, {}, Riode.defaults.minipopup, options),
-                    $box;
-                if (!settings.isPurchased) {
-                    settings.detailTemplate = Riode.parseTemplate(
-                        (null != settings.count ? settings.priceQuantityTemplate : settings.priceTemplate),
-                        settings
-                    )
-                } else {
-                    settings.detailTemplate = Riode.parseTemplate(
-                        settings.purchasedTemplate,
-                        settings
-                    )
-                }
-                if (null != settings.rating) {
-                    settings.detailTemplate += Riode.parseTemplate(settings.ratingTemplate, settings);
-                }
-                $box = $(Riode.parseTemplate(settings.template, settings));
-                self.space = settings.space;
-
-                // open
-                $box
-                    .appendTo($area)
-                    .css('top', - offset)
-                    .find("img")[0]
-                    .onload = function () {
-                        offset += $box[0].offsetHeight + self.space;
-
-                        $box.addClass('show');
-                        if ($box.offset().top - window.pageYOffset < 0) {
-                            self.close();
-                            $box.css('top', - offset + $box[0].offsetHeight + self.space);
-                        }
-                        $box.on('mouseenter', function () { self.pause() })
-                            .on('mouseleave', function () { self.resume() })
-                            .on('touchstart', function (e) { self.pause(); e.stopPropagation(); })
-                            .on('mousedown', function () {
-                                $(this).addClass('focus');
-                            })
-                            .on('mouseup', function () {
-                                self.close($(this).index());
-                            });
-                        Riode.$body.on('touchstart', function () {
-                            self.resume();
-                        });
-
-                        boxes.push($box);
-                        timers.push(settings.delay);
-
-                        (timers.length > 1) || (
-                            timerId = setInterval(timerClock, timerInterval)
-                        )
-
-                        callback && callback($box);
-                    };
-            },
-
-            close: function (indexToClose) {
-                var self = this,
-                    index = ('undefined' === typeof indexToClose) ? 0 : indexToClose,
-                    $box = boxes.splice(index, 1)[0];
-
-                // remove timer
-                timers.splice(index, 1)[0];
-
-                // remove box
-                offset -= $box[0].offsetHeight + self.space;
-                $box.removeClass('show');
-                setTimeout(function () {
-                    $box.remove();
-                }, 300);
-
-                // slide down other boxes
-                boxes.forEach(function ($box, i) {
-                    if (i >= index && $box.hasClass('show')) {
-                        $box.stop(true, true).animate({
-                            top: parseInt($box.css('top')) + $box[0].offsetHeight + 20
-                        }, 600, 'easeOutQuint');
-                    }
-                });
-
-                // clear timer
-                boxes.length || clearTimeout(timerId);
-            },
-
-            pause: function () {
-                isPaused = true;
-            },
-
-            resume: function () {
-                isPaused = false;
-            }
-        }
-    })();
 
     /**
      * @function floatSVG
@@ -3493,7 +3361,7 @@ window.Riode = {};
                                 imageLink: $productName.find(' a ').attr('href'),
                                 price: productPrice,
                                 count: $product.find('.quantity').length > 0 ? $product.find('.quantity').val() : 1,
-                                actionTemplate: '<div class="action-group d-flex"><a href="/cart" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                                actionTemplate: '<div class="action-group d-flex"><a href="/cart" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="/checkout" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                             });
                     } else {
                         // if not product single, then open minipopup
@@ -3507,7 +3375,7 @@ window.Riode = {};
                                 imageLink: $product.find('.product-name > a').attr('href'),
                                 price: $product.find('.product-price .new-price, .product-price .price').html(),
                                 count: $product.find('.quantity').length > 0 ? $product.find('.quantity').val() : 1,
-                                actionTemplate: '<div class="action-group d-flex"><a href="/cart" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                                actionTemplate: '<div class="action-group d-flex"><a href="/cart" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="/checkout" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                             });
                     }
                 })
@@ -3525,7 +3393,7 @@ window.Riode = {};
                         imageLink: $tooltip.find('.tooltip-name > a').attr('href'),
                         price: $tooltip.find('.tooltip-price .new-price, .tooltip-price .price').html(),
                         count: $tooltip.find('.quantity').length > 0 ? $tooltip.find('.quantity').val() : 1,
-                        actionTemplate: '<div class="action-group d-flex"><a href="/cart" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                        actionTemplate: '<div class="action-group d-flex"><a href="/cart" class="btn btn-sm btn-outline btn-primary btn-rounded">View Cart</a><a href="/checkout" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                     });
                 });
         },
@@ -3561,7 +3429,7 @@ window.Riode = {};
                             imageLink: $product.find('.product-name > a').attr('href'),
                             price: $product.find('.product-price .new-price, .product-price .price').html(),
                             count: $product.find('.quantity').length > 0 ? $product.find('.quantity').val() : 1,
-                            actionTemplate: '<div class="action-group d-flex"><a href="compare.html" class="btn btn-sm btn-outline btn-primary btn-rounded">Compare</a><a href="checkout.html" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                            actionTemplate: '<div class="action-group d-flex"><a href="compare.html" class="btn btn-sm btn-outline btn-primary btn-rounded">Compare</a><a href="/checkout" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                         });
                 });
         },

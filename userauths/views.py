@@ -11,7 +11,7 @@ from .models import UserToken, User, Contact
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth.decorators import login_required
 
 def register_view(request):
     form = UserRegisterForm(request.POST)
@@ -76,7 +76,7 @@ def logout_view(request):
 
 
 
-
+@login_required
 def account_view(request):
     customer_orders = Order.objects.filter(customer=request.user)
     context = {
@@ -162,20 +162,6 @@ def process_password_reset(request):
 def password_reset_cooldown(request):
     return render(request, 'password/password_reset_cooldown.html')
 
-
-def redirect_sign_in(request):
-    if request.user.is_authenticated:
-
-        # Get the 'next' parameter from the URL, defaulting to None
-        next_page = request.GET.get('next', None)
-
-        if next_page:
-            # If the 'next' parameter exists, redirect to that page
-            return redirect(next_page)
-        else:
-            return redirect('core:home')
-
-    return render(request, "userauths/sign-in.html")
 
 
 @csrf_exempt  # Use this if you're not sending the CSRF token with AJAX request

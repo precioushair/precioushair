@@ -1,8 +1,12 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Category, Product, Wishlist,Cart, CartItem
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Category, Product, Wishlist,Cart, CartItem, Coupon, Order
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.core.cache import cache
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+from django.template.loader import render_to_string
 # Create your views here.
 
 
@@ -130,16 +134,24 @@ def add_to_wishlist(request, product_id):
     return HttpResponse(status=403)
 
 def remove_from_wishlist(request, product_id):
-    if request.user.is_authenticated:
+    if request.method == "POST" and request.user.is_authenticated:
         product = get_object_or_404(Product, id=product_id)
-        Wishlist.objects.filter(user=request.user, product=product).delete()
-        wishlist_items = Wishlist.objects.filter(user=request.user)
-        if 'HX-Request' in request.headers:
-            return render(request, 'htmx/wishlist_items.html', {'wishlist_items': wishlist_items})
-        return HttpResponse(status=200)
+        wishlist_item = Wishlist.objects.filter(user=request.user, product=product)
+        
+        if wishlist_item.exists():
+            wishlist_item.delete()  # Delete the item from the wishlist
 
-    return HttpResponse(status=403)
+            # HTMX request handling
+            if 'HX-Request' in request.headers:
+                wishlist_items = Wishlist.objects.filter(user=request.user)
+                return render(request, 'htmx/wishlist_items.html', {'wishlist_items': wishlist_items})
 
+            # Non-HTMX requests (JSON response for jQuery/AJAX)
+            return JsonResponse({'success': True})
+        
+        return JsonResponse({'success': False}, status=400)
+
+    return JsonResponse({'success': False}, status=403)
 
 
 @login_required
@@ -190,26 +202,90 @@ def search(request):
     return render(request, "core/search.html")
 
 def search_queries(request):
-    query = request.GET.get('query', '')
+    query = request.GET.get('query', '').strip()
     
     # Return empty results if query is too short
     if len(query) < 3:
-        return JsonResponse({'results': []})
-    
-    # Fetch the products and manually extract the image URL
-    top_products = Product.objects.filter(name__icontains=query)[:10]
-    
-    # Check if any products were found
-    if not top_products:
-        return JsonResponse({'results': [], 'message': 'No results'})
-    
-    results = []
-    for product in top_products:
-        results.append({
+        return JsonResponse({'results': [], 'message': ''})
+
+    # Generate a cache key based on the query
+    cache_key = f'search_results_{query}'
+    cached_results = cache.get(cache_key)
+
+    if cached_results is not None:
+        return JsonResponse({'results': cached_results})
+
+    try:
+        # Fetch the products and only select the necessary fields
+        top_products = Product.objects.filter(name__icontains=query).only('id', 'name', 'slug', 'image')[:10]
+
+        if not top_products:
+            return JsonResponse({'results': [], 'message': 'No results'})
+
+        results = [{
             'id': product.id,
             'name': product.name,
             'slug': product.slug,
             'image': product.image.url  # Extract the URL from the Cloudinary image field
-        })
+        } for product in top_products]
+
+        # Cache the results for 5 minutes
+        cache.set(cache_key, results, 300)
+
+        return JsonResponse({'results': results})
+
+    except ObjectDoesNotExist:
+        return JsonResponse({'results': [], 'message': 'No results'})
+    except Exception as e:
+        return JsonResponse({'results': [], 'message': str(e)})
     
-    return JsonResponse({'results': results})
+
+def apply_coupon(request):
+    coupon_code = request.POST.get('coupon_code', '').strip()
+    
+    # Check if the coupon code is provided
+    if not coupon_code:
+        return JsonResponse({'error': 'Please enter a coupon code.'}, status=400)
+    
+    try:
+        # Get the coupon from the database
+        coupon = Coupon.objects.get(code=coupon_code, is_active=True)
+
+        # Check if the coupon is still valid (within the valid_from and valid_until date range)
+        if coupon.valid_from <= timezone.now() <= coupon.valid_until:
+            # Coupon is valid, apply the discount
+            # You can add logic to update the order total here
+            return JsonResponse({'success': 'Coupon applied successfully!'}, status=200)
+        else:
+            return JsonResponse({'error': 'Invalid or expired coupon code.'}, status=400)
+    
+    except Coupon.DoesNotExist:
+        return JsonResponse({'error': 'Invalid or expired coupon code.'}, status=400)
+    
+
+def update_cart(request):
+    if request.method == "POST":
+        cart = get_cart(request)
+        items = request.POST.getlist('items[]')
+
+        for item in items:
+            try:
+                product_id, quantity = item.split('|')
+                product = get_object_or_404(Product, id=product_id)
+                cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+                cart_item.quantity = int(quantity)
+                cart_item.save()
+            except ValueError:
+                continue  # Skip malformed items
+        
+        context = {'cart': cart}
+        html = render_to_string('htmx/cart_item_checkout.html', context, request=request)
+        return HttpResponse(html)
+    return HttpResponse(status=400)  # Return a bad request response if not POST
+
+
+def checkout_view(request):
+    return render(request, "product/checkout.html")
+
+def order_view(request):
+    return render(request, "product/order.html")

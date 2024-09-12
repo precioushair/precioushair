@@ -27,7 +27,7 @@
     <div class="product product-wishlist" id="wishlist-item-{{ item.product.id }}">
         <figure class="product-media">
             <a href="{% url "core:product-detail" item.product.slug %}">
-                <img src="{{item.product.image.url}}" style="border-radius: 1.25rem;" width="100" height="100" alt="product" />
+                <img src="{{item.product.image.url}}" style="border-radius: 1.3rem;" width="100" height="100" alt="product" />
             </a>
             <button class="btn btn-link btn-close" hx-delete="{% url 'core:remove_from_wishlist' item.product.id %}" hx-target="#wishlist-container" hx-swap="innerHTML">
                 <i class="fas fa-times"></i><span class="sr-only">Close</span>
