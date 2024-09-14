@@ -285,7 +285,15 @@
                                     <div class="product-action-vertical">
                                         <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i class="d-icon-bag"></i></a>
                                         {% if user.is_authenticated %}
-                                        <a href="#" class="btn-product-icon btn-wishlist"  hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                            {% if p.id in wishlist_obj %}
+                                                <!-- Product is already in wishlist, disable the button -->
+                                                <a href="#" class="btn-product-icon btn-wishlist disabled" title="Already in wishlist">
+                                                    <i class="d-icon-heart-full" style="color: red;"></i>
+                                                </a>
+                                            {% else %}
+                                                <!-- Allow the user to add the product to wishlist -->
+                                                <a href="#" class="btn-product-icon btn-wishlist" hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                            {% endif %}
                                         {% endif %}
                                         <a href="#" class="btn-product-icon btn-search btn-preview" title="Quick View" 
                                             hx-get="{% url "core:product-preview" p.slug %}" 
@@ -362,7 +370,15 @@
                                     <div class="product-action-vertical">
                                         <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i class="d-icon-bag"></i></a>
                                         {% if user.is_authenticated %}
-                                        <a href="#" class="btn-product-icon btn-wishlist"  hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                            {% if p.id in wishlist_obj %}
+                                                <!-- Product is already in wishlist, disable the button -->
+                                                <a href="#" class="btn-product-icon btn-wishlist disabled" title="Already in wishlist">
+                                                    <i class="d-icon-heart-full"></i>
+                                                </a>
+                                            {% else %}
+                                                <!-- Allow the user to add the product to wishlist -->
+                                                <a href="#" class="btn-product-icon btn-wishlist" hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i class="d-icon-heart" ></i></a>
+                                            {% endif %}
                                         {% endif %}
                                         <a href="#" class="btn-product-icon btn-search btn-preview" title="Quick View" 
                                             hx-get="{% url "core:product-preview" p.slug %}" 

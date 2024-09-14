@@ -39,7 +39,7 @@ def register_view(request):
         error_messages = '<br>'.join(
             ' '.join(error.messages) for error_list in errors.values() for error in error_list
         )
-        return HttpResponse(f'<div class="alert alert-warning"><span class="text-white">{error_messages}</span></div>')
+        return HttpResponse(f'<div class="alert alert-warning" style="border-radius: 3.75rem;"><span class="text-white">{error_messages}</span></div>')
 
     return render(request, "user/sign-up.html")
 

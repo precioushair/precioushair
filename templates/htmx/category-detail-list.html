@@ -7,7 +7,7 @@
         <div class="product product-list">
             <figure class="product-media">
                 <a href="{% url "core:product-detail" p.slug %}">
-                    <img src="{{p.image.url}}" style="border-radius: 8px;" alt="product" width="260" height="293">
+                    <img src="{{p.image.url}}" style="border-radius: 1.3rem;" alt="product" width="260" height="293">
                 </a>
                 {% if p.recent %}
                 <div class="product-label-group">
@@ -23,16 +23,25 @@
                     <a href="{% url "core:product-detail" p.slug %}">{{p.name}}</a>
                 </h3>
                 <div class="product-price">
-                    <span class="price">&#8358;{{p.price}}</span>
+                    <span class="price">&#8358;{{p.price|floatformat:"0"|intcomma}}</span>
                 </div>
                 <p class="product-short-desc">
                     {{p.description}}
                 </p>
                 <div class="product-action">
-                    <a href="#" class="btn-product btn-cart"  hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i
-                            class="d-icon-bag"></i><span>Add to cart</span></a>
-                    <a href="#" class="btn-product-icon btn-wishlist" hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Add to wishlist"><i
-                            class="d-icon-heart"></i></a>
+                    <a href="#" class="btn-product btn-cart"  hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" style="border-radius: 3.75rem;" title="Add to cart"><i
+                            class="d-icon-bag" ></i><span>Add to cart</span></a>
+                    {% if user.is_authenticated %}
+                        {% if p.id in wishlist_obj %}
+                            <!-- Product is already in wishlist, disable the button -->
+                            <a href="#" class="btn-product-icon btn-wishlist disabled added" title="Already in wishlist">
+                                <i class="d-icon-heart-full" ></i>
+                            </a>
+                        {% else %}
+                            <!-- Allow the user to add the product to wishlist -->
+                            <a href="#" class="btn-product-icon btn-wishlist" hx-post="{% url 'core:add_to_wishlist' p.id %}" hx-target="#wishlist-container" hx-swap="innerHTML"  title="Add to wishlist"><i class="d-icon-heart" style="color: red;"></i></a>
+                        {% endif %}
+                    {% endif %}
                     <a href="#" class="btn-product-icon btn-search btn-quickview btn-preview" title="Quick View" 
                             hx-get="{% url "core:product-preview" p.slug %}" 
                             hx-target="#quickViewContent"

@@ -93,8 +93,16 @@ class Product(models.Model):
     def get_absolute_url(self):
         return f'/products/{self.slug}/'
     def save(self, *args, **kwargs):
+        if self.image and not self.sku:
+            # Generate a unique SKU only if it doesn't already exist
+            unique_sku = f"{uuid.uuid4().hex[:8]}"  # Adding 8 characters from a UUID
+            self.sku = unique_sku
+
+        # Save the instance first to ensure the image is uploaded to Cloudinary
+        super(Product, self).save(*args, **kwargs)
+
         if self.image:
-            # Download the image from Cloudinary
+            # Now, download the image from Cloudinary using its URL
             response = requests.get(self.image.url)
             img = Image.open(BytesIO(response.content))
 
@@ -105,17 +113,21 @@ class Product(models.Model):
             output = BytesIO()
             img.save(output, format='WEBP', quality=100)
             output.seek(0)
-            unique_sku = f"{uuid.uuid4().hex[:8]}"  # Adding 8 characters from a UUID
-            self.sku = unique_sku
+
             # Update the image field with the resized image
-            self.image = InMemoryUploadedFile(output, 'ImageField', 
-                                              f"{self.image.public_id}.webp", 
-                                              'image/webp', 
-                                              output.getbuffer().nbytes, 
-                                              None)
+            # We must save the object again to update the image field
+            self.image = InMemoryUploadedFile(
+                output, 
+                'ImageField', 
+                f"{self.image.public_id}.webp", 
+                'image/webp', 
+                output.getbuffer().nbytes, 
+                None
+            )
 
+            # Save the instance again to update the resized image in Cloudinary
+            super(Product, self).save(*args, **kwargs)
 
-        super(Product, self).save(*args, **kwargs)
     def delete(self, *args, **kwargs):
         # Delete the image from Cloudinary before deleting the Blog object
         if self.image:
@@ -222,7 +234,7 @@ class Order(models.Model):
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0) 
     
     def __str__(self):
-        return f'Order {self.id} by {self.customer.username}'
+        return f'Order {self.id} by {self.customer.full_name}'
     def calculate_total(self):
         total = sum(item.product.price * item.quantity for item in self.items.all())
         if self.coupon:
@@ -249,7 +261,7 @@ class ShippingAddress(models.Model):
     country = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Shipping Address for {self.user.username} - {self.address_line_1}"
+        return f"Shipping Address for {self.user.full_name} - {self.address_line_1}"
 
 
 class Review(models.Model):
@@ -260,7 +272,7 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     date = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return f'Review by {self.user.username} for {self.product.name}'
+        return f'Review by {self.user.full_name} for {self.product.name}'
 
 
 class Coupon(models.Model):

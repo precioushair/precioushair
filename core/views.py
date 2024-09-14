@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Category, Product, Wishlist,Cart, CartItem, Coupon, Order
+from .models import Category, Product, Wishlist,Cart, CartItem, Coupon, Order, ShippingAddress, OrderItem
+from .forms import ShippingAddressForm
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -20,6 +21,7 @@ def home(request):
     context = {
         "products": products,
         "new_products": new_products,
+
     }
     return render(request, "core/index.html", context)
 
@@ -54,10 +56,15 @@ def category_list(request):
 def category_detail(request, slug):
     category = Category.objects.get(slug=slug)
     products = Product.objects.filter(category=category)
+        # Pagination
+    paginator = Paginator(products, 12)  # Show 12 products per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     list_mode = request.GET.get('list', 'false') == 'true'
     context = {
         'category': category,
-        'products': products,
+        'products': page_obj,
         'list_mode': list_mode,
     }
 
@@ -72,9 +79,14 @@ def category_detail(request, slug):
 def category_detail_list_mode(request, slug):
     category = Category.objects.get(slug=slug)
     products = Product.objects.filter( category=category)
+        # Pagination
+    paginator = Paginator(products, 12)  # Show 12 products per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     context = {
         'category': category,
-        'products': products,
+        'products': page_obj,
 
     }
     return render(request, "htmx/category-detail-list.html", context)
@@ -134,24 +146,15 @@ def add_to_wishlist(request, product_id):
     return HttpResponse(status=403)
 
 def remove_from_wishlist(request, product_id):
-    if request.method == "POST" and request.user.is_authenticated:
+    if request.user.is_authenticated:
         product = get_object_or_404(Product, id=product_id)
-        wishlist_item = Wishlist.objects.filter(user=request.user, product=product)
-        
-        if wishlist_item.exists():
-            wishlist_item.delete()  # Delete the item from the wishlist
+        Wishlist.objects.filter(user=request.user, product=product).delete()
+        wishlist_items = Wishlist.objects.filter(user=request.user)
+        if 'HX-Request' in request.headers:
+            return render(request, 'htmx/wishlist_items.html', {'wishlist_items': wishlist_items})
+        return HttpResponse(status=200)
 
-            # HTMX request handling
-            if 'HX-Request' in request.headers:
-                wishlist_items = Wishlist.objects.filter(user=request.user)
-                return render(request, 'htmx/wishlist_items.html', {'wishlist_items': wishlist_items})
-
-            # Non-HTMX requests (JSON response for jQuery/AJAX)
-            return JsonResponse({'success': True})
-        
-        return JsonResponse({'success': False}, status=400)
-
-    return JsonResponse({'success': False}, status=403)
+    return HttpResponse(status=403)
 
 
 @login_required
@@ -176,9 +179,7 @@ def get_cart(request):
         cart, created = Cart.objects.get_or_create(session_key=session_key)
     return cart
 
-def view_cart(request):
 
-    return render(request, "user/cart.html")
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -283,9 +284,51 @@ def update_cart(request):
         return HttpResponse(html)
     return HttpResponse(status=400)  # Return a bad request response if not POST
 
+def view_cart(request):
 
+    return render(request, "user/cart.html")
+
+
+@login_required
 def checkout_view(request):
-    return render(request, "product/checkout.html")
+    cart = get_object_or_404(Cart, user=request.user)
+    order, created = Order.objects.get_or_create(customer=request.user, complete=False)
+    shipping_address = ShippingAddress.objects.filter(order=order).first()
 
-def order_view(request):
+    if request.method == 'POST':
+        shipping_option = request.POST.get('shipping_option')
+        shipping_form = ShippingAddressForm(request.POST, instance=shipping_address)
+
+        if shipping_option == 'pickup':
+            # If the user selects 'pickup', you can skip address validation
+            order.shipping_option = 'pickup'
+            order.save()
+            return redirect('core:order', order_id=order.id)
+
+        elif shipping_form.is_valid():
+            shipping_address = shipping_form.save(commit=False)
+            shipping_address.user = request.user
+            shipping_address.order = order
+            shipping_address.save()
+
+            # Create OrderItems from CartItems
+            for cart_item in cart.items.all():
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity
+                )
+
+            # Optionally clear the cart after order is created
+            cart.items.all().delete()
+
+            return redirect('core:order', order_id=order.id)
+
+    else:
+        shipping_form = ShippingAddressForm(instance=shipping_address)
+
+    return render(request, 'product/checkout.html', {'cart': cart, 'shipping_form': shipping_form})
+
+
+def order_view(request, order_id):
     return render(request, "product/order.html")

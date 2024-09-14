@@ -3,10 +3,13 @@ from core.models import Category, Wishlist, Cart
 def default(request):
     categories = Category.objects.all()
     user = request.user
+    wishlist_obj = Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True) if request.user.is_authenticated else []
+
 
     return {
         "categories": categories,
         "user": user,
+        "wishlist_obj": wishlist_obj,
     }
 
 def wishlist_processor(request):

@@ -3,13 +3,90 @@
 {% load humanize %}
 {% load custom_filters %}
 {% block content %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const shippingRadio = document.getElementById('free-shipping');
+        const localPickup = document.getElementById('local_pickup');
+        const shippingAddress = document.getElementById('shipping-address');
+    
+        shippingRadio.addEventListener('change', function() {
+            if (this.checked) {
+                shippingAddress.style.display = 'block'; // Show the shipping address form when "Shipping" is checked
+            } else if (localPickup.checked) {
+                shippingAddress.style.display = 'none'; // Hide the form if "Local Pickup" is checked
+            } else {
+                shippingAddress.style.display = 'none'; // Hide the form if no valid option is checked
+            }
+        });
+    
+        localPickup.addEventListener('change', function() {
+            if (this.checked) {
+                shippingAddress.style.display = 'none'; // Hide the form when "Local Pickup" is checked
+            }
+        });
 
+    });
+    function populateCities() {
+        // Get the selected state
+        var selectedState = document.getElementById('stateSelect').value.toLowerCase();
+      
+        // Get the city select element
+        var citySelect = document.getElementById('citySelect');
+      
+        // Clear existing options
+        citySelect.innerHTML = '<option value="select">Select City</option>';
+      
+        // Fetch cities based on the selected state
+        if (selectedState !== 'select') {
+          // Replace with your actual API endpoint
+          const apiUrl = `/api/cities/${selectedState}`;
+      
+          // Fetch cities using AJAX
+          fetch(apiUrl)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(data => {
+              
+              // Check if the 'cities' property exists in the response
+              if (data && data.cities) {
+                
+                data.cities.forEach(city => {
+                  const option = document.createElement('option');
+                  option.value = city;
+                  option.text = city;
+                  citySelect.appendChild(option);
+                  
+                });
+                
+              } else {
+                console.error('Unexpected response format');
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching cities');
+            });
+        }
+      }
+    
+    
+      $(document).ready(function(){
+        // Check if citySelect exists before manipulating it
+        if ($('#citySelect').length) {
+          $('#citySelect').addClass('nice-select');
+        }
+      });
+    
+</script>
         <main class="main cart">
             <div class="page-content pt-7 pb-10">
                 <div class="step-by pr-4 pl-4">
                     <h3 class="title title-simple title-step active"><a href="{% url "core:view_cart" %}">1. Shopping Cart</a></h3>
                     <h3 class="title title-simple title-step"><a href="{% url "core:checkout" %}">2. Checkout</a></h3>
-                    <h3 class="title title-simple title-step"><a href="{% url "core:order" %}">3. Order Complete</a></h3>
+                    <h3 class="title title-simple title-step"><a href="#">3. Order Complete</a></h3>
                 </div>
                 <style>
                     @media screen and (max-width: 720px) {
@@ -35,7 +112,7 @@
                                 </thead>
                                 {% endif %}
                                 <tbody style="border-radius: 1.25rem;" id="cart-item-checkout">
-                                    {% if cart.items %}
+                                    {% if cart.items.all %}
                                     {% include 'htmx/cart_item_checkout.html' %}
                                     {% else %}
                                     <h2 class="title title-center mb-5">No items in cart</h2>
@@ -62,6 +139,8 @@
                             <div class="sticky-sidebar" data-sticky-options="{'bottom': 20}">
                                 <div class="summary mb-4" style="border-radius: 1.25rem;">
                                     <h3 class="summary-title text-left">Cart Totals</h3>
+                                    <form method="POST" action="{% url 'core:checkout' %}">
+                                        {% csrf_token %}
                                     <table class="shipping">
                                         <tr class="summary-subtotal">
                                             <td>
@@ -71,14 +150,25 @@
                                                 <p class="summary-subtotal-price">&#8358;{{cart_total|floatformat:"0"|intcomma }}</p>
                                             </td>
                                         </tr>
+                                       
                                         <tr class="sumnary-shipping shipping-row-last">
                                             <td colspan="2">
                                                 <h4 class="summary-subtitle">Calculate Shipping</h4>
-                                                <ul>
+                                                {% if cart.items.all %}
                                                 
+                                
+                                                <ul>
+                                                    {% if not user.is_authenticated %}
                                                     <li>
                                                         <div class="custom-radio">
-                                                            <input type="radio" id="free-shipping" name="shipping"
+                                                            <a class="login-toggle custom-control-label" href="#signin"  style="text-decoration: underline;">
+                                                                Please log in to continue</a>
+                                                        </div>
+                                                    </li>
+                                                    {% endif %}
+                                                    <li>
+                                                        <div class="custom-radio">
+                                                            <input type="radio" id="free-shipping" value="shipping"  name="shipping_option"
                                                                 class="custom-control-input" >
                                                             <label class="custom-control-label" for="free-shipping">
                                                                 Shipping</label>
@@ -86,32 +176,69 @@
                                                     </li>
                                                     <li>
                                                         <div class="custom-radio">
-                                                            <input type="radio" id="local_pickup" name="shipping"
+                                                            <input type="radio" id="local_pickup" value="pickup"  name="shipping_option"
                                                                 class="custom-control-input" >
                                                             <label class="custom-control-label" for="local_pickup">Store
                                                                 pickup</label>
                                                         </div>
                                                     </li>
                                                 </ul>
+                                                {% else %}
+                                                <h4 class="title title-center mb-5" style="font-size: 1.5rem;">No items in cart</h4>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     </table>
                                     <div class="shipping-address" id="shipping-address" style="display: none;">
                                         <label>Shipping to <strong>all locations</strong></label>
                                         <div class="select-box">
-                                            <select name="country" class="form-control" style="border-radius: 1.25rem">
-                                                <option value="us" selected>United States (US)</option>
-                                                <option value="uk"> United Kingdom</option>
-                                                <option value="fr">France</option>
-                                                <option value="aus">Austria</option>
+                                     
+                                            <select class="form-control" style="border-radius: 1.25rem" id="stateSelect" name="country" onchange="populateCities()">
+                                                <option value="">Select locations</option>
+                                                <option value="Abia">Abia</option>
+                                                <option value="Adamawa">Adamawa</option>
+                                                <option value="Akwa Ibom">Akwa Ibom</option>
+                                                <option value="Anambra">Anambra</option>
+                                                <option value="Bauchi">Bauchi</option>
+                                                <option value="Bayelsa">Bayelsa</option>
+                                                <option value="Benue">Benue</option>
+                                                <option value="Borno">Borno</option>
+                                                <option value="Cross River">Cross River</option>
+                                                <option value="Delta">Delta</option>
+                                                <option value="Ebonyi">Ebonyi</option>
+                                                <option value="Edo">Edo</option>
+                                                <option value="Ekiti">Ekiti</option>
+                                                <option value="Enugu">Enugu</option>
+                                                <option value="Gombe">Gombe</option>
+                                                <option value="Imo">Imo</option>
+                                                <option value="Jigawa">Jigawa</option>
+                                                <option value="Kaduna">Kaduna</option>
+                                                <option value="Kano">Kano</option>
+                                                <option value="Katsina">Katsina</option>
+                                                <option value="Kebbi">Kebbi</option>
+                                                <option value="Kogi">Kogi</option>
+                                                <option value="Kwara">Kwara</option>
+                                                <option value="Lagos">Lagos</option>
+                                                <option value="Nasarawa">Nasarawa</option>
+                                                <option value="Niger">Niger</option>
+                                                <option value="Ogun">Ogun</option>
+                                                <option value="Ondo">Ondo</option>
+                                                <option value="Osun">Osun</option>
+                                                <option value="Oyo">Oyo</option>
+                                                <option value="Plateau">Plateau</option>
+                                                <option value="Rivers">Rivers</option>
+                                                <option value="Sokoto">Sokoto</option>
+                                                <option value="Taraba">Taraba</option>
+                                                <option value="Yobe">Yobe</option>
+                                                <option value="Zamfara">Zamfara</option>
+                                            
+                                                
                                             </select>
+                                            
                                         </div>
                                         <div class="select-box">
-                                            <select name="country" class="form-control" style="border-radius: 1.25rem">
-                                                <option value="us" selected>California</option>
-                                                <option value="uk">Alaska</option>
-                                                <option value="fr">Delaware</option>
-                                                <option value="aus">Hawaii</option>
+                                            <select name="country" class="form-control" style="border-radius: 1.25rem" id="citySelect">
+                                                <option class="pb-5" value="select">Select City</option>
                                             </select>
                                         </div>
                                         <input type="text" class="form-control" name="code" placeholder="Town / City" style="border-radius: 1.25rem" />
@@ -127,8 +254,16 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <a href="" class="btn btn-dark btn-rounded btn-checkout mt-3" style="border-radius: 3.75rem;">Proceed to
-                                        checkout</a>
+                                    {% if user.is_authenticated %}
+                                    <button type="submit" class="btn btn-dark btn-rounded btn-checkout mt-3" style="border-radius: 3.75rem;">
+                                        Proceed to checkout
+                                    </button>
+                                    {% else %}
+                                    <a href="#signin" class="btn btn-dark btn-rounded btn-checkout mt-3 login-toggle" style="border-radius: 3.75rem;">
+                                        Proceed to checkout
+                                    </a>
+                                    {% endif %}
+                                    </form>
                                 </div>
                             </div>
                         </aside>

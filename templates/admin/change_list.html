@@ -121,12 +121,18 @@
                             <th>Message</th>
                             <th>Date Received</th>
                             <th class="text-center">Actions</th>
-                      
+                          {% elif cl.opts.model_name == 'order' %}
+                            <th class="text-end">#</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Total</th>
+                            <th>Date Received</th>
+                            <th>Complete</th>
+                            <th class="text-center">Actions</th>
                           {% else %}
                             <!-- Default headers for other models -->
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Details</th>
+                            <th>{{cl.opts.model_name}}</th>
                             <th class="text-center">Actions</th>
                           {% endif %}
                         </tr>
@@ -152,7 +158,9 @@
             <td class="text-end">₦{{ result.price|floatformat:"0"|intcomma }}</td>
             <td class="text-end">{{ result.stock }}</td>
             {% if result.finished %}
-                <td><span class="badge bg-light-warning f-12">Out of stock</span></td>
+                <td><span class="badge bg-light-danger f-12">Out of stock</span></td>
+            {% elif result.stock < 5 %}
+                <td><span class="badge bg-light-warning f-12">Restock</span></td>
             {% else %}
                 <td><span class="badge bg-light-success f-12">In stock</span></td>
             {% endif %}
@@ -207,8 +215,28 @@
                 <td>{{ result.email|truncatechars:"12" }}</td>
                 <td>{{ result.message|truncatechars:"15"  }}</td>
                 <td>{{ result.date|date:"d, M Y" }}</td>
+            {% elif cl.opts.model_name == 'order' %}
+                <!-- Custom HTML for Contact model -->
+                <td class="text-end">{{ forloop.counter }}</td>
+                <td>{{ result.customer|truncatechars:"10" }}</td>
+                <td>{{ result.customer.email|truncatechars:"12" }}</td>
+                <td>&#8358;{{ result.calculate_total|floatformat:"0"|intcomma  }}</td>
+                <td>{{ result.created_at|date:"d, M Y" }}</td>
+                <td> 
+                  {% if result.complete %}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 12L10.5 15.5L17 9M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#28CF28" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  {% else %}
+                  <svg width="24" height="24"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 8L12 12M12 12L8 16M12 12L8 8M12 12L16 16M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                  {% endif %}
+                </td>
+                
             {% else %}
                 <!-- Default fallback layout for other models -->
+                <td class="text-end">{{ forloop.counter }}</td>
                 <td>{{ result }}</td>
             {% endif %}
             <td class="text-center">

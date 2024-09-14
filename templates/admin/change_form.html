@@ -87,22 +87,47 @@
                   <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
-                      <div class="col-md-6">
-                        <!-- Dynamically render form fields -->
-                        {% for field in adminform.form %}
-                          <div class="form-group">
-                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
-                            {{ field|add_class:"form-control custom-class"}}
-                            {% if field.help_text %}
-                              <small class="form-text text-muted">{{ field.help_text }}</small>
-                            {% endif %}
-                          </div>
-                        {% endfor %}
-                      </div>
-                     
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <!-- Main form fields -->
+                        <div class="col-md-6">
+                            <!-- Dynamically render form fields -->
+                            {% for field in adminform.form %}
+                                <div class="form-group">
+                                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                                    {% if field.field.widget.input_type == "checkbox" %}
+                                        <div class="form-check">
+                                            {{ field|add_class:"form-check-input custom-checkbox-class" }}
+                                            {% if field.help_text %}
+                                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        {{ field|add_class:"form-control custom-class" }}
+                                        {% if field.help_text %}
+                                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                
+                        <!-- Render inline formsets -->
+                        <div class="col-md-12 mt-4">
+                          
+                            {% for inline_admin_formset in inline_admin_formsets %}
+                                <fieldset class="module aligned {{ inline_admin_formset.classes }}">
+                                    <div class="inline-related" id="{{ inline_admin_formset.formset.prefix }}">
+                                        <h3>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h3>
+                                        {% include inline_admin_formset.opts.template %}
+                                    </div>
+                                </fieldset>
+                            {% endfor %}
+                        </div>
                     </div>
-                  </form>
+                
+                    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+                </form>
+                
+                
                 </div>
               </div>
             </div>

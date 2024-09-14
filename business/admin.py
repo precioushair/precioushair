@@ -1,6 +1,7 @@
 from django.contrib import admin
-from core.models import Order, Product
+from core.models import Order, Product, Review, Coupon, ProductImages
 from django.core.paginator import Paginator
+
 
 
 class MyAdminSite(admin.AdminSite):
@@ -23,10 +24,11 @@ class MyAdminSite(admin.AdminSite):
 
 
     
-
+class ProductImagesAdmin(admin.TabularInline):
+    model = ProductImages
     
 class ProductAdmin(admin.ModelAdmin):
-
+    inlines = [ProductImagesAdmin]
     def changelist_view(self, request, extra_context=None):
         # Use the admin's default queryset
         queryset = self.get_queryset(request)
@@ -48,4 +50,6 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 
 admin_site = MyAdminSite(name='myadmin')
-admin_site.register(Order)
+admin.site.register(Order)
+admin.site.register(Review)
+admin.site.register(Coupon)

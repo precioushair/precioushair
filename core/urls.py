@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from .utils import get_cities
 app_name = "core"
 
 urlpatterns = [
@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('apply-coupon/', views.apply_coupon, name='apply_coupon'),
     path('checkout/', views.checkout_view, name='checkout'),
-    path('order/', views.order_view, name='order'),
+    path('order/<order_id>', views.order_view, name='order'),
 
     
     path('cart/', views.view_cart, name='view_cart'),
@@ -33,7 +33,7 @@ urlpatterns = [
     path('update_cart/', views.update_cart, name='update_cart'),
     path('remove_from_cart/<int:cart_item_id>/', views.remove_from_cart, name='remove_from_cart'),
 
-
+    path('api/cities/<str:state>/', get_cities, name='get_cities'),
     path('search_query/', views.search_queries, name='search_query'),
     path('search/', views.search, name='search'),
 ]
