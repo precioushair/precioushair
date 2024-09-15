@@ -10,6 +10,7 @@ from everprecious.sitemaps import StaticSitemap, CategorySitemap, ProductSitemap
 #Sitemaps
 from django.contrib.sitemaps.views import sitemap
 
+
 sitemaps = {
     'static': StaticSitemap,
     'Category': CategorySitemap,

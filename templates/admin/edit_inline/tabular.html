@@ -6,15 +6,16 @@
             {% for inline_field in inline_admin_formset.formset.empty_form.visible_fields %}
                 <th>{{ inline_field.label }}</th>
             {% endfor %}
+            
         </tr>
     </thead>
     <tbody>
         {% for inline_admin_form in inline_admin_formset %}
             <tr class="formset-row">
-               
                 {% for inline_field in inline_admin_form %}
-                    <td >
-                        {{ inline_field.form }}
+                    <td>
+                      <label for="id_p_images-__prefix__-{{ inline_field.name }}"></label>
+                       <input type="file" name="p_images-__prefix__-{{ inline_field.name }}" id="id_p_images-__prefix__-{{ inline_field.name }}">
                         {% if inline_field.errors %}
                             <div class="errors">{{ inline_field.errors }}</div>
                         {% endif %}
@@ -28,40 +29,31 @@
     </tbody>
 </table>
 
-<a href="javascript:void(0);" class="btn btn-primary" onclick="addInline()">Add Another</a>
 
 <script type="text/javascript">
-  let formIndex = {{ inline_admin_formset.formset.total_form_count }};
-  
-  function addInline() {
-    let formTemplate = document.querySelector('.formset-row').cloneNode(true);
-    formTemplate.style.display = '';
+    let formIndex = {{ inline_admin_formset.formset.total_form_count }};
 
-    formTemplate.innerHTML = formTemplate.innerHTML.replace(/__prefix__/g, formIndex);
-    formIndex++;
 
-    let tableBody = document.querySelector('tbody');
-    tableBody.appendChild(formTemplate);
-  }
 
-  function removeInline(button) {
-    button.closest('tr').remove();
-  }
-
+    function removeInline(button) {
+        let row = button.closest('tr'); // Get the closest <tr> ancestor
+        if (row) {
+            row.remove(); // Remove the entire row
+        }
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
-      // Hide the delete checkbox and label
-      var deleteCheckboxes = document.querySelectorAll('input[type="checkbox"][name$="DELETE"]');
-      deleteCheckboxes.forEach(function(checkbox) {
-        var td = checkbox.closest('td');
-        var label = td.previousElementSibling; // Assuming the label is immediately before the checkbox in the same row
-        if (label) {
-          label.style.display = 'none'; // Hide the label
-        }
-        td.style.display = 'none'; // Hide the checkbox
-      });
+        // Hide the delete checkbox and label
+        let deleteCheckboxes = document.querySelectorAll('input[type="checkbox"][name$="DELETE"]');
+        deleteCheckboxes.forEach(function(checkbox) {
+            let td = checkbox.closest('td');
+            if (td) {
+                let label = td.previousElementSibling; // Assuming the label is immediately before the checkbox in the same row
+                if (label) {
+                    label.style.display = 'none'; // Hide the label
+                }
+                td.style.display = 'none'; // Hide the checkbox
+            }
+        });
     });
-
-  
-
 </script>

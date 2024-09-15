@@ -5,8 +5,7 @@ from django.shortcuts import get_object_or_404
 from .forms import PaymentForm
 import requests
 from django.http import HttpResponse
-
-
+from django.shortcuts import render
 
 def initiate_payment(request):
     cart = Cart.objects.get(user=request.user)
@@ -59,3 +58,10 @@ def verify_payment(request):
     else:
         # Handle payment failure
         return HttpResponse("Payment Failed")
+
+
+
+def mail_view(request):
+    return render(request, "admin/mail.html")
+
+
