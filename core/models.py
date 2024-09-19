@@ -77,7 +77,10 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField()
     image = CloudinaryField(folder="products")
-    slug = models.SlugField(unique=True)
+    image1 = CloudinaryField(folder="products", default="product.webp", blank=True)
+    image2 = CloudinaryField(folder="products", default="product.webp", blank=True)
+    image3 = CloudinaryField(folder="products", default="product.webp", blank=True)
+    slug = models.SlugField(unique=True, blank=True)
     sku = models.CharField(max_length=100, unique=True, blank=True, null=True)
     is_best_seller = models.BooleanField(default=False)
     is_trending = models.BooleanField(default=False)
@@ -93,41 +96,18 @@ class Product(models.Model):
     def get_absolute_url(self):
         return f'/products/{self.slug}/'
     def save(self, *args, **kwargs):
+        
         if self.image and not self.sku:
             # Generate a unique SKU only if it doesn't already exist
             unique_sku = f"{uuid.uuid4().hex[:8]}"  # Adding 8 characters from a UUID
             self.sku = unique_sku
+        if not self.slug:
+            self.slug = slugify(self.name)
 
         # Save the instance first to ensure the image is uploaded to Cloudinary
         super(Product, self).save(*args, **kwargs)
 
-        if self.image:
-            # Now, download the image from Cloudinary using its URL
-            response = requests.get(self.image.url)
-            img = Image.open(BytesIO(response.content))
-
-            # Resize the image to the desired dimensions (280x320)
-            img = img.resize((280, 320), Image.ANTIALIAS)
-
-            # Save the resized image to a BytesIO object
-            output = BytesIO()
-            img.save(output, format='WEBP', quality=100)
-            output.seek(0)
-
-            # Update the image field with the resized image
-            # We must save the object again to update the image field
-            self.image = InMemoryUploadedFile(
-                output, 
-                'ImageField', 
-                f"{self.image.public_id}.webp", 
-                'image/webp', 
-                output.getbuffer().nbytes, 
-                None
-            )
-
-            # Save the instance again to update the resized image in Cloudinary
-            super(Product, self).save(*args, **kwargs)
-
+        
     def delete(self, *args, **kwargs):
         # Delete the image from Cloudinary before deleting the Blog object
         if self.image:
@@ -138,50 +118,7 @@ class Product(models.Model):
         # Call the parent class delete method to delete the Blog object
         super().delete(*args, **kwargs)
     
-class ProductImages(models.Model):
-    images = CloudinaryField(folder="products")
-    product = models.ForeignKey(Product, related_name="p_images", on_delete=models.SET_NULL, null=True)
-    date = models.DateTimeField(auto_now_add=True)
-    def __str__(self):
-        return self.name
-    
-    def save(self, *args, **kwargs):
-        if self.image:
-            # Download the image from Cloudinary
-            response = requests.get(self.image.url)
-            img = Image.open(BytesIO(response.content))
-
-            # Resize the image to the desired dimensions (280x320)
-            img = img.resize((280, 320), Image.ANTIALIAS)
-
-            # Save the resized image to a BytesIO object
-            output = BytesIO()
-            img.save(output, format='WEBP', quality=100)
-            output.seek(0)
-
-            # Update the image field with the resized image
-            self.image = InMemoryUploadedFile(output, 'ImageField', 
-                                              f"{self.image.public_id}.webp", 
-                                              'image/webp', 
-                                              output.getbuffer().nbytes, 
-                                              None)
-
-        # Call the original save method to save the model instance
-        super(ProductImages, self).save(*args, **kwargs)
-    def delete(self, *args, **kwargs):
-        # Delete the image from Cloudinary before deleting the Blog object
-        if self.images:
-            # Get the public ID of the image from Cloudinary
-            public_id = self.images.public_id
-            # Delete the image from Cloudinary
-            cloudinary.uploader.destroy(public_id)
-        # Call the parent class delete method to delete the Blog object
-        super().delete(*args, **kwargs)
-    class Meta:
-        verbose_name_plural = "Product images"
         
-        
-
 
 class Wishlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)

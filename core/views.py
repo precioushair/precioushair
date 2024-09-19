@@ -116,10 +116,8 @@ def product_detail(request, slug):
 
 def product_preview(request, slug):
     product = Product.objects.get(slug=slug)
-    p_image = product.p_images.all()
     context = {
         'product': product,
-        'p_image': p_image,
     }
     return render(request, "htmx/product_details.html", context)
 

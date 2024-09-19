@@ -110,18 +110,7 @@
                             {% endfor %}
                         </div>
                 
-                        <!-- Render inline formsets -->
-                        <div class="col-md-12 mt-4">
-                          
-                            {% for inline_admin_formset in inline_admin_formsets %}
-                                <fieldset class="module aligned {{ inline_admin_formset.classes }}">
-                                    <div class="inline-related" id="{{ inline_admin_formset.formset.prefix }}">
-                                        <h4>{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h4>
-                                        {% include inline_admin_formset.opts.template %}
-                                    </div>
-                                </fieldset>
-                            {% endfor %}
-                        </div>
+                       
                     </div>
                 
                     <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
