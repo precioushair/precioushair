@@ -9,6 +9,9 @@ urlpatterns = [
     path("about", views.about, name="about"),
     path("faq", views.faq, name="faq"),
 
+    path("trending", views.trending, name="trending"),
+    path("best-sellers", views.best_sellers, name="best_sellers"),
+
     path("all-products", views.all_products, name="products"),
     path('products/<slug>', views.product_detail, name="product-detail" ),
     path('products/preview/<slug>', views.product_preview, name="product-preview" ),

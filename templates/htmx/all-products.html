@@ -6,7 +6,7 @@
         <div class="product product-slideup-content text-center product-variable">
             <figure class="product-media">
                 <a href="{% url "core:product-detail" p.slug %}">
-                    <img src="{{p.image.url}}" style="border-radius: 1.3rem;" alt="product" width="280" height="315">
+                    <img src="{{p.image.url}}" style="border-radius: 1.3rem;" class="product-detail-img" alt="product" width="280" height="315">
                 </a>
                 {% if recent %}
                 <div class="product-label-group">
@@ -16,7 +16,7 @@
             </figure>
             <div class="product-details">
                 <div class="product-cat">
-                    <a href="shop-default-5.html">{{p.category.name}}</a>
+                    <a href="{% url "core:category-detail" p.category.slug %}">{{p.category.name}}</a>
                 </div>
                 <h3 class="product-name">
                     <a href="{% url "core:product-detail" p.slug %}">{{p.name}}</a>

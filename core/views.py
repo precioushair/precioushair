@@ -37,7 +37,7 @@ def faq(request):
     return render(request, "core/faq.html")
 
 def all_products(request):
-    products = Product.objects.all().order_by('name')
+    products = Product.objects.all().order_by('-id')
     
     # Pagination
     paginator = Paginator(products, 12)  # Show 12 products per page
@@ -55,7 +55,7 @@ def category_list(request):
 
 def category_detail(request, slug):
     category = Category.objects.get(slug=slug)
-    products = Product.objects.filter(category=category)
+    products = Product.objects.filter(category=category).order_by('-id')
         # Pagination
     paginator = Paginator(products, 12)  # Show 12 products per page
     page_number = request.GET.get('page')
@@ -78,7 +78,7 @@ def category_detail(request, slug):
 
 def category_detail_list_mode(request, slug):
     category = Category.objects.get(slug=slug)
-    products = Product.objects.filter( category=category)
+    products = Product.objects.filter( category=category).order_by('-id')
         # Pagination
     paginator = Paginator(products, 12)  # Show 12 products per page
     page_number = request.GET.get('page')
@@ -330,3 +330,30 @@ def checkout_view(request):
 
 def order_view(request, order_id):
     return render(request, "product/order.html")
+
+
+def best_sellers(request):
+    products = Product.objects.filter(is_best_seller=True).order_by('-id')
+    
+    # Pagination
+    paginator = Paginator(products, 12)  # Show 12 products per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'products': page_obj,  # Pass the paginated products
+    }
+    return render(request, "product/all-products.html", context)
+
+def trending(request):
+    products = Product.objects.filter(is_trending=True).order_by('-id')
+    
+    # Pagination
+    paginator = Paginator(products, 12)  # Show 12 products per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'products': page_obj,  # Pass the paginated products
+    }
+    return render(request, "product/all-products.html", context)

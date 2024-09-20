@@ -80,6 +80,29 @@ class Product(models.Model):
     image1 = CloudinaryField(folder="products", default="product.webp", blank=True)
     image2 = CloudinaryField(folder="products", default="product.webp", blank=True)
     image3 = CloudinaryField(folder="products", default="product.webp", blank=True)
+    COLOR_CHOICES = [
+        ('black', 'Black'),
+        ('brown', 'Brown'),
+        ('blonde', 'Blonde'),
+        ('ombre', 'Ombré'),
+        ('highlighted', 'Highlighted'),
+        ('red', 'Red'),
+        ('custom', 'Custom'),
+    ]
+    color = models.CharField(max_length=20, choices=COLOR_CHOICES, blank=True, null=True)
+    
+    # Size options for hair lengths
+    SIZE_CHOICES = [
+        ('12', '12 Inches'),
+        ('14', '14 Inches'),
+        ('16', '16 Inches'),
+        ('18', '18 Inches'),
+        ('20', '20 Inches'),
+        ('22', '22 Inches'),
+        ('24', '24 Inches'),
+        ('26', '26 Inches'),
+    ]
+    size = models.CharField(max_length=5, choices=SIZE_CHOICES, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
     sku = models.CharField(max_length=100, unique=True, blank=True, null=True)
     is_best_seller = models.BooleanField(default=False)

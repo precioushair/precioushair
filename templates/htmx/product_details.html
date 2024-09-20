@@ -1,6 +1,17 @@
 {% load static %}
 {% load humanize %}
-
+<style>
+    .product-detail-img{
+        width: 560px !important;
+        height: auto !important; 
+    }
+    @media (max-width: 600px) {
+        .product-detail-img {
+            max-width: 100% !important; /* Adjust for smaller screens */
+            height: auto !important;
+        }
+    }
+</style>
 <div class="product product-single row mb-7" id="MainContent">
     
     <div class="col-md-6 sticky-sidebar-wrapper" >
@@ -11,7 +22,7 @@
                 <figure class="product-image">
                     <img src="{{product.image.url}}" style="border-radius: 8px;"
                         data-zoom-image="/"
-                        alt="Converse Training Shoes" width="800" height="900">
+                        alt="{{product.name}}" width="800" height="900">
                 </figure>
             </div>
 {% comment %}             

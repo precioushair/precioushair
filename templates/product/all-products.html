@@ -3,7 +3,18 @@
 {% load static %}
 {% load humanize %}
 {% block content %}
-
+<style>
+    .product-detail-img{
+        width: 280px !important;
+        height: 320px !important; 
+    }
+    @media (max-width: 600px) {
+        .product-detail-img {
+            max-width: 100% !important; /* Adjust for smaller screens */
+            height: 215px !important;
+        }
+    }
+</style>
 		<main class="main">
 			<div class="page-header"
 				style="background-image: url('{% static "images/shop/dfuhbgdfurh.jpg" %}');">
@@ -103,30 +114,16 @@
 											btn-primary btn-rounded btn-icon-right" style="border-radius: 3.75rem;">Filter<i class="d-icon-arrow-left"></i></a>
 									<a href="#" class="filter-clean text-primary">Clean All</a>
 								</div>
-								<div class="widget widget-collapsible">
+								<div class="widget widget-collapsible ">
 									<h3 class="widget-title">Product Categories</h3>
-									<ul class="widget-body filter-items search-ul">
+									<ul class="widget-body filter-items search-ul" style="display: none;">
 										{% for c in categories %}
-										<li><a href="#">{{c.name}}</a></li>
+										<li><a href="{{c.get_absolute_url}}">{{c.name}}</a></li>
 										{% endfor %}
 										
 									</ul>
 								</div>
-								<div class="widget widget-collapsible">
-									<h3 class="widget-title">Filter by Price</h3>
-									<div class="widget-body">
-										<form action="#">
-											<div class="filter-price-slider"></div>
-											<div class="filter-actions">
-												<div class="filter-price-text mb-4">Price:
-													<span class="filter-price-range"></span>
-												</div>
-												<button type="submit"
-													class="btn btn-sm btn-dark btn-filter btn-rounded" style="border-radius: 3.75rem;">Filter</button>
-											</div>
-										</form>
-									</div>
-								</div>
+								
 								<div class="widget widget-collapsible">
 									<h3 class="widget-title">Size</h3>
 									<ul class="widget-body filter-items">
@@ -145,7 +142,7 @@
 										<li><a href="#">White<span class="count">(1)</span></a></li>
 									</ul>
 								</div>
-								<div class="widget widget-collapsible">
+								{% comment %} <div class="widget widget-collapsible">
 									<h3 class="widget-title">Brands</h3>
 									<ul class="widget-body filter-items">
 										<li><a href="#">SLS<span>(2)</span></a></li>
@@ -153,7 +150,7 @@
 										<li><a href="#">Comedy<span>(8)</span></a></li>
 										<li><a href="#">Rightcheck<span>(1)</span></a></li>
 									</ul>
-								</div>
+								</div> {% endcomment %}
 							</div>
 						</aside>
 					</div>

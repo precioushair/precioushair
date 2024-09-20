@@ -2,7 +2,18 @@
 {% load static %}
 {% load humanize %}
 {% block content %}
-
+<style>
+    .product-detail-img{
+        width: 280px !important;
+        height: 320px !important; 
+    }
+    @media (max-width: 600px) {
+        .product-detail-img {
+            max-width: 100% !important; /* Adjust for smaller screens */
+            height: 215px !important;
+        }
+    }
+</style>
 
         <main class="main">
             <div class="page-content">
@@ -280,7 +291,7 @@
                             <div class="product text-center">
                                 <figure class="product-media" style="background-color: #f7f8fa;">
                                     <a href="{% url "core:product-detail" p.slug %}" >
-                                        <img src="{{p.image.url}}" alt="{{p.name}}"  style="border-radius: 1.3rem;" width="280" height="280">
+                                        <img src="{{p.image.url}}" alt="{{p.name}}" class="product-detail-img"  style="border-radius: 1.3rem; object-fit: cover;" width="280" height="320">
                                     </a>
                                     <div class="product-action-vertical">
                                         <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i class="d-icon-bag"></i></a>
@@ -327,12 +338,12 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="product text-center" style="position: relative;">
                                     <figure class="product-media" style="background-color: #f7f8fa;">
-                                        <a href="#">
+                                        <a href="{% url "core:best_sellers" %}">
                                             <img src="{% static 'images/shop/2150908585.jpg' %}" alt="" style="border-radius: 1.5rem; height: auto; width: 100%;">
                                         </a>
                                         <div class="product-text" style="position: absolute; bottom: 20px; left: 20px; color: white; text-align: left;">
                                             <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;  color: white;" >Best Sellers</h3>
-                                            <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 10px 17px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
+                                            <a href="{% url "core:best_sellers" %}" style="background-color: rgba(255, 255, 255, 0.3); padding: 10px 17px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
                                         </div>
                                     </figure>
                                 </div>
@@ -342,12 +353,12 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="product text-center" style="position: relative;">
                                     <figure class="product-media" style="background-color: #f7f8fa;">
-                                        <a href="#">
+                                        <a href="{% url "core:best_sellers" %}">
                                             <img src="{% static 'images/shop/1914.jpg' %}" alt="" style="border-radius: 1.5rem; height: auto; width: 100%;">
                                         </a>
                                         <div class="product-text" style="position: absolute; bottom: 20px; left: 20px; color: white; text-align: left;">
                                             <h3 style="font-weight: 600; margin: 0; padding-bottom: 12px;  color: white;" >Trending</h3>
-                                            <a href="#" style="background-color: rgba(255, 255, 255, 0.3); padding: 10px 17px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
+                                            <a href="{% url "core:best_sellers" %}" style="background-color: rgba(255, 255, 255, 0.3); padding: 10px 17px; border-radius: 3.75rem; color: white; text-decoration: none; font-weight: bold; backdrop-filter: blur(17px);">SHOP NOW</a>
                                         </div>
                                     </figure>
                                 </div>
@@ -365,7 +376,7 @@
                             <div class="product text-center">
                                 <figure class="product-media" style="background-color: #f7f8fa;">
                                     <a href="{% url "core:product-detail" p.slug %}">
-                                        <img src="{{p.image.url}}" alt="{{p.name}}" style="border-radius: 1.3rem;" width="280" height="280">
+                                        <img src="{{p.image.url}}" alt="{{p.name}}" class="product-detail-img" style="border-radius: 1.3rem; object-fit: cover" width="280" height="280">
                                     </a>
                                     <div class="product-action-vertical">
                                         <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' p.id %}" hx-target="#cart-items" hx-swap="innerHTML" title="Add to cart"><i class="d-icon-bag"></i></a>
@@ -426,7 +437,7 @@
                         </div>
                     
                         <!-- Mini-carousel section -->
-                        <div class="col-lg-6 col-md-6 col-12 d-flex align-items-center mt-5" style="background: #FAF8F5; border-radius: 1.3rem;">
+                        <div class="col-lg-6 col-md-6 col-12 d-flex align-items-center mt-5 mt-lg-0" style="background: #FAF8F5; border-radius: 1.3rem;">
                             <div class="owl-carousel owl-theme  cols-lg-4 cols-md-3 cols-sm-2 cols-1" data-owl-options="{
                                 'nav': true,
                                 'loop': true,
@@ -452,7 +463,7 @@
                             {% for p in products %}
                                 <div>
                                     <a href="#">
-                                        <img src="{{p.image.url}}" alt="{{p.name}}" style="border-radius: 1.3rem;">
+                                        <img src="{{p.image.url}}" alt="{{p.name}}" class="product-detail-img" style="border-radius: 1.3rem; object-fit: cover">
                                     </a>
                                     <div class="product-details" style="text-align: left; background: #FAF8F5;">
                                         <h3 class="product-name">

@@ -1,6 +1,18 @@
 {% extends "partials/base.html" %}
-{% load static %}
+{% load static humanize %}
 {% block content %}
+<style>
+    .product-detail-img{
+        width: 560px !important;
+        height: auto !important; 
+    }
+    @media (max-width: 600px) {
+        .product-detail-img {
+            max-width: 100% !important; /* Adjust for smaller screens */
+            height: auto !important;
+        }
+    }
+</style>
 		<main class="main mt-6 single-product">
 			<div class="page-content mb-10 pb-6">
 				<div class="container">
@@ -11,31 +23,57 @@
 								<div
 									class="product-single-carousel owl-carousel owl-theme owl-nav-inner row cols-1 gutter-no">
 									<figure class="product-image" style="border-radius: 1.3rem;">
-										<img src="{{product.image.url}}" style="border-radius: 1.3rem;"
+										<img src="{{product.image.url}}" class="product-detail-img" style="border-radius: 1.3rem;"
 											data-zoom-image="#"
-											alt="Converse Training Shoes" width="800" height="900">
+											alt="{{product.name}}" width="800" height="900">
 									</figure>
-									{% for p in p_image %}
+									
+									{% if 'product.webp' not in product.image1.url %}
 									<figure class="product-image" style="border-radius: 1.3rem;">
-										<img src="{{p.image.url}}"
-											data-zoom-image="#" style="border-radius: 1.3rem;"
-											alt="{{p.name}}" width="800" height="900">
+										<img src="{{ product.image1.url }}" data-zoom-image="#" style="border-radius: 1.3rem;" alt="{{ project.name }}" width="800" height="900">
 									</figure>
-									{% endfor %}
+									{% endif %}
+
+									{% if 'product.webp' not in product.image2.url %}
+									<figure class="product-image" style="border-radius: 1.3rem;">
+										<img src="{{ product.image2.url }}" data-zoom-image="#" style="border-radius: 1.3rem;" alt="{{ project.name }}" width="800" height="900">
+									</figure>
+									{% endif %}
+
+									{% if 'product.webp' not in product.image3.url %}
+									<figure class="product-image" style="border-radius: 1.3rem;">
+										<img src="{{ product.image3.url }}" data-zoom-image="#" style="border-radius: 1.3rem;" alt="{{ project.name }}" width="800" height="900">
+									</figure>
+									{% endif %}
+
+									
 
 								</div>
 								<div class="product-thumbs-wrap">
 									<div class="product-thumbs">
 										<div class="product-thumb active">
-											<img src="{{product.image.url}}" alt="product thumbnail"
+											<img src="{{product.image.url}}" alt="{{product.name}}"
 												width="150" height="169">
 										</div>
-										{% for p in p_image %}
+										
+										{% if 'product.webp' not in product.image1.url %}
 										<div class="product-thumb">
-											<img src="{{p.image.url}}" alt="{{p.name}} thumbnail" style="border-radius: 1.3rem;"
-												width="150" height="169">
+											<img src="{{ product.image1.url }}" alt="{{ product.name }} thumbnail" style="border-radius: 1.3rem;" width="150" height="169">
 										</div>
-										{% endfor %}
+										{% endif %}
+
+										{% if 'product.webp' not in product.image2.url %}
+										<div class="product-thumb">
+											<img src="{{ product.image2.url }}" alt="{{ product.name }} thumbnail" style="border-radius: 1.3rem;" width="150" height="169">
+										</div>
+										{% endif %}
+
+										{% if 'product.webp' not in product.image3.url %}
+										<div class="product-thumb">
+											<img src="{{ product.image3.url }}" alt="{{ product.name }} thumbnail" style="border-radius: 1.3rem;" width="150" height="169">
+										</div>
+										{% endif %}
+
 										
 									</div>
 									<button class="thumb-up disabled"><i class="fas fa-chevron-left"></i></button>
@@ -63,7 +101,7 @@
 									SKU: <span class="product-sku">{{product.sku}}</span>
 									Category: <span class="product-brand">{{product.category}}</span>
 								</div>
-								<div class="product-price">&#8358;{{product.price}}</div>
+								<div class="product-price">&#8358;{{product.price|floatformat:"0"|intcomma}}</div>
 								{% comment %} <div class="ratings-container">
 									<div class="ratings-full">
 										<span class="ratings" style="width:80%"></span>
@@ -71,35 +109,24 @@
 									</div>
 									<a href="#product-tab-reviews" class="link-to-tab rating-reviews">( 11 reviews )</a>
 								</div> {% endcomment %}
-								<p class="product-short-desc">{{product.description}}</p>
+								
 								<div class="product-form product-color">
 									<label>Color:</label>
 									<div class="product-variations">
-										<a class="color" data-src="{% static 'images/demos/demo7/products/big1.jpg' %}" href="#"
-											style="background-color: #c8c7ce"></a>
-										<a class="color" data-src="{% static 'images/demos/demo7/products/2.jpg' %}" href="#"
-											style="background-color: #537548"></a>
-										<a class="color" data-src="{% static 'images/demos/demo7/products/3.jpg' %}" href="#"
-											style="background-color: #484975"></a>
-										<a class="color" data-src="{% static 'images/demos/demo7/products/4.jpg' %}" href="#"
-											style="background-color: #313131"></a>
+										<a class="color active" href="#"
+											style="background-color: {{product.color|lower}}; border-radius: 3.75rem; width: 20px; height: 20px;"></a>
+										
 									</div>
 								</div>
 								<div class="product-form product-size">
 									<label>Size:</label>
 									<div class="product-form-group">
 										<div class="product-variations">
-											<a class="size" href="#">XL</a>
-											<a class="size" href="#">L</a>
-											<a class="size" href="#">M</a>
-											<a class="size" href="#">S</a>
+											<a class="size active" href="#">{{product.size}}″</a>
 										</div>
-										<a href="#" class="product-variation-clean" style="display: none;">Clean All</a>
 									</div>
 								</div>
-								<div class="product-variation-price">
-									<span>&#8358;239.00</span>
-								</div>
+								
 								<hr class="product-divider">
 								<div class="product-form product-qty">
 									<div class="product-form-group">
@@ -123,8 +150,15 @@
 										<a href="#" class="social-link social-pinterest fab fa-pinterest-p"></a>
 									</div>
 									<span class="divider d-lg-show"></span>
+									{% if user.is_authenticated %}
+									{% if product.id in wishlist_obj %}
+									<a href="#" class="btn-product btn-wishlist mr-6"  hx-delete="{% url 'core:remove_from_wishlist' product.id %}" hx-target="#wishlist-container" hx-swap="innerHTML" title="Already in wishlist"><i class="d-icon-heart-full"></i>Add to
+										wishlist</a>
+									{% else %}
 									<a href="#" class="btn-product btn-wishlist mr-6" hx-post="{% url 'core:add_to_wishlist' product.id %}" hx-target="#wishlist-container" hx-swap="innerHTML"><i class="d-icon-heart"></i>Add to
 										wishlist</a>
+									{% endif %}
+									{% endif %}
 									{% comment %} <a href="#" class="btn-product btn-compare"><i class="d-icon-compare"></i>Add
 										to
 										compare</a> {% endcomment %}
@@ -132,7 +166,7 @@
 							</div>
 						</div>
 					</div>
-					
+					{% if  r_products %}
 					<section class="pt-3 mt-10">
 						<h2 class="title justify-content-center">Related Products</h2>
 						<div class="owl-carousel owl-theme owl-nav-full row cols-2 cols-md-3 cols-lg-4"
@@ -200,6 +234,7 @@
 							{% endfor %}
 						</div>
 					</section>
+					{% endif %}
 				</div>
 			</div>
 		</main>
