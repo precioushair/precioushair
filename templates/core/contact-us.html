@@ -10,7 +10,7 @@
                     </ul>
                 </div>
             </nav>
-            <div class="page-header" style="background-image: url({% static "images/page-header/contact-us.jpg" %})">
+            <div class="page-header" style="background-image: url({% static "images/shop/47615.jpg" %})">
                 <h1 class="page-title font-weight-bold text-capitalize ls-l">Contact Us</h1>
             </div>
             <div class="page-content mt-10 pt-7">
@@ -47,8 +47,15 @@
                                         <h4 class="ls-m font-weight-bold">Contact Us</h4>
                                         <p>Your email address will not be published. Required fields are
                                             marked *</p>
+                                            <div class="notification" id="notification">
+                                   
+                                                Your message has been received <picture>
+                                                 <source srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/1f389/512.webp" type="image/webp">
+                                                 <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f389/512.gif" alt="🎉" width="22" height="22">
+                                               </picture>
+                                            </div>
                                         <div class="row mb-2">
-                                          
+                                            
                                             <div class="col-md-12 mb-4">
                                                 <input class="form-control" style="border-radius: 1.3rem;" type="text" name="full_name" placeholder="Name *" required>
                                             </div>
@@ -63,12 +70,12 @@
                                                     placeholder="Message*"></textarea>
                                             </div>
                                         </div>
-                                        <button class="btn btn-dark btn-rounded" type="submit" style="border-radius: 3.75rem;">Submit<i
+                                        <button class="btn btn-dark btn-rounded" type="submit" id="contactSubmit" style="border-radius: 3.75rem;">Submit<i
                                                 class="d-icon-arrow-right"></i></button>
                                     </form>
                                   
                                     
-                                </div>
+                                </div> 
                             </div>
                         </div>
                     </div>
@@ -125,7 +132,7 @@
                 </section>
 
 
-                <div class="grey-section google-map" id="googlemaps" style="height: 386px"></div>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.290332522838!2d6.673170374148095!3d6.225397893762691!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1043f3438472f7dd%3A0xab10ef70d66ae1e3!2sEver%20Precious%20Hair!5e0!3m2!1sen!2sng!4v1726861249426!5m2!1sen!2sng" style="width: 100%;" width="1000" height="380" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
             </div>
         </main>
@@ -134,25 +141,72 @@
             $(document).ready(function() {
                 $('#contactForm').on('submit', function(event) {
                     event.preventDefault();
-            
+                    
+                    // Disable the submit button and show spinner
+                    $('#contactSubmit').prop('disabled', true).html('Sending <span class="spinner-border spinner-border-sm" style="margin-left: 3px;" role="status" aria-hidden="true"></span> ');
+                    
                     $.ajax({
                         type: 'POST',
                         url: '/submit-contact/',  // Replace with the correct URL for your view
                         data: $(this).serialize(),
+                        
                         success: function(response) {
                             if (response.status === 'success') {
-                                alert(response.message);
                                 // Optionally, clear the form or display a success message
+                                showNotification();
                                 $('form.pl-lg-2')[0].reset();
                             } else {
-                                alert('Something went wrong, please try again.');
+                                alert(response.message || 'An error occurred. Please try again.');
+                                
                             }
                         },
                         error: function(xhr, errmsg, err) {
-                            alert('An error occurred: ' + errmsg);
+                            alert('An error occurred while submitting the form.');
+                           
+                        },
+                        complete: function() {
+                            // Re-enable the submit button and change the text back to "Send"
+                            $('#contactSubmit').prop('disabled', false).html('Send');
                         }
                     });
                 });
+                
+                function showNotification() {
+                    var notification = document.getElementById("notification");
+                    notification.style.display = "block";
+                    
+                    setTimeout(function() {
+                        notification.style.display = "none";
+                    }, 5000); 
+                }
+            
             });
         </script>
+        <style>
+            .notification {
+                display: none;
+                top: 30%;
+                position: fixed;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 10px;
+                font-size: 14px;
+                background-color: #fefefe;
+                border: 2px solid #f5eaf7;
+                border-radius: 5px;
+                z-index: 1000;
+                animation: slideDown 0.5s ease-in-out;
+                box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+              }
+              
+              @keyframes slideDown {
+                0% {
+                  transform: translate(-50%, -100%);
+                }
+                100% {
+                  transform: translate(-50%, 0);
+                }
+              }
+            
+        </style>
 {% endblock content %}

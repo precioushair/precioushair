@@ -56,7 +56,7 @@
     });
 </script>
 {% for item in cart.items.all %}
-<tr id="cart-item-checkout-{{ item.product.id }}">
+<tr id="cart-item-checkout-{{ item.id }}">
     <td class="product-thumbnail">
         <figure>
             <a href="{% url "core:product-detail" item.product.slug %}">
@@ -89,7 +89,7 @@
         <span class="amount" id="subtotal-{{ item.product.id }}" >₦{% widthratio item.product.price 1 cart|get_quantity:item.product %}</span>
     </td>
     <td class="product-close">
-        <button class="btn btn-link btn-close"  hx-on="htmx:afterRequest: document.getElementById('cart-item-checkout-{{ item.product.id }}').remove()" hx-delete="{% url 'core:remove_from_cart' item.product.id %}" hx-target="#cart-items" hx-swap="innerHTML">
+        <button class="btn btn-link btn-close"  hx-on="htmx:afterRequest: document.getElementById('cart-item-checkout-{{ item.id }}').remove()" hx-delete="{% url 'core:remove_from_cart' item.id %}" hx-target="#cart-items" hx-swap="innerHTML">
             <i class="fas fa-times"></i><span class="sr-only">Close</span>
         </button>
     </td>

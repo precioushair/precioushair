@@ -1,5 +1,5 @@
 {% extends "partials/base.html" %}
-{% load static %}
+{% load static humanize %}
 {% block content %}
         <main class="main">
             <nav class="breadcrumb-nav">
@@ -29,7 +29,7 @@
                             
                             {% if wishlist_items %}
                                 {% for item in wishlist_items %}
-                                <tr  id="wishlist-item-{{ item.id }}">
+                                <tr  id="wishlist-item-{{ item.product.id }}">
                                     <td class="product-thumbnail">
                                         <a href="{% url "core:product-detail" item.product.slug %}">
                                             <figure>
@@ -42,19 +42,19 @@
                                         <a href="{% url "core:product-detail" item.product.slug %}">{{item.product.name|capfirst}}</a>
                                     </td>
                                     <td class="product-price">
-                                        <span class="amount">₦{{item.product.price}}</span>
+                                        <span class="amount">₦{{item.product.price|floatformat:"0"|intcomma}}</span>
                                     </td>
                                     <td class="product-stock-status">
                                         <span class="wishlist-in-stock">{% if p.finished %}Out Of Stock {% else %}<span >In Stock</span>{% endif %} </span>
                                     </td>
                                     <td class="product-add-to-cart">
-                                        <a href="#" style="border-radius: 3.75rem;"   class="btn-product btn-primary"><span>Add to cart</span></a>
+                                        <a href="#" style="border-radius: 3.75rem; background: #e82d7c;" data-target="#addCartModal" hx-post="{% url 'core:add_to_cart' item.product.id %}" hx-target="#cart-items" hx-swap="innerHTML" class="btn-product btn-primary"><span>Add to cart</span></a>
                                     </td>
                                     <td class="product-remove">
                                         <div>
-                                            <a href="#" class="remove" data-product-item="{{ item.product.id }}" data-url="{% url 'core:remove_from_wishlist' item.product.id %}" title="Remove this product">
-                                                <i class="fas fa-times"></i>
-                                            </a>
+                                            <button class="btn btn-link btn-close"  hx-on="htmx:afterRequest: document.getElementById('wishlist-item-{{ item.product.id }}').remove()" hx-delete="{% url 'core:remove_from_wishlist' item.product.id %}" hx-target="#wishlist-container" hx-swap="innerHTML">
+                                                <i class="fas fa-times"></i><span class="sr-only">Close</span>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -64,44 +64,7 @@
                             {% endif %}
                         </tbody>
                     </table>
-               <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        $('.btn-delete-wishlist').click(function() {
-                            let productId = $(this).attr('data-product-item');
-                            let this_val = $(this);
-                    
-                            $.ajax({
-                                url: $(this).attr('data-url'),
-                                type: 'POST',
-                                headers: {
-                                    'X-CSRFToken': '{{ csrf_token }}',  // Ensure you include the CSRF token
-                                    'Content-Type': 'application/json',
-                                },
-                                data: JSON.stringify({ id: productId }),
-                                dataType: 'json',
-                                beforeSend: function() {
-                                    // Show a spinner while processing the request
-                                    this_val.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
-                                },
-                                success: function(data) {
-                                    if (data.success) {
-                                        // Remove the item row from the DOM
-                                        $(`#wishlist-item-${productId}`).remove();
-                                    } else {
-                                        // Handle failure
-                                        this_val.html('<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8L12 12M12 12L8 16M12 12L8 8M12 12L16 16" stroke="rgba(0,0,0,0.95)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="12" r="10" stroke="rgba(0,0,0,0.95)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle></svg>');
-                                    }
-                                },
-                                error: function(xhr, textStatus, errorThrown) {
-                                    console.error('Error:', errorThrown);
-                                    // Handle the error gracefully by restoring the button
-                                    this_val.html('<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8L12 12M12 12L8 16M12 12L8 8M12 12L16 16" stroke="rgba(0,0,0,0.95)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="12" cy="12" r="10" stroke="rgba(0,0,0,0.95)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle></svg>');
-                                }
-                            });
-                        });
-                    });
-                    
-                </script>
+
                 </div>
             </div>
         </main>

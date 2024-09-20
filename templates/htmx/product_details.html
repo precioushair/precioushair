@@ -42,7 +42,22 @@
             <div class="product-price product-price-mobile">&#8358;{{product.price|intcomma}}</div>
             <p class="product-short-desc d-none-mobile">{{product.description}}</p>
           
-            
+            <div class="product-form product-color">
+                <label>Color:</label>
+                <div class="product-variations">
+                    <a class="color active" href="#"
+                        style="background-color: {{product.color|lower}}; border-radius: 3.75rem; width: 20px; height: 20px;"></a>
+                    
+                </div>
+            </div>
+            <div class="product-form product-size">
+                <label>Size in inches:</label>
+                <div class="product-form-group" >
+                    <div class="product-variations" >
+                        <a class="size active" href="#">{{product.size}}″</a>
+                    </div>
+                </div>
+            </div>
             
             <hr class="product-divider">
             <div class="product-form product-qty">

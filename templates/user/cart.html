@@ -254,14 +254,18 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    {% if user.is_authenticated %}
-                                    <button type="submit" class="btn btn-dark btn-rounded btn-checkout mt-3" style="border-radius: 3.75rem;">
-                                        Proceed to checkout
-                                    </button>
-                                    {% else %}
-                                    <a href="#signin" class="btn btn-dark btn-rounded btn-checkout mt-3 login-toggle" style="border-radius: 3.75rem;">
-                                        Proceed to checkout
-                                    </a>
+                                    {% if cart.items.all %}
+                                        {% if user.is_authenticated  %}
+                                        
+                                        <button type="submit" class="btn btn-dark btn-rounded btn-checkout mt-3" style="border-radius: 3.75rem;">
+                                            Proceed to checkout
+                                        </button>
+                                        
+                                        {% else %}
+                                        <a href="#signin" class="btn btn-dark btn-rounded btn-checkout mt-3 login-toggle" style="border-radius: 3.75rem;">
+                                            Proceed to checkout
+                                        </a>
+                                        {% endif %}
                                     {% endif %}
                                     </form>
                                 </div>
