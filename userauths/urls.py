@@ -14,6 +14,7 @@ urlpatterns = [
 
 user_accounts_paths = [
     path('account/', views.account_view, name="account"),
+    path('update-profile/', views.update_profile, name='update_profile'),
     path('logout', views.logout_view, name="logout"),
 ]
 

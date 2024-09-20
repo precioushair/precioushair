@@ -68,46 +68,7 @@
                                             <td class="order-action"><a href="#"
                                                     class="btn btn-primary btn-link btn-underline">View</a></td>
                                         </tr>
-                                        <tr>
-                                            <td class="order-number"><a href="#">#3593</a></td>
-                                            <td class="order-date"><span>February 21, 2022</span></td>
-                                            <td class="order-status"><span>On hold</span></td>
-                                            <td class="order-total"><span>$290.00 for 2 items</span></td>
-                                            <td class="order-action"><a href="#"
-                                                    class="btn btn-primary btn-link btn-underline">View</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="order-number"><a href="#">#2547</a></td>
-                                            <td class="order-date"><span>January 4, 2022</span></td>
-                                            <td class="order-status"><span>On hold</span></td>
-                                            <td class="order-total"><span>$480.00 for 8 items</span></td>
-                                            <td class="order-action"><a href="#"
-                                                    class="btn btn-primary btn-link btn-underline">View</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="order-number"><a href="#">#2549</a></td>
-                                            <td class="order-date"><span>January 19, 2022</span></td>
-                                            <td class="order-status"><span>On hold</span></td>
-                                            <td class="order-total"><span>$680.00 for 5 items</span></td>
-                                            <td class="order-action"><a href="#"
-                                                    class="btn btn-primary btn-link btn-underline">View</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="order-number"><a href="#">#4523</a></td>
-                                            <td class="order-date"><span>Jun 6, 2022</span></td>
-                                            <td class="order-status"><span>On hold</span></td>
-                                            <td class="order-total"><span>$564.00 for 3 items</span></td>
-                                            <td class="order-action"><a href="#"
-                                                    class="btn btn-primary btn-link btn-underline">View</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="order-number"><a href="#">#4526</a></td>
-                                            <td class="order-date"><span>Jun 19, 2022</span></td>
-                                            <td class="order-status"><span>On hold</span></td>
-                                            <td class="order-total"><span>$123.00 for 8 items</span></td>
-                                            <td class="order-action"><a href="#"
-                                                    class="btn btn-primary btn-link btn-underline">View</a></td>
-                                        </tr>
+                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -143,25 +104,32 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="account">
-                                <form action="#" class="form">
+                                <form action="{% url 'update_profile' %}" method="POST" class="form">
+                                    {% csrf_token %}
                                     
-                                    <label>Full Name </label>
-                                    <input type="text" class="form-control mb-0" name="full_name" value="{{request.user.full_name}}" required>
-                                    <small class="d-block form-text mb-7">This will be how your name will be displayed
-                                        in the account section and in reviews</small>
+                                    <label>Full Name</label>
+                                    <input type="text" class="form-control mb-0" name="full_name" value="{{ request.user.full_name }}" required>
+                                    <small class="d-block form-text mb-7">This will be how your name will be displayed in the account section and in reviews.</small>
+                                    
                                     <label>Email Address *</label>
-                                    <input type="email" class="form-control" name="email" required>
+                                    <input type="email" class="form-control" name="email" value="{{ request.user.email }}" required>
+                                    
                                     <fieldset>
                                         <legend>Password Change</legend>
+                                        
                                         <label>Current password (leave blank to leave unchanged)</label>
                                         <input type="password" class="form-control" name="current_password">
+                                        
                                         <label>New password (leave blank to leave unchanged)</label>
                                         <input type="password" class="form-control" name="new_password">
+                                        
                                         <label>Confirm new password</label>
                                         <input type="password" class="form-control" name="confirm_password">
                                     </fieldset>
+                                    
                                     <button type="submit" class="btn btn-primary">SAVE CHANGES</button>
                                 </form>
+                                
                             </div>
                         </div>
                     </div>

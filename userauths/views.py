@@ -12,6 +12,9 @@ from django.utils import timezone
 from django.contrib.auth.hashers import make_password
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
 
 def register_view(request):
     form = UserRegisterForm(request.POST)
@@ -177,3 +180,36 @@ def submit_contact_form(request):
         
         return JsonResponse({'status': 'success', 'message': 'Form submitted successfully!'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request.'})
+
+def update_profile(request):
+    if request.method == 'POST':
+        # Get user data from the form
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        # Update full name and email
+        user = request.user
+        user.full_name = full_name
+        user.email = email
+        user.save()
+
+        # Check if the user wants to change the password
+        if current_password and new_password and confirm_password:
+            if new_password == confirm_password:
+                if user.check_password(current_password):
+                    user.set_password(new_password)
+                    user.save()
+                    update_session_auth_hash(request, user)  # Keep the user logged in after password change
+                    messages.success(request, 'Your password has been successfully updated!')
+                else:
+                    messages.error(request, 'Current password is incorrect.')
+            else:
+                messages.error(request, 'New passwords do not match.')
+
+        messages.success(request, 'Profile updated successfully!')
+        return redirect('userauths:account')  # Replace 'profile' with the name of the profile page URL
+
+    return render(request, 'user/account.html')
