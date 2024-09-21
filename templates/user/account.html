@@ -60,15 +60,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for o in orders %}
                                         <tr>
-                                            <td class="order-number"><a href="#">#3596</a></td>
-                                            <td class="order-date"><span>February 24, 2022</span></td>
-                                            <td class="order-status"><span>On hold</span></td>
-                                            <td class="order-total"><span>$900.00 for 5 items</span></td>
+                                            <td class="order-number"><a href="#">#{{o.id}}</a></td>
+                                            <td class="order-date"><span>{{o.created_at|date:"M, d Y"}}</span></td>
+                                            <td class="order-status"><span>{{o.complete}}</span></td>
+                                            <td class="order-total"><span>₦{{o.calculate_total}}</span></td>
                                             <td class="order-action"><a href="#"
                                                     class="btn btn-primary btn-link btn-underline">View</a></td>
                                         </tr>
-                                       
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -104,7 +105,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="account">
-                                <form action="{% url 'update_profile' %}" method="POST" class="form">
+                                <form action="{% url 'userauths:update_profile' %}" method="POST" class="form">
                                     {% csrf_token %}
                                     
                                     <label>Full Name</label>

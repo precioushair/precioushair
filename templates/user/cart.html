@@ -85,8 +85,7 @@
             <div class="page-content pt-7 pb-10">
                 <div class="step-by pr-4 pl-4">
                     <h3 class="title title-simple title-step active"><a href="{% url "core:view_cart" %}">1. Shopping Cart</a></h3>
-                    <h3 class="title title-simple title-step"><a href="{% url "core:checkout" %}">2. Checkout</a></h3>
-                    <h3 class="title title-simple title-step"><a href="#">3. Order Complete</a></h3>
+                    <h3 class="title title-simple title-step"><a href="#">2. Order Complete</a></h3>
                 </div>
                 <style>
                     @media screen and (max-width: 720px) {
@@ -139,7 +138,7 @@
                             <div class="sticky-sidebar" data-sticky-options="{'bottom': 20}">
                                 <div class="summary mb-4" style="border-radius: 1.25rem;">
                                     <h3 class="summary-title text-left">Cart Totals</h3>
-                                    <form method="POST" action="{% url 'core:checkout' %}">
+                                    <form method="POST" action="{% url 'core:checkout' %}" id="checkout-form">
                                         {% csrf_token %}
                                     <table class="shipping">
                                         <tr class="summary-subtotal">
@@ -191,9 +190,10 @@
                                     </table>
                                     <div class="shipping-address" id="shipping-address" style="display: none;">
                                         <label>Shipping to <strong>all locations</strong></label>
+                                        <input type="hidden" class="form-control" name="country" value="Nigeria"  style="border-radius: 1.25rem" />
                                         <div class="select-box">
                                      
-                                            <select class="form-control" style="border-radius: 1.25rem" id="stateSelect" name="country" onchange="populateCities()">
+                                            <select class="form-control" style="border-radius: 1.25rem" id="stateSelect" name="state" onchange="populateCities()">
                                                 <option value="">Select locations</option>
                                                 <option value="Abia">Abia</option>
                                                 <option value="Adamawa">Adamawa</option>
@@ -237,12 +237,17 @@
                                             
                                         </div>
                                         <div class="select-box">
-                                            <select name="country" class="form-control" style="border-radius: 1.25rem" id="citySelect">
+                                            <select name="city" class="form-control" style="border-radius: 1.25rem" id="citySelect">
                                                 <option class="pb-5" value="select">Select City</option>
                                             </select>
                                         </div>
-                                        <input type="text" class="form-control" name="code" placeholder="Town / City" style="border-radius: 1.25rem" />
-                                        
+                                        <input type="text" class="form-control" name="address_line_1" placeholder="Town / City" style="border-radius: 1.25rem" />
+                                        <input type="text" class="form-control" name="postal_code" placeholder="Postal code" style="border-radius: 1.25rem" />
+
+                    
+                                    
+                                       
+
                                     </div>
                                     <table class="total">
                                         <tr class="summary-subtotal">
@@ -285,5 +290,27 @@
                 content: "" !important;
             }
         </style>
+        <script>
+            $(document).on('submit', '#checkout-form', function(event) {
+                event.preventDefault();  // Prevent the default form submission
+        
+                $.ajax({
+                    url: "{% url 'core:checkout' %}",  // Make sure this URL points to the correct endpoint
+                    method: "POST",
+                    data: $(this).serialize(),  // Serialize form data
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            alert(response.message);  // Show success message
+                            window.location.href = '/order/' + response.order_id;  // Redirect to the order page
+                        } else {
+                            alert(response.message);  // Show error message
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred: ' + error);  // Handle the error
+                    }
+                });
+            });
+        </script>
         
       {% endblock content %}

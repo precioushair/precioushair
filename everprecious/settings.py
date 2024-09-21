@@ -99,6 +99,7 @@ if not DEBUG:
             'PASSWORD': config('PASSWORD'),
             'HOST': config('HOST'),
             'PORT': config('DBPORT'),
+            'CONN_MAX_AGE': 600,
         }
     }
 else:

@@ -7,8 +7,7 @@
 			<div class="page-content pt-7 pb-10 mb-10">
 				<div class="step-by pr-4 pl-4">
 					<h3 class="title title-simple title-step"><a href="{% url "core:view_cart" %}">1. Shopping Cart</a></h3>
-					<h3 class="title title-simple title-step"><a href="{% url "core:checkout" %}">2. Checkout</a></h3>
-					<h3 class="title title-simple title-step active"><a href="#">3. Order Complete</a></h3>
+					<h3 class="title title-simple title-step active"><a href="#">2. Order Complete</a></h3>
 				</div>
 				<div class="container mt-8">
 					<div class="order-message mr-auto ml-auto">
@@ -37,28 +36,28 @@
 					<div class="order-results">
 						<div class="overview-item">
 							<span>Order number:</span>
-							<strong>4935</strong>
+							<strong>{{ order.id }}</strong>
 						</div>
 						<div class="overview-item">
 							<span>Status:</span>
-							<strong>Processing</strong>
+							<strong>{{ order.complete|yesno:"Completed,Pending" }}</strong>
 						</div>
 						<div class="overview-item">
 							<span>Date:</span>
-							<strong>November 20, 2020</strong>
+							<strong>{{ order.created_at|date:"M, d Y" }}</strong>
 						</div>
 						<div class="overview-item">
 							<span>Email:</span>
-							<strong><a href="mail:" class="__cf_email__"
-									>example@gmail.com</a></strong>
+							<strong><a href="#" class="__cf_email__"
+									>{{ order.customer.email }}</a></strong>
 						</div>
 						<div class="overview-item">
 							<span>Total:</span>
-							<strong>$312.00</strong>
+							<strong>₦{{ order.calculate_total|floatformat:"0"|intcomma }}</strong>
 						</div>
 						<div class="overview-item">
 							<span>Payment method:</span>
-							<strong>Cash on delivery</strong>
+							<strong>Bank Transfer</strong>
 						</div>
 					</div>
 					<h2 class="title title-simple text-left pt-4 font-weight-bold text-uppercase">Order Details</h2>
@@ -73,45 +72,38 @@
 								</tr>
 							</thead>
 							<tbody>
+								{% for item in order_items %}
 								<tr>
-									<td class="product-name">Beige knitted shoes <span> <i class="fas fa-times"></i>
-											1</span></td>
-									<td class="product-price">$84.00</td>
+									<td class="product-name">{{ item.product.name }} <span> <i class="fas fa-times"></i>
+										{{ item.quantity }}</span></td>
+									<td class="product-price">₦{% widthratio item.quantity 1 item.product.price %}</td>
 								</tr>
-								<tr>
-									<td class="product-name">Best dark blue pedestrian <span><i
-												class="fas fa-times"></i> 1</span></td>
-									<td class="product-price">$76.00</td>
-								</tr>
-								<tr>
-									<td class="product-name">Women's fashion handing <span><i class="fas fa-times"></i>
-											2</span></td>
-									<td class="product-price">$152.00</td>
-								</tr>
+								{% endfor %}
+								
 								<tr class="summary-subtotal">
 									<td>
 										<h4 class="summary-subtitle">Subtotal:</h4>
 									</td>
-									<td class="summary-subtotal-price">$312.00</td>
+									<td class="summary-subtotal-price">₦{{ total|floatformat:0|intcomma }}</td>
 								</tr>
 								<tr class="summary-subtotal">
 									<td>
 										<h4 class="summary-subtitle">Shipping:</h4>
 									</td>
-									<td class="summary-subtotal-price">Free shipping</td>
+									<td class="summary-subtotal-price">Varies</td>
 								</tr>
 								<tr class="summary-subtotal">
 									<td>
 										<h4 class="summary-subtitle">Payment method:</h4>
 									</td>
-									<td class="summary-subtotal-price">Cash on delivery</td>
-								</tr>
+									<td class="summary-subtotal-price">Online Transfer</td>
+								</tr> 
 								<tr class="summary-subtotal">
 									<td>
 										<h4 class="summary-subtitle">Total:</h4>
 									</td>
 									<td>
-										<p class="summary-total-price">$312.00</p>
+										<p class="summary-total-price">₦{{ total|floatformat:0|intcomma }}</p>
 									</td>
 								</tr>
 							</tbody>
@@ -121,13 +113,12 @@
 					<div class="address-info pb-8 mb-6">
 						<p class="address-detail pb-2">
 							John Doe<br>
-							Riode Company<br>
-							Steven street<br>
-							El Carjon, CA 92020<br>
-							123456789
+							{{ shipping_address.state }}<br>
+							{{ shipping_address.city }}<br>
+							{{ shipping_address.address_line_1 }}<br>
+							{{ shipping_address.postal_code }}
 						</p>
-						<p class="email"><a href="mail:" class="__cf_email__"
-								>admin@gmail.com</a></p>
+						
 					</div>
 					<a href="{% url "core:products" %}" class="btn btn-icon-left btn-dark btn-back btn-rounded btn-md mb-4" style="border-radius: 3.75rem;"><i
 							class="d-icon-arrow-left"></i> Back to List</a>

@@ -283,8 +283,10 @@ def update_cart(request):
     return HttpResponse(status=400)  # Return a bad request response if not POST
 
 def view_cart(request):
-
-    return render(request, "user/cart.html")
+    shipping_form = ShippingAddressForm()
+    context ={'shipping_form': shipping_form}
+    
+    return render(request, "user/cart.html", context)
 
 
 @login_required
@@ -298,10 +300,11 @@ def checkout_view(request):
         shipping_form = ShippingAddressForm(request.POST, instance=shipping_address)
 
         if shipping_option == 'pickup':
-            # If the user selects 'pickup', you can skip address validation
             order.shipping_option = 'pickup'
             order.save()
-            return redirect('core:order', order_id=order.id)
+
+            # Return success response for API
+            return JsonResponse({'status': 'success', 'message': 'Order created for pickup', 'order_id': order.id})
 
         elif shipping_form.is_valid():
             shipping_address = shipping_form.save(commit=False)
@@ -317,20 +320,35 @@ def checkout_view(request):
                     quantity=cart_item.quantity
                 )
 
-            # Optionally clear the cart after order is created
             cart.items.all().delete()
 
-            return redirect('core:order', order_id=order.id)
+            return JsonResponse({'status': 'success', 'message': 'Order created with shipping', 'order_id': order.id})
 
-    else:
-        shipping_form = ShippingAddressForm(instance=shipping_address)
-
-    return render(request, 'product/checkout.html', {'cart': cart, 'shipping_form': shipping_form})
+        # Handle form validation error
+        return JsonResponse({'status': 'error', 'message': 'Form validation failed'})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 
 def order_view(request, order_id):
-    return render(request, "product/order.html")
+    # Get the order by ID, ensuring it belongs to the logged-in user
+    order = get_object_or_404(Order, id=order_id, customer=request.user)
 
+    # Get the shipping address for the order
+    shipping_address = order.shipping_addresses.first()
+
+    # Get all items in the order
+    order_items = order.items.all()
+
+    # Pass the details to the template
+    context = {
+        'order': order,
+        'shipping_address': shipping_address,
+        'order_items': order_items,
+        'total': order.calculate_total()  # Optional, if you want to show the total
+    }
+
+    return render(request, "product/order.html", context)
 
 def best_sellers(request):
     products = Product.objects.filter(is_best_seller=True).order_by('-id')

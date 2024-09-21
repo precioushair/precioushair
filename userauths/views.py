@@ -85,7 +85,7 @@ def account_view(request):
     context = {
         "orders" : customer_orders
     }
-    return render(request, "user/account.html")
+    return render(request, "user/account.html", context)
 
 
 
