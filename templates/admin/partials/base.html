@@ -250,6 +250,53 @@
         </svg>
       </a>
     </li>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const notificationToggle = document.querySelector('.dropdown-toggle');
+          const notificationContainer = document.querySelector('.notification-container');
+          
+          notificationToggle.addEventListener('click', function() {
+              // Show loading state
+              notificationContainer.innerHTML = '<p>Loading notifications...</p>';
+      
+              fetch('/api/notifications/')
+                  .then(response => response.json())
+                  .then(data => {
+                      notificationContainer.innerHTML = '';  // Clear previous notifications
+      
+                      // Populate notifications
+                      data.notifications.forEach(notification => {
+                          const card = document.createElement('div');
+                          card.classList.add('card', 'mb-2');
+                          card.innerHTML = `
+                              <div class="card-body">
+                                  <div class="d-flex">
+                                      <div class="flex-shrink-0">
+                                          <svg class="pc-icon text-primary">
+                                              <use xlink:href="#custom-notification-icon"></use>
+                                          </svg>
+                                      </div>
+                                      <div class="flex-grow-1 ms-3">
+                                          <span class="float-end text-sm text-muted">${new Date(notification.timestamp).toLocaleString()}</span>
+                                          <h5 class="text-body mb-2">${notification.message}</h5>
+                                      </div>
+                                  </div>
+                              </div>
+                          `;
+                          notificationContainer.appendChild(card);
+                      });
+      
+                      // Update unread count
+                      document.querySelector('.badge').textContent = data.unread_count;
+                  })
+                  .catch(error => {
+                      console.error('Error fetching notifications:', error);
+                      notificationContainer.innerHTML = '<p>Error loading notifications.</p>';
+                  });
+          });
+      });
+      </script>
+      
     <li class="dropdown pc-h-item">
       <a
         class="pc-head-link dropdown-toggle arrow-none me-0"
@@ -271,87 +318,14 @@
         </div>
         <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
           <p class="text-span">Today</p>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <svg class="pc-icon text-primary">
-                    <use xlink:href="#custom-layer"></use>
-                  </svg>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-sm text-muted">2 min ago</span>
-                  <h5 class="text-body mb-2">UI/UX Design</h5>
-                  <p class="mb-0"
-                    >Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type</p
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <svg class="pc-icon text-primary">
-                    <use xlink:href="#custom-sms"></use>
-                  </svg>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-sm text-muted">1 hour ago</span>
-                  <h5 class="text-body mb-2">Message</h5>
-                  <p class="mb-0">Lorem Ipsum has been the industry's standard dummy text ever since the 1500.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p class="text-span">Yesterday</p>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <svg class="pc-icon text-primary">
-                    <use xlink:href="#custom-document-text"></use>
-                  </svg>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-sm text-muted">2 hour ago</span>
-                  <h5 class="text-body mb-2">Forms</h5>
-                  <p class="mb-0"
-                    >Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type</p
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-         
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <svg class="pc-icon text-primary">
-                    <use xlink:href="#custom-security-safe"></use>
-                  </svg>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-sm text-muted">5 hour ago</span>
-                  <h5 class="text-body mb-2">Security</h5>
-                  <p class="mb-0"
-                    >Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                    type and scrambled it to make a type</p
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="notification-container"></div>  <!-- Container for notifications -->
         </div>
         <div class="text-center py-2">
           <a href="#!" class="link-danger">Clear all Notifications</a>
         </div>
       </div>
     </li>
+    
     <li class="dropdown pc-h-item header-user-profile">
       <a
         class="pc-head-link dropdown-toggle arrow-none me-0"
@@ -478,69 +452,80 @@
 </div>
  </div>
 </header>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const announcementOffcanvas = document.getElementById('announcement');
+    const ordersContainer = document.getElementById('recent-orders-container');
+    announcementOffcanvas.addEventListener('show.bs.offcanvas', function() {
+      // Show loading spinner or message when fetching starts
+      ordersContainer.innerHTML = 'Loading Recent orders <div class="spinner-border" id="loader" style="height: 14px; width: 14px;" role="status"><span class="sr-only">Loading...</span></div>';
+      fetchRecentOrders();
+    });
+
+    function fetchRecentOrders() {
+      fetch('/api/recent-orders/')
+        .then(response => response.json())
+        .then(data => {
+          const ordersContainer = document.getElementById('recent-orders-container');
+          ordersContainer.innerHTML = '';
+
+          if (data.orders.length === 0) {
+            ordersContainer.innerHTML = '<p>No recent orders available.</p>';
+          } else {
+            data.orders.forEach(order => {
+              const orderCard = `
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <div class="align-items-center d-flex flex-wrap gap-2 mb-3">
+                      <div class="badge bg-light-success f-12">${order.status}</div>
+                      <p class="mb-0 text-muted">${order.created_at}pm</p>
+                      <span class="badge dot bg-warning"></span>
+                    </div>
+                    <h5 class="mb-3">Order #${order.order_id}</h5>
+                    <p class="text-muted">Email: ${order.customer_email}</p>
+                     <p class="text-muted">Name: ${order.customer_name}</p>
+                    <p class="text-muted">Total: ₦${order.total}</p>
+                    <a href="/admin/core/order/${order.order_id}/" class="btn btn-outline-secondary">View Order</a>
+                  </div>
+                </div>`;
+              ordersContainer.innerHTML += orderCard;
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching recent orders:', error);
+        });
+    }
+    fetch('/api/orders-summary/')
+        .then(response => response.json())
+        .then(data => {
+            // Replace the content of the total earnings element
+            document.getElementById('total_earnings').innerHTML = '₦' + data.total_earnings;
+
+            // Replace the content of the total orders element
+            document.getElementById('total_orders').innerHTML = data.total_orders;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+  });
+</script>
+
 <div class="offcanvas pc-announcement-offcanvas offcanvas-end" tabindex="-1" id="announcement" aria-labelledby="announcementLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="announcementLabel">What's new announcement?</h5>
+    <h5 class="offcanvas-title" id="announcementLabel">Recent Orders</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <p class="text-span">Today</p>
-    <div class="card mb-3">
-      <div class="card-body">
-        <div class="align-items-center d-flex flex-wrap gap-2 mb-3">
-          <div class="badge bg-light-success f-12">Big News</div>
-          <p class="mb-0 text-muted">2 min ago</p>
-          <span class="badge dot bg-warning"></span>
-        </div>
-        <h5 class="mb-3">Able Pro is Redesigned</h5>
-        <p class="text-muted">Able Pro is completely renowed with high aesthetics User Interface.</p>
-        <img src="{% static 'assets/images/layout/img-announcement-1.png' %}" alt="img" class="img-fluid mb-3" />
-        <div class="row">
-          <div class="col-12">
-            <div class="d-grid"
-              ><a
-                class="btn btn-outline-secondary"
-                href="https://1.envato.market/zNkqj6"
-                target="_blank"
-                >Check Now</a
-              ></div
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card mb-3">
-      <div class="card-body">
-        <div class="align-items-center d-flex flex-wrap gap-2 mb-3">
-          <div class="badge bg-light-warning f-12">Offer</div>
-          <p class="mb-0 text-muted">2 hour ago</p>
-          <span class="badge dot bg-warning"></span>
-        </div>
-        <h5 class="mb-3">Able Pro is in best offer price</h5>
-        <p class="text-muted">Download Able Pro exclusive on themeforest with best price. </p>
-        <a
-          href="https://1.envato.market/zNkqj6"
-          target="_blank"
-          ><img src="{% static 'assets/images/layout/img-announcement-2.png' %}" alt="img" class="img-fluid"
-        /></a>
-      </div>
-    </div>
+    <p class="text-span">Recent Orders</p>
 
-    <p class="text-span mt-4">Yesterday</p>
-    <div class="card mb-3">
-      <div class="card-body">
-        <div class="align-items-center d-flex flex-wrap gap-2 mb-3">
-          <div class="badge bg-light-primary f-12">Blog</div>
-          <p class="mb-0 text-muted">12 hour ago</p>
-          <span class="badge dot bg-warning"></span>
-        </div>
-        <h5 class="mb-3">Featured Dashboard Template</h5>
-        <p class="text-muted">Do you know Able Pro is one of the featured dashboard template selected by Themeforest team.?</p>
-        <img src="{% static 'assets/images/layout/img-announcement-3.png' %}" alt="img" class="img-fluid" />
-      </div>
+    <!-- Empty container to dynamically insert recent orders -->
+    <div id="recent-orders-container">
+      <!-- Orders will be loaded here by JavaScript -->
     </div>
   </div>
 </div>
+
 <!-- [ Header ] end -->
 
 

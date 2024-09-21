@@ -244,3 +244,12 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Admin receiving the notification
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'Notification for {self.user.username} - {self.message[:20]}'

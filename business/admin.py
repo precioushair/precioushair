@@ -4,25 +4,6 @@ from django.core.paginator import Paginator
 
 
 
-class MyAdminSite(admin.AdminSite):
-    def index(self, request, extra_context=None):
-        total_orders = Order.objects.count()
-        completed_orders = Order.objects.filter(complete=True).count()
-        pending_orders = Order.objects.filter(complete=False).count()
-        
-        custom_context = {
-            'total_orders': total_orders,
-            'completed_orders': completed_orders,
-            'pending_orders': pending_orders,
-        }
-        
-        if extra_context is None:
-            extra_context = {}
-        extra_context.update(custom_context)
-        
-        return super().index(request, extra_context=extra_context) 
-
-
     
 
     
@@ -47,7 +28,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 
-admin_site = MyAdminSite(name='myadmin')
+
 admin.site.register(Order)
 admin.site.register(Review)
 admin.site.register(Coupon)
