@@ -9,6 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.template.loader import render_to_string
 from django.contrib import messages
+import logging
+logging.basicConfig(level=logging.DEBUG)
 # Create your views here.
 
 

@@ -52,13 +52,14 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+        # Your custom middleware
+    "core.middleware.EnsureSessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # Your custom middleware
-    "core.middleware.EnsureSessionMiddleware",
+
 ]
 
 ROOT_URLCONF = "everprecious.urls"
@@ -99,7 +100,6 @@ if not DEBUG:
             'PASSWORD': config('PASSWORD'),
             'HOST': config('HOST'),
             'PORT': config('DBPORT'),
-            'CONN_MAX_AGE': 600,
         }
     }
 else:
