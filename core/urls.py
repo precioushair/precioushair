@@ -38,6 +38,6 @@ urlpatterns = [
 
     path('api/cities/<str:state>/', get_cities, name='get_cities'),
     path('search_query/', views.search_queries, name='search_query'),
-    path('search/', views.search, name='search'),
+    path('search/', views.search_view, name='search'),
 ]
 

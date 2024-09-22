@@ -657,8 +657,8 @@
 <a class="mobile-menu-close" href="#"><i class="d-icon-times"></i></a>
 
 <div class="mobile-menu-container scrollable" style="border-bottom-right-radius: 3.75rem;border-top-right-radius: 3.75rem;">
-    <form action="#" class="input-wrapper">
-        <input type="text" class="form-control item_search" style="border-radius: 3.75rem;" name="search" autocomplete="off" 
+    <form action="{% url 'core:search' %}" method="GET" class="input-wrapper">
+        <input type="text" class="form-control item_search"  style="border-radius: 3.75rem;" name="search" autocomplete="off" 
             placeholder="Search your keyword..." required />
         <button class="btn btn-search" style="border-radius: 3.75rem;" type="submit" title="submit-button">
             <i class="d-icon-search"></i>

@@ -9,8 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.template.loader import render_to_string
 from django.contrib import messages
-import logging
-logging.basicConfig(level=logging.DEBUG)
+from django.db.models import Q
+from itertools import chain
 # Create your views here.
 
 
@@ -200,8 +200,7 @@ def remove_from_cart(request, cart_item_id):
     
     return render(request, 'htmx/cart_items.html', {'cart_item': cart_item, 'removed': True})
 
-def search(request):
-    return render(request, "core/search.html")
+
 
 def search_queries(request):
     query = request.GET.get('query', '').strip()
@@ -383,3 +382,22 @@ def trending(request):
         'products': page_obj,  # Pass the paginated products
     }
     return render(request, "product/all-products.html", context)
+
+
+
+def search_view(request):
+    query = request.GET.get('search', '')  # Get the search term from the query string
+    products = []
+
+    if query:
+        # Search through Category names and Product names
+        products = Product.objects.filter(Q(name__icontains=query))
+
+
+    context = {
+        'query': query,
+        'search_results': products,
+        'count': products.count(),
+    }
+
+    return render(request, 'product/search.html', context)

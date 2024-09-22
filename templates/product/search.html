@@ -1,0 +1,177 @@
+
+{% extends "partials/base.html" %}
+{% load static humanize %}
+{% block content %}
+<style>
+    .product-detail-img{
+        width: 280px !important;
+        height: 320px !important; 
+        border-radius: 1.25rem;
+    }
+    @media (max-width: 600px) {
+        .product-detail-img {
+            max-width: 100% !important; /* Adjust for smaller screens */
+            height: 215px !important;
+        }
+    }
+</style>
+        <main class="main">
+            <div class="page-header"
+                style="background-image: url('{% static "images/shop/pikaso_embed_quality.png" %}');">
+                <h3 class="page-subtitle">''{{query}}''</h3>
+                <h1 class="page-title">Found {{count}} products</h1>
+                <ul class="breadcrumb">
+                    <li><a href="/"><i class="d-icon-home"></i></a></li>
+                    <li class="delimiter">/</li>
+                    <li><a href="#">Search</a></li>
+                    <li class="delimiter">/</li>
+                    <li>{{query}}</li>
+                </ul>
+            </div>
+
+            <div class="page-content mb-10 pb-6">
+                <div class="container">
+                    <div class="row main-content-wrap gutter-lg">
+                        <div class="main-content">
+                            
+                            <div class="row cols-2 cols-md-3 cols-lg-4 product-wrapper " style="margin-top: 20px;">
+                                {% for p in search_results %}
+                                <div class="product-wrap">
+                                    <div class="product text-center">
+                                        <figure class="product-media">
+                                            <a href="{{p.url}}">
+                                                <img src="{{p.image.url}}" class="product-detail-img" alt="{{p.name}}" width="280" height="315">
+                                            </a>
+                                            {% if p.recent %}
+                                            <div class="product-label-group">
+                                                <label class="product-label label-new" style="border-radius: 3.75rem;">new</label>
+                                            </div>
+                                            {% endif %}
+                                        </figure>
+                                        <div class="product-details">
+                                            
+                                            <h3 class="product-name">
+                                                <a href="{{p.url}}">{{p.name}}</a>
+                                            </h3>
+                                            <div class="product-price">
+                                                <ins class="new-price">₦{{p.price|floatformat:0|intcomma}}</ins>
+                                            </div>
+                                           
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                            </div>
+                            <nav class="toolbox toolbox-pagination">
+                                <p class="show-info">Showing <span>12 of 56</span> Products</p>
+                                <ul class="pagination">
+                                    <li class="page-item disabled">
+                                        <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
+                                            aria-disabled="true">
+                                            <i class="d-icon-arrow-left"></i>Prev
+                                        </a>
+                                    </li>
+                                    <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item page-item-dots"><a class="page-link" href="#">6</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link page-link-next" href="#" aria-label="Next">
+                                            Next<i class="d-icon-arrow-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <aside class="col-lg-3 sidebar shop-sidebar">
+                            <div class="sidebar-overlay"></div>
+                            <a class="sidebar-close" href="#"><i class="d-icon-times"></i></a>
+                            <div class="sidebar-content">
+                                <div class="filter-actions mb-4">
+                                    <a href="#" class="sidebar-toggle-btn toggle-remain btn btn-sm btn-outline 
+											btn-primary btn-rounded btn-icon-right">Filter<i class="d-icon-arrow-left"></i></a>
+                                    <a href="#" class="filter-clean text-primary">Clean All</a>
+                                </div>
+                                <div class="widget widget-collapsible">
+                                    <h3 class="widget-title">Product Categories</h3>
+                                    <ul class="widget-body filter-items search-ul">
+                                        <li>
+                                            <a href="#">Clothing<span class="count">(6)</span></a>
+                                            <ul>
+                                                <li><a href="#">Summer sale<span class="count">(2)</span></a></li>
+                                                <li><a href="#">Shirts<span class="count">(3)</span></a></li>
+                                                <li><a href="#">Trunks<span class="count">(1)</span></a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#">Shoes<span class="count">(5)</span></a></li>
+                                        <li><a href="#">Men<span class="count">(8)</span></a></li>
+                                        <li><a href="#">Women<span class="count">(3)</span></a></li>
+                                        <li><a href="#">Bags & Backpacks<span class="count">(5)</span></a></li>
+                                        <li>
+                                            <a href="#">Watches<span class="count">(4)</span></a>
+                                            <ul>
+                                                <li><a href="#">Men's<span class="count">(2)</span></a></li>
+                                                <li><a href="#">Woment's<span class="count">(2)</span></a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="#">Accessosries<span class="count">(1)</span></a>
+                                            <ul>
+                                                <li><a href="#">Ring<span class="count">(1)</span></a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="widget widget-collapsible">
+                                    <h3 class="widget-title">Filter by Price</h3>
+                                    <div class="widget-body">
+                                        <form action="#">
+                                            <div class="filter-price-slider"></div>
+                                            <div class="filter-actions">
+                                                <div class="filter-price-text mb-4">Price:
+                                                    <span class="filter-price-range"></span>
+                                                </div>
+                                                <button type="submit"
+                                                    class="btn btn-sm btn-dark btn-filter btn-rounded">Filter</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="widget widget-collapsible">
+                                    <h3 class="widget-title">Size</h3>
+                                    <ul class="widget-body filter-items">
+                                        <li><a href="#">Extra Large<span class="count">(2)</span></a></li>
+                                        <li><a href="#">Large<span class="count">(5)</span></a></li>
+                                        <li><a href="#">Medium<span class="count">(8)</span></a></li>
+                                        <li><a href="#">Small<span class="count">(1)</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="widget widget-collapsible">
+                                    <h3 class="widget-title">Color</h3>
+                                    <ul class="widget-body filter-items">
+                                        <li><a href="#">Black<span class="count">(2)</span></a></li>
+                                        <li><a href="#">Blue<span class="count">(5)</span></a></li>
+                                        <li><a href="#">Green<span class="count">(8)</span></a></li>
+                                        <li><a href="#">White<span class="count">(1)</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="widget widget-collapsible">
+                                    <h3 class="widget-title">Brands</h3>
+                                    <ul class="widget-body filter-items">
+                                        <li><a href="#">SLS<span>(2)</span></a></li>
+                                        <li><a href="#">Cinderella<span>(5)</span></a></li>
+                                        <li><a href="#">Comedy<span>(8)</span></a></li>
+                                        <li><a href="#">Rightcheck<span>(1)</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+{% endblock %}
