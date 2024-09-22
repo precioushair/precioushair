@@ -138,6 +138,12 @@
                             <div class="sticky-sidebar" data-sticky-options="{'bottom': 20}">
                                 <div class="summary mb-4" style="border-radius: 1.25rem;">
                                     <h3 class="summary-title text-left">Cart Totals</h3>
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-{{ message.tags }}" style="color: #fff;">{{ message }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+
                                     <form method="POST" action="{% url 'core:checkout' %}" id="checkout-form">
                                         {% csrf_token %}
                                     <table class="shipping">
@@ -175,10 +181,10 @@
                                                     </li>
                                                     <li>
                                                         <div class="custom-radio">
-                                                            <input type="radio" id="local_pickup" value="pickup"  name="shipping_option"
+                                                            <input type="hidden" id="local_pickup" value="pickup"  name="shipping_option"
                                                                 class="custom-control-input" >
-                                                            <label class="custom-control-label" for="local_pickup">Store
-                                                                pickup</label>
+                                                            {% comment %} <label class="custom-control-label" for="local_pickup">Store
+                                                                pickup</label> {% endcomment %}
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -290,27 +296,6 @@
                 content: "" !important;
             }
         </style>
-        <script>
-            $(document).on('submit', '#checkout-form', function(event) {
-                event.preventDefault();  // Prevent the default form submission
         
-                $.ajax({
-                    url: "{% url 'core:checkout' %}",  // Make sure this URL points to the correct endpoint
-                    method: "POST",
-                    data: $(this).serialize(),  // Serialize form data
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            alert(response.message);  // Show success message
-                            window.location.href = '/order/' + response.order_id;  // Redirect to the order page
-                        } else {
-                            alert(response.message);  // Show error message
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('An error occurred: ' + error);  // Handle the error
-                    }
-                });
-            });
-        </script>
         
       {% endblock content %}

@@ -3,13 +3,21 @@
 {% load humanize %}
 {% load custom_filters %}
 {% block content %}
-		<main class="main order">
+<style>
+	@media print {
+		.no-disp {
+			display: none; /* Hide header and footer when printing */
+		}
+	}
+	
+</style>
+		<main class="main order" >
 			<div class="page-content pt-7 pb-10 mb-10">
 				<div class="step-by pr-4 pl-4">
 					<h3 class="title title-simple title-step"><a href="{% url "core:view_cart" %}">1. Shopping Cart</a></h3>
 					<h3 class="title title-simple title-step active"><a href="#">2. Order Complete</a></h3>
 				</div>
-				<div class="container mt-8">
+				<div class="container mt-8" id="main-content">
 					<div class="order-message mr-auto ml-auto">
 						<div class="icon-box d-inline-flex align-items-center">
 							<div class="icon-box-icon mb-0" >
@@ -112,7 +120,7 @@
 					<h2 class="title title-simple text-left pt-10 mb-2">Billing Address</h2>
 					<div class="address-info pb-8 mb-6">
 						<p class="address-detail pb-2">
-							John Doe<br>
+							{{ order.customer.full_name }}<br>
 							{{ shipping_address.state }}<br>
 							{{ shipping_address.city }}<br>
 							{{ shipping_address.address_line_1 }}<br>
@@ -120,11 +128,88 @@
 						</p>
 						
 					</div>
-					<a href="{% url "core:products" %}" class="btn btn-icon-left btn-dark btn-back btn-rounded btn-md mb-4" style="border-radius: 3.75rem;"><i
+					<a href="{% url "core:view_cart" %}" class="btn btn-icon-left btn-dark btn-back btn-rounded btn-md mb-4 no-disp" style="border-radius: 3.75rem;"><i
 							class="d-icon-arrow-left"></i> Back to List</a>
+
+					<button class="btn btn-icon-left btn-dark btn-back btn-rounded btn-md mb-4 no-disp" style="border-radius: 3.75rem;" onclick="printSection()">Print Section</button>
+					<button id="processOrderBtn" class="btn btn-icon-left btn-dark btn-back btn-rounded btn-md mb-4 no-disp" style="border-radius: 3.75rem;" onclick="sendImageToWhatsApp()">Process Order <i
+						class="d-icon-arrow-right"></i></button>
 				</div>
 			</div>
 		</main>
-
+		<script>
+			// Function to print the specific section of the page
+			function printSection() {
+				var originalContent = document.body.innerHTML; // Store original content
+				var printContent = document.getElementById('main-content').innerHTML; // Get section to print
+	
+				document.body.innerHTML = printContent; // Replace body content with the section content
+				window.print(); // Trigger print
+				document.body.innerHTML = originalContent; // Restore original content
+			}
+	
+			function sendImageToWhatsApp() {
+				// Disable the button and show the loader
+				var button = document.getElementById("processOrderBtn");
+				button.innerHTML = `Processing <div class="spinner-border" id="loader" style="height: 14px; width: 14px; color: #fff !important;" role="status"><span class="sr-only" style="color: #fff !important;">Loading...</span></div>`;
+				button.disabled = true;
+			
+				// Use html2canvas to capture the #main-content as a canvas
+				html2canvas(document.querySelector("#main-content")).then(function (canvas) {
+					var image = canvas.toDataURL("image/png"); // Convert canvas to image
+					var blob = dataURItoBlob(image); // Convert data URL to Blob for uploading
+					
+					// Cloudinary upload
+					var cloudinaryUrl = 'https://api.cloudinary.com/v1_1/dypvrytwu/image/upload';
+					var cloudinaryUploadPreset = 'precioushairz'; // Replace with your preset
+			
+					var formData = new FormData();
+					formData.append('file', blob);
+					formData.append('upload_preset', cloudinaryUploadPreset);
+			
+					fetch(cloudinaryUrl, {
+						method: 'POST',
+						body: formData
+					})
+					.then(response => response.json())
+					.then(data => {
+						var imageUrl = data.secure_url; // Get Cloudinary URL
+						var whatsappNumber = '2348025067397'; // Replace with your WhatsApp number
+						var name = '{{order.customer.full_name}}';
+						// WhatsApp URL with image link
+						var whatsappURL = `https://wa.me/${whatsappNumber}?text=Hello my name is ${name}, I am sending you my order receipt.%0AYou can view it here: ${imageUrl}.%0A How can I proceed with the payment?`;
+			
+						// Open WhatsApp with the image link
+						window.open(whatsappURL, '_blank');
+					})
+					.catch(error => {
+						console.error('Error uploading image:', error);
+					})
+					.finally(() => {
+						// Reset the button state after processing
+						button.innerHTML = 'Process Order <i class="d-icon-arrow-right"></i>'; // Reset button text
+						button.disabled = false; // Enable the button again
+					});
+				}).catch(function (error) {
+					console.error('Error capturing content as image:', error);
+					// Reset the button state in case of an error
+					button.innerHTML = 'Process Order <i class="d-icon-arrow-right"></i>';
+					button.disabled = false;
+				});
+			}
+			
+			// Helper function to convert base64 to Blob
+			function dataURItoBlob(dataURI) {
+				var byteString = atob(dataURI.split(',')[1]);
+				var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+				var ab = new ArrayBuffer(byteString.length);
+				var ia = new Uint8Array(ab);
+				for (var i = 0; i < byteString.length; i++) {
+					ia[i] = byteString.charCodeAt(i);
+				}
+				return new Blob([ab], { type: mimeString });
+			}
+			
+		</script>
 	        
 		{% endblock content %}

@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 
@@ -90,7 +90,7 @@ WSGI_APPLICATION = "everprecious.wsgi.application"
 
 
 
-if DEBUG:
+if not DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -185,9 +185,7 @@ STATICFILES_FINDERS = [
 
 
 
-CLOUD_NAME_SECRET = "dypvrytwu"
-API_KEY = "796229729547852"
-API_SECRET = "FaYFLYVkL-i-bNhuAwAEerbbszY" 
+
 
 LOGIN_REDIRECT_URL = '/user/login/'
 

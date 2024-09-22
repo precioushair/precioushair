@@ -8,6 +8,7 @@ from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.template.loader import render_to_string
+from django.contrib import messages
 # Create your views here.
 
 
@@ -292,19 +293,20 @@ def view_cart(request):
 @login_required
 def checkout_view(request):
     cart = get_object_or_404(Cart, user=request.user)
-    order, created = Order.objects.get_or_create(customer=request.user, complete=False)
-    shipping_address = ShippingAddress.objects.filter(order=order).first()
 
     if request.method == 'POST':
+        # Create a new order instance
+        order = Order.objects.create(customer=request.user, complete=False)
         shipping_option = request.POST.get('shipping_option')
-        shipping_form = ShippingAddressForm(request.POST, instance=shipping_address)
+        shipping_form = ShippingAddressForm(request.POST)
 
         if shipping_option == 'pickup':
             order.shipping_option = 'pickup'
             order.save()
+            messages.success(request, 'Order created for pickup.')
 
-            # Return success response for API
-            return JsonResponse({'status': 'success', 'message': 'Order created for pickup', 'order_id': order.id})
+            # Redirect to cart.html
+            return redirect('core:order', order.id)  # Replace 'cart' with the actual name of the URL pattern for your cart page
 
         elif shipping_form.is_valid():
             shipping_address = shipping_form.save(commit=False)
@@ -320,14 +322,18 @@ def checkout_view(request):
                     quantity=cart_item.quantity
                 )
 
+            # Clear cart items after creating order
             cart.items.all().delete()
 
-            return JsonResponse({'status': 'success', 'message': 'Order created with shipping', 'order_id': order.id})
+            messages.success(request, 'Order created with shipping.')
+            return redirect('core:order', order.id) 
 
         # Handle form validation error
-        return JsonResponse({'status': 'error', 'message': 'Form validation failed'})
-    
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+        messages.error(request, 'Form validation failed.')
+        return redirect('core:view_cart')  # Redirect back to cart.html
+
+    # If the request method is not POST, render the cart page
+    return render(request, 'user/cart.html', {'cart': cart})
 
 
 def order_view(request, order_id):

@@ -1,7 +1,6 @@
 from django.db import models
 from userauths.models import User
 from django.utils.html import mark_safe
-from django.conf import settings
 from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -12,11 +11,13 @@ from django.utils.text import slugify
 from django.utils import timezone
 from datetime import timedelta
 import requests
-          
+from decouple import config
+
+
 cloudinary.config( 
-  cloud_name = getattr(settings, 'CLOUD_NAME_SECRET', None), 
-  api_key = getattr(settings, 'API_KEY', None), 
-  api_secret = getattr(settings, 'API_SECRET', None)
+  cloud_name = config('CLOUD_NAME_SECRET'), 
+  api_key = config('CLOUDINARY_API_KEY'), 
+  api_secret = config('CLOUDINARY_API_SECRET')
 )
 class Category(models.Model):
     name = models.CharField(max_length=255)
