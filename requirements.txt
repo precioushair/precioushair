@@ -6,11 +6,7 @@ psycopg2-binary==2.9.9
 Pillow==9.4.0
 pytz==2022.7
 django-pipeline== 2.1.0
-django-ckeditor==6.7.0
 python-decouple==3.8
-numpy==1.26.4
-pandas==2.2.2
-scikit-learn==1.5.0
 resend==0.6.0
 cloudinary==1.39.0
 requests==2.31.0
